@@ -1,38 +1,39 @@
 @extends('layouts.app')
 
-@section('header_title', 'Promotion Management')
+@section('header_title', 'Event Management')
 
 @section('content')
-<div x-data="{ showPromotionModal: {{ $errors->any() ? 'true' : 'false' }}, showDeleteModal: false, showDetailModal: false }" class="p-2">
+<div x-data="{ showEventModal: {{ $errors->any() ? 'true' : 'false' }}, showDeleteModal: false, showDetailModal: false }" class="p-2">
 
     <div class="flex flex-wrap items-end gap-4 mb-8">
+        
         <div class="flex-[2] min-w-[250px]">
-            <label class="block text-sm font-semibold text-gray-800 mb-2">Search Promotion</label>
+            <label class="block text-sm font-semibold text-gray-800 mb-2">Search Event</label>
             <div class="relative">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </span>
-                {{-- backend menghubungkan input dengan query pencarian berdasarkan 'title' --}}
-                <input type="text" placeholder="Search promotion by title" class="w-full pl-10 pr-4 h-[42px] rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-pink transition text-sm">
+                {{-- input pencarian berdasarkan 'name' --}}
+                <input type="text" placeholder="Search event by name" class="w-full pl-10 pr-4 h-[42px] rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-pink transition text-sm">
             </div>
         </div>
 
         <div class="flex-[2] min-w-[200px]">
             <label class="block text-sm font-semibold text-gray-800 mb-2">Search by Date</label>
             <div class="relative">
-                {{-- backend menghubungkan input dengan query pencarian berdasarkan 'date' --}}
+                {{-- input pencarian berdasarkan 'date' --}}
                 <input type="date" class="w-full px-4 h-[42px] rounded-lg border border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-pink transition appearance-none bg-white text-sm">
             </div>
         </div>
 
-        <div class="flex gap-2">
-            <button @click="showPromotionModal = true" class="px-6 py-2.5 h-[42px] w-[180px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition text-sm">
-                + Add Promotion
+        <div>
+            <button @click="showEventModal = true" class="px-8 py-2.5 h-[42px] w-[180px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition text-sm">
+                + Add Event
             </button>
         </div>
     </div>
 
-    {{-- tabel data promosi --}}
+    {{-- tabel data event --}}
     <div class="bg-white rounded-xl border border-gray-100 overflow-hidden mb-4">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
@@ -41,23 +42,21 @@
                         <th class="py-3 px-6 text-center w-16">
                             <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-blue focus:ring-brand-blue">
                         </th>
-                        <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Promotion Title</th>
-                        <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Start Date</th>
-                        <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">End Date</th>
+                        <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Event Name</th>
+                        <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Event Date</th>
                         <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Format</th>
                         <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Created By</th>
                         <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- perulangan untuk menampilkan data promosi --}}
+                    {{-- perulangan untuk menampilkan data event --}}
                     <tr class="border-b border-gray-50 hover:bg-brand-light-blue-active transition-colors bg-brand-light-blue-active/75">
                         <td class="py-3 px-6 text-center">
                             <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-blue focus:ring-brand-blue">
                         </td>
-                        <td class="py-3 px-4 text-sm font-bold text-gray-800">CNY</td>
+                        <td class="py-3 px-4 text-sm font-bold text-gray-800">Fun Day CNY</td>
                         <td class="py-3 px-4 text-sm font-semibold text-gray-700">13/03/2026</td>
-                        <td class="py-3 px-4 text-sm font-semibold text-gray-700">20/04/2026</td>
                         <td class="py-3 px-4 text-sm font-semibold text-gray-700">IMAGE</td>
                         <td class="py-3 px-4">
                             <div class="flex items-center gap-2">
@@ -67,14 +66,14 @@
                                 <span class="text-sm font-semibold text-gray-700">Rinda</span>
                             </div>
                         </td>
-                        <td class="py-3 px-6">
+                        <td class="py-3 px-4">
                             <div class="flex items-center justify-center gap-3">
                                 {{-- tombol view untuk melihat detail --}}
-                                <button @click="showDetailModal = true" class="text-brand-blue hover:text-brand-blue-hover transition-colors" title="View Details">
+                                <button @click="showDetailModal = true" class="text-brand-blue hover:text-[#4996BE] transition-colors" title="View Details">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                 </button>
                                 {{-- tombol edit --}}
-                                <button @click="showPromotionModal = true" class="text-brand-pink hover:text-brand-pink-hover transition-colors" title="Edit">
+                                <button @click="showEventModal = true" class="text-brand-pink hover:text-brand-pink-hover transition-colors" title="Edit">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                 </button>
                                 {{-- tombol hapus --}}
@@ -88,12 +87,11 @@
             </table>
         </div>
     </div>
-    
+
     <div class="flex items-center justify-between text-sm text-gray-500 px-2">
         <div>
             Total 1 document
         </div>
-        
         <div class="flex items-center gap-6">
             <div class="flex items-center gap-2">
                 <span>Rows per page</span>
@@ -118,43 +116,35 @@
     </div>
 
     {{-- form modal untuk create dan edit --}}
-    <div x-show="showPromotionModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
-        <div @click.away="showPromotionModal = false" class="bg-white rounded-lg p-8 w-full max-w-4xl shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+    <div x-show="showEventModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
+        <div @click.away="showEventModal = false" class="bg-white rounded-lg p-8 w-full max-w-4xl shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
             
-            <button @click="showPromotionModal = false" class="absolute top-6 right-6 text-gray-400 hover:text-gray-700">
+            <button @click="showEventModal = false" class="absolute top-6 right-6 text-gray-400 hover:text-gray-700">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
-            <h2 class="text-2xl font-extrabold text-gray-900 mb-8">Promotion Information</h2>
+            <h2 class="text-2xl font-extrabold text-gray-900 mb-8">Event Information</h2>
 
             <form action="#" method="POST">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                     
                     <div class="space-y-5">
                         <div>
-                            <label class="block text-sm font-semibold mb-2 @error('title') text-red-500 @else text-gray-800 @enderror">
-                                Promotion Title
-                            </label>
-                            
-                            <input type="text" name="title" value="{{ old('title') }}" class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 transition @error('title') border-red-500 bg-red-50 @else border-gray-300 focus:ring-brand-pink @enderror">
-                            @error('title')
+                            <label class="block text-sm font-semibold mb-2 @error('name') text-red-500 @else text-gray-800 @enderror">Event Name</label>
+                            <input type="text" name="name" value="{{ old('name') }}" class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 transition @error('name') border-red-500 bg-red-50 @else border-gray-300 focus:ring-brand-pink @enderror">
+                            @error('name')
                                 <p class="text-red-500 text-xs font-bold mt-2">{{ $message }}</p>
                             @enderror
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-semibold mb-2 text-gray-800">Start Date</label>
-                            <input type="date" name="start_date" class="w-full px-4 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold mb-2 text-gray-800">End Date</label>
-                            <input type="date" name="end_date" class="w-full px-4 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition">
+                            <label class="block text-sm font-semibold mb-2 text-gray-800">Event Date</label>
+                            <input type="date" name="event_date" class="w-full px-4 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition">
                         </div>
 
                         <div>
                             <label class="block text-sm font-semibold mb-2 text-gray-800">Description</label>
-                            <textarea name="description" rows="4" class="w-full px-4 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition"></textarea>
+                            <textarea name="description" rows="8" class="w-full px-4 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition" placeholder="Write event description here (5W+1H)..."></textarea>
                         </div>
                     </div>
                     
@@ -163,7 +153,7 @@
                         <label class="block text-xl font-semibold text-gray-800 mb-2">File Upload</label>
                         
                         <div class="flex-1 min-h-[250px] flex flex-col items-center justify-center bg-brand-light-pink rounded-lg cursor-pointer hover:opacity-80 transition relative">
-                            <input type="file" name="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*,application/pdf">
+                            <input type="file" name="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*,video/*,application/pdf">
                             <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-4 shadow-md text-white">
                                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                             </div>
@@ -172,7 +162,7 @@
                         </div>
 
                         <div class="flex gap-4 mt-8">
-                            <button type="button" @click="showPromotionModal = false" class="flex-1 py-3 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition">Cancel</button>
+                            <button type="button" @click="showEventModal = false" class="flex-1 py-3 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition">Cancel</button>
                             <button type="submit" class="flex-1 py-3 bg-brand-light-pink text-brand-pink hover:bg-brand-pink hover:text-white font-semibold rounded-lg transition">Save</button>
                         </div>
                     </div>
@@ -182,17 +172,14 @@
         </div>
     </div>
 
-    {{-- modal konfirmasi untuk hapus --}}
+    {{-- modal konfirmasi hapus --}}
     <div x-show="showDeleteModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
         <div @click.away="showDeleteModal = false" class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl relative overflow-hidden text-center" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
-            
             <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500 shadow-sm">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
             </div>
-            
-            <h3 class="text-xl font-extrabold text-gray-900 mb-2">Delete Promotion?</h3>
-            <p class="text-sm text-gray-500 mb-6 font-medium">Are you sure you want to remove this promotion data? This action cannot be undone.</p>
-            
+            <h3 class="text-xl font-extrabold text-gray-900 mb-2">Delete Event?</h3>
+            <p class="text-sm text-gray-500 mb-6 font-medium">Are you sure you want to remove this event data? This action cannot be undone.</p>
             <div class="flex gap-3">
                 <button @click="showDeleteModal = false" class="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition">Cancel</button>
                 <form action="#" method="POST" class="flex-1">
@@ -202,7 +189,7 @@
         </div>
     </div>
 
-    {{-- modal detail promosi --}}
+    {{-- modal detail event --}}
     <div x-show="showDetailModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
         <div @click.away="showDetailModal = false" class="bg-white rounded-3xl p-8 md:p-10 w-full max-w-3xl shadow-2xl relative mx-4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
             
@@ -210,7 +197,7 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
-            <h2 class="text-3xl font-semibold text-brand-pink mb-8">Promotion Details</h2>
+            <h2 class="text-3xl font-semibold text-brand-pink mb-8">Event Details</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-8 md:gap-12">
                 <div class="w-full rounded-2xl border border-gray-200 overflow-hidden bg-gray-50 aspect-[3/4] flex items-center justify-center">
@@ -228,14 +215,10 @@
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at dapibus risus. Donec eu odio id risus laoreet vehicula nec quis massa. Phasellus dapibus turpis eget lacus pretium varius. Nulla at quam non augue dapibus ultricies.
                     </p>
 
-                    <div class="flex items-center mt-auto pt-6">
-                        <div class="flex-1 text-center border-r-2 border-gray-300">
-                            <p class="text-brand-pink font-bold mb-2 text-lg">Start Date</p>
-                            <p class="text-gray-900 font-medium text-lg">13 March 2026</p>
-                        </div>
+                    <div class="flex items-center pt-6">
                         <div class="flex-1 text-center">
-                            <p class="text-brand-pink font-bold mb-2 text-lg">End Date</p>
-                            <p class="text-gray-900 font-medium text-lg">20 April 2026</p>
+                            <p class="text-brand-pink font-bold mb-2 text-lg">Date</p>
+                            <p class="text-gray-900 font-medium text-lg">13 March 2026</p>
                         </div>
                     </div>
                 </div>

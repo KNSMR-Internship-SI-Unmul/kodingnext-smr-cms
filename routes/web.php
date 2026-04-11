@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/dashboard', function () {
@@ -24,4 +24,8 @@ Route::get('/students', function () {
 
 Route::get('/promotions', function () {
     return view('pages.promotions.index');
+});
+
+Route::get('/events', function () {
+    return view('pages.events.index');
 });

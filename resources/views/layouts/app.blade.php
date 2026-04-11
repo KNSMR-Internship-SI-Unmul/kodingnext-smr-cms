@@ -20,8 +20,16 @@
                         brand: {
                             pink: '#E4559B',
                             'light-pink': '#FCEEF5',
+                            'light-pink-hover': '#FBE6F0',
+                            'light-pink-active': '#F7CAE0',
+                            'pink-hover': '#CD4D8C',
+                            'pink-active': '#B6447C',
                             blue: '#51A7D3',
-                            'light-blue': '#E5F2F8',
+                            'light-blue': '#EEF6FB',
+                            'light-blue-hover': '#E5F2F8',
+                            'light-blue-active': '#C9E4F1',
+                            'blue-hover': '#4996BE',
+                            'blue-active': '#4186A9',
                         }
                     }
                 }

@@ -37,8 +37,9 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
         
-        <div class="bg-brand-light-pink rounded-lg p-4 shadow-sm flex flex-col h-full relative group transform transition-all hover:-translate-y-2 hover:shadow-sm">
-            <div class="absolute top-6 right-6 z-10" x-data="{ openDropdown: false }">
+        <div class="bg-brand-light-pink rounded-lg p-4 shadow-sm hover:shadow-md flex flex-col h-full relative group transform transition-all hover:-translate-y-1">
+            
+            <div class="absolute top-3 right-3 z-20" x-data="{ openDropdown: false }">
                 <button @click="openDropdown = !openDropdown" class="text-brand-pink hover:text-brand-pink-hover focus:outline-none transition-colors rounded-full p-1 hover:bg-brand-pink/10">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
                 </button>
@@ -63,23 +64,24 @@
                 </div>
             </div>
             
-            <div class="w-full h-44 bg-white/60 rounded-lg mb-4 overflow-hidden relative border border-white/50 flex-shrink-0">
-                <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjZTVlN2ViIi8+PHJlY3QgeD0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2Y5ZmFmYiIvPjxyZWN0IHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNmOWZhZmIiLz48cmVjdCB4PSIxMCIgeT0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2U1ZTdlYiIvPjwvc3ZnPg==')] opacity-40"></div>
-                {{-- <img src="URL_GAMBAR" alt="Cover" class="w-full h-full object-cover"> --}}
+            <div class="flex justify-between items-center px-3 pt-5 pb-3">
+                <div class="flex-1 pr-2">
+                    <h3 class="font-extrabold text-brand-pink text-xl leading-tight mb-1">Coding Stories</h3>
+                    <p class="text-sm text-gray-500">Little Koders</p>
+                </div>
+                
+                {{-- gambar ilustrasi ukuran 106x106 --}}
+                <div class="flex-shrink-0 relative z-10">
+                    <img src="{{ asset('images/module-icon.png') }}" alt="Module Illustration" class="w-[106px] h-[106px] object-contain drop-shadow-sm">
+                </div>
             </div>
             
-            {{-- Judul dan Kategori --}}
-            <div class="px-2 mb-4">
-                <h3 class="font-extrabold text-gray-900 text-lg leading-tight mb-0.5">Coding Stories</h3>
-                <p class="text-sm font-medium text-gray-500">Little Koders</p>
-            </div>
-            
-            <div class="bg-white rounded-lg p-5 flex-1 flex flex-col border border-brand-pink shadow-sm">
+            <div class="bg-white rounded-lg p-5 flex-1 flex flex-col border border-brand-pink shadow-sm relative z-0">
                 <p class="text-xs text-gray-800 leading-relaxed mb-4 flex-1">
                     Siswa akan mempelajari konsep dasar coding dan berlatih berpikir logis melalui kegiatan yang menyenangkan dan alat yang sesuai dengan usia mereka. Mereka akan membuat animasi, membuat kode, dan memainkan board game berbasis cerita.
                 </p>
                 
-                <div class="flex items-center justify-between border-t border-gray-100 pt-4">
+                <div class="flex items-center justify-between border-t border-gray-100 pt-3">
                     <div>
                         <p class="text-xs text-gray-400 font-medium mb-1">Age Range</p>
                         <p class="text-sm font-bold text-gray-900">4 - 6 y.o</p>
@@ -93,7 +95,7 @@
         </div>
 
         <div class="bg-brand-light-blue rounded-lg p-4 shadow-sm hover:shadow-md flex flex-col h-full relative group transform transition-all hover:-translate-y-1">
-            <div class="absolute top-6 right-6 z-10" x-data="{ openDropdown: false }">
+            <div class="absolute top-3 right-3 z-20" x-data="{ openDropdown: false }">
                 <button @click="openDropdown = !openDropdown" class="text-brand-blue hover:text-brand-blue-hover focus:outline-none transition-colors rounded-full p-1 hover:bg-brand-blue/10">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
                 </button>
@@ -118,21 +120,24 @@
                 </div>
             </div>
             
-            <div class="w-full h-44 bg-white/60 rounded-lg mb-4 overflow-hidden relative border border-white/50 flex-shrink-0">
-                <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjZTVlN2ViIi8+PHJlY3QgeD0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2Y5ZmFmYiIvPjxyZWN0IHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNmOWZhZmIiLz48cmVjdCB4PSIxMCIgeT0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2U1ZTdlYiIvPjwvc3ZnPg==')] opacity-40"></div>
+            <div class="flex justify-between items-center px-3 pt-5 pb-3">
+                <div class="flex-1 pr-2">
+                    <h3 class="font-extrabold text-brand-blue text-xl leading-tight mb-1">2D Games with Roblox</h3>
+                    <p class="text-sm text-gray-500">Junior Koders</p>
+                </div>
+                
+                {{-- gambar ilustrasi ukuran 106x106 --}}
+                <div class="flex-shrink-0 relative z-10">
+                    <img src="{{ asset('images/module-icon.png') }}" alt="Module Illustration" class="w-[106px] h-[106px] object-contain drop-shadow-sm">
+                </div>
             </div>
             
-            <div class="px-2 mb-4">
-                <h3 class="font-bold text-gray-900 text-lg leading-tight mb-0.5">2D Games With Roblox</h3>
-                <p class="text-sm font-medium text-gray-500">Junior Koders</p>
-            </div>
-            
-            <div class="bg-white rounded-lg p-5 flex-1 flex flex-col border border-brand-blue shadow-sm">
+            <div class="bg-white rounded-lg p-5 flex-1 flex flex-col border border-brand-blue shadow-sm relative z-0">
                 <p class="text-xs text-gray-800 leading-relaxed mb-4 flex-1">
                     Siswa akan belajar cara membuat dan memprogram animasi dan game sederhana melalui berbagai tugas dan proyek. Mempelajari elemen dan konsep dasar game dan menerapkan pengetahuan ini untuk membuat proyek game mereka sendiri.
                 </p>
                 
-                <div class="flex items-center justify-between border-t border-gray-100 pt-4">
+                <div class="flex items-center justify-between border-t border-gray-100 pt-3">
                     <div>
                         <p class="text-xs text-gray-400 font-medium mb-1">Age Range</p>
                         <p class="text-sm font-bold text-gray-900">8 - 12 y.o</p>
@@ -202,7 +207,7 @@
 
                     {{-- form upload file --}}
                     <div class="flex flex-col h-full">
-                        <label class="block text-xl font-semibold text-gray-800 mb-4">Module Image</label>
+                        <label class="block text-xl font-semibold text-gray-800 mb-3">Module Image</label>
                         
                         <div class="flex-1 min-h-[200px] flex flex-col items-center justify-center bg-brand-light-pink rounded-lg cursor-pointer hover:opacity-80 transition relative">
                             <input type="file" name="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*">

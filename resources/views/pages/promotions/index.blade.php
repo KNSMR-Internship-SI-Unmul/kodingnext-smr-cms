@@ -160,14 +160,14 @@
                     
                     {{-- form upload file --}}
                     <div class="flex flex-col h-full">
-                        <label class="block text-xl font-semibold text-gray-800 mb-2">File Upload</label>
+                        <label class="block text-xl font-semibold text-gray-800 mb-3">File Upload</label>
                         
                         <div class="flex-1 min-h-[250px] flex flex-col items-center justify-center bg-brand-light-pink rounded-lg cursor-pointer hover:opacity-80 transition relative">
                             <input type="file" name="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*,application/pdf">
                             <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-4 shadow-md text-white">
                                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                             </div>
-                            <h4 class="font-semibold text-gray-900 mb-1">Click for upload file</h4>
+                            <h4 class="font-semibold text-gray-900 mb-1">Click for Upload File</h4>
                             <p class="text-xs font-medium text-gray-500">PDF, IMAGE, JPG, PNG, JPEG</p>
                         </div>
 

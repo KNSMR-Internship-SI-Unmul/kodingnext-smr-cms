@@ -3,7 +3,7 @@
 @section('header_title', 'Module Management')
 
 @section('content')
-<div x-data="{ showModuleModal: {{ $errors->any() ? 'true' : 'false' }}, showDeleteModal: false }" class="p-2">
+<div x-data="{ showModuleModal: {{ $errors->any() ? 'true' : 'false' }}, showDeleteModal: false }">
 
     <div class="flex flex-wrap items-end gap-4 mb-8">
         
@@ -220,7 +220,7 @@
 
                         <div class="flex gap-4 mt-8">
                             <button type="button" @click="showModuleModal = false" class="flex-1 py-3 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition">Cancel</button>
-                            <button type="submit" class="flex-1 py-3 bg-brand-light-pink text-brand-pink hover:bg-brand-pink hover:text-white font-semibold rounded-lg transition shadow-sm">Save</button>
+                            <button type="submit" class="flex-1 py-3 bg-brand-light-pink text-brand-pink hover:bg-brand-pink hover:text-white font-semibold rounded-lg transition">Save</button>
                         </div>
                     </div>
 

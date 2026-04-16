@@ -30,6 +30,15 @@
                             'light-blue-active': '#C9E4F1',
                             'blue-hover': '#4996BE',
                             'blue-active': '#4186A9',
+                            'dark-blue': '#3D7D9E',
+                            'dark-blue-hover': '#31647F',   
+                            'dark-blue-active': '#244B5F',
+                            purple: '#2E0065',
+                            'light-purple': '#EAE6F0',
+                            'light-purple-hover': '#E0D9E8',
+                            'light-purple-active': '#BEB0CF',
+                            'purple-hover': '#29005B',
+                            'purple-active': '#250051',
                         }
                     }
                 }
@@ -51,7 +60,7 @@
         
         @include('partials.navbar')
 
-        <main class="flex-1 overflow-y-auto p-8">
+        <main class="flex-1 overflow-y-auto p-9">
             @yield('content')
         </main>
         

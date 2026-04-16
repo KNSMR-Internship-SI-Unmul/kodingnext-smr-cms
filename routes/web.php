@@ -10,6 +10,10 @@ Route::get('/dashboard', function () {
     return view('pages.dashboard');
 });
 
+Route::get('/dashboard/courses', function () {
+    return view('pages.courses.index');
+});
+
 Route::get('/modules', function () {
     return view('pages.modules.index');
 });
@@ -28,4 +32,12 @@ Route::get('/promotions', function () {
 
 Route::get('/events', function () {
     return view('pages.events.index');
+});
+
+Route::get('/employees/roles', function () {
+    return view('pages.roles.index');
+});
+
+Route::get('/employees/{id}', function ($id) {
+    return view('pages.employees.show', ['employeeId' => $id]);
 });

@@ -30,7 +30,7 @@
                         class="w-full px-4 py-3.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink text-gray-700 placeholder-gray-400 transition-all text-sm">
 
                     <div class="flex justify-end mt-3">
-                        <a href="#" class="text-xs font-medium text-red-500 hover:text-red-700 transition-colors">Forgot password?</a>
+                        <a href="#" class="text-xs font-medium text-gray-600 hover:text-red-700 transition-colors">Forgot password?</a>
                     </div>
                 </div>
 

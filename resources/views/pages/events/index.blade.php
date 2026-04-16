@@ -3,7 +3,7 @@
 @section('header_title', 'Event Management')
 
 @section('content')
-<div x-data="{ showEventModal: {{ $errors->any() ? 'true' : 'false' }}, showDeleteModal: false, showDetailModal: false }" class="p-2">
+<div x-data="{ showEventModal: {{ $errors->any() ? 'true' : 'false' }}, showDeleteModal: false, showDetailModal: false }">
 
     <div class="flex flex-wrap items-end gap-4 mb-8">
         
@@ -37,9 +37,10 @@
     <div class="bg-white rounded-xl border border-gray-100 overflow-hidden mb-4">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
+
                 <thead>
                     <tr class="border-b border-gray-100 bg-brand-light-blue">
-                        <th class="py-3 px-6 text-center w-16">
+                        <th class="py-3 px-4 text-center w-16">
                             <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-blue focus:ring-brand-blue">
                         </th>
                         <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Event Name</th>
@@ -49,8 +50,41 @@
                         <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Action</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     {{-- perulangan untuk menampilkan data event --}}
+                    <tr class="border-b border-gray-50 hover:bg-brand-light-blue-active transition-colors bg-brand-light-blue-active/75">
+                        <td class="py-3 px-6 text-center">
+                            <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-blue focus:ring-brand-blue">
+                        </td>
+                        <td class="py-3 px-4 text-sm font-bold text-gray-800">Fun Day CNY</td>
+                        <td class="py-3 px-4 text-sm font-semibold text-gray-700">13/03/2026</td>
+                        <td class="py-3 px-4 text-sm font-semibold text-gray-700">IMAGE</td>
+                        <td class="py-3 px-4">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-full bg-gray-200 overflow-hidden">
+                                    <svg class="w-full h-full text-gray-400 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                                </div>
+                                <span class="text-sm font-semibold text-gray-700">Rinda</span>
+                            </div>
+                        </td>
+                        <td class="py-3 px-4">
+                            <div class="flex items-center justify-center gap-3">
+                                {{-- tombol view untuk melihat detail --}}
+                                <button @click="showDetailModal = true" class="text-brand-blue hover:text-[#4996BE] transition-colors" title="View Details">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                </button>
+                                {{-- tombol edit --}}
+                                <button @click="showEventModal = true" class="text-brand-pink hover:text-brand-pink-hover transition-colors" title="Edit">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                </button>
+                                {{-- tombol hapus --}}
+                                <button @click="showDeleteModal = true" class="text-red-500 hover:text-red-600 transition-colors" title="Delete">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
                     <tr class="border-b border-gray-50 hover:bg-brand-light-blue-active transition-colors bg-brand-light-blue-active/75">
                         <td class="py-3 px-6 text-center">
                             <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-blue focus:ring-brand-blue">
@@ -150,14 +184,14 @@
                     
                     {{-- form upload file --}}
                     <div class="flex flex-col h-full">
-                        <label class="block text-xl font-semibold text-gray-800 mb-2">File Upload</label>
+                        <label class="block text-xl font-semibold text-gray-800 mb-3">File Upload</label>
                         
                         <div class="flex-1 min-h-[250px] flex flex-col items-center justify-center bg-brand-light-pink rounded-lg cursor-pointer hover:opacity-80 transition relative">
                             <input type="file" name="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*,video/*,application/pdf">
                             <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-4 shadow-md text-white">
                                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                             </div>
-                            <h4 class="font-semibold text-gray-900 mb-1">Click for upload file</h4>
+                            <h4 class="font-semibold text-gray-900 mb-1">Click for Upload File</h4>
                             <p class="text-xs font-medium text-gray-500">PDF, IMAGE, JPG, PNG, JPEG</p>
                         </div>
 
@@ -191,7 +225,7 @@
 
     {{-- modal detail event --}}
     <div x-show="showDetailModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
-        <div @click.away="showDetailModal = false" class="bg-white rounded-3xl p-8 md:p-10 w-full max-w-3xl shadow-2xl relative mx-4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+        <div @click.away="showDetailModal = false" class="bg-white rounded-lg p-8 md:p-10 w-full max-w-3xl shadow-2xl relative mx-4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
             
             <button @click="showDetailModal = false" class="absolute top-6 right-6 text-gray-800 hover:text-gray-500 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -200,27 +234,25 @@
             <h2 class="text-3xl font-semibold text-brand-pink mb-8">Event Details</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-8 md:gap-12">
-                <div class="w-full rounded-2xl border border-gray-200 overflow-hidden bg-gray-50 aspect-[3/4] flex items-center justify-center">
+                <div class="w-full rounded-lg border border-gray-200 overflow-hidden bg-gray-50 aspect-[3/4] flex items-center justify-center">
                     <div class="w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjZTVlN2ViIi8+PHJlY3QgeD0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2Y5ZmFmYiIvPjxyZWN0IHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNmOWZhZmIiLz48cmVjdCB4PSIxMCIgeT0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2U1ZTdlYiIvPjwvc3ZnPg==')] opacity-50"></div>
                 </div>
 
-                <div class="flex flex-col">
-                    <div class="mb-6">
-                        <span class="inline-block px-6 py-2.5 bg-brand-light-pink text-brand-pink font-semibold rounded-full text-lg">
-                            Description
-                        </span>
+                <div class="flex flex-col pt-2">
+                    <div class="flex items-center gap-3 mb-4 text-brand-pink">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            <text x="12" y="16" text-anchor="middle" font-size="6" font-family="sans-serif" font-weight="medium" fill="currentColor">11</text>
+                        </svg>
+                        <span class="text-lg font-medium">30 April 2026</span>
                     </div>
 
-                    <p class="text-gray-800 text-sm leading-relaxed mb-4 flex-1">
+                    <h3 class="text-2xl font-medium text-brand-pink mb-5">Fun Day Chinese New Year 2026</h3>
+
+                    <p class="text-gray-800 text-sm leading-relaxed flex-1">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at dapibus risus. Donec eu odio id risus laoreet vehicula nec quis massa. Phasellus dapibus turpis eget lacus pretium varius. Nulla at quam non augue dapibus ultricies.
                     </p>
 
-                    <div class="flex items-center pt-6">
-                        <div class="flex-1 text-center">
-                            <p class="text-brand-pink font-bold mb-2 text-lg">Date</p>
-                            <p class="text-gray-900 font-medium text-lg">13 March 2026</p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

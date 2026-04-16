@@ -1,4 +1,4 @@
-<header class="h-20 bg-white/80 backdrop-blur-md border-b border-gray-100 flex items-center justify-between px-8 sticky top-0 z-10">
+<header class="h-20 bg-white/80 backdrop-blur-md border-b border-gray-100 flex items-center justify-between px-9 sticky top-0 z-10">
     
     <div>
         <h2 class="text-2xl font-bold text-brand-pink tracking-tight">
@@ -6,10 +6,10 @@
         </h2>
     </div>
 
-    <div class="flex items-center gap-3 border border-brand-blue rounded-lg px-3 py-1 cursor-pointer hover:bg-brand-light-blue/50 transition-colors shadow-sm">
+    <div class="flex items-center gap-3 border border-brand-pink rounded-lg px-3 py-1 cursor-pointer hover:bg-gray-100 transition-colors shadow-sm">
         
         <div class="text-right">
-            <p class="text-[12px] font-semibold text-gray-900 leading-tight">Rinda Lailatul Arofah, S.Kom.</p>
+            <p class="text-xs font-semibold text-gray-900 leading-tight">Rinda Lailatul Arofah, S.Kom.</p>
             <p class="text-[10px] font-medium text-gray-600">Student Advisor</p>
         </div>
         

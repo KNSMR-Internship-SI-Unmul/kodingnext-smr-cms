@@ -53,7 +53,7 @@
     {{-- courses overview --}}
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-brand-pink tracking-tight">Courses Overview</h2>
-        <a href="/dashboard/courses" class="px-6 py-2.5 h-[42px] w-[180px] bg-brand-light-pink hover:bg-brand-light-pink-hover text-brand-pink hover:text-brand-dark-pink font-semibold rounded-lg transition-colors text-sm justify-center flex">
+        <a href="/dashboard/courses" class="px-6 py-2.5 h-[42px] bg-brand-white hover:bg-brand-pink text-brand-pink hover:text-white border border-brand-pink font-semibold rounded-lg transition-colors text-sm justify-center flex">
             Manage Courses
         </a>
     </div>

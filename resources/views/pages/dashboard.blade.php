@@ -61,7 +61,7 @@
     <div class="flex flex-col gap-5">
         
         {{-- course little koders --}}
-        <div class="bg-brand-light-pink rounded-xl p-4 flex flex-col sm:flex-row items-center gap-6 relative pr-16 shadow-sm border border-brand-pink/10">
+        <div class="bg-brand-light-pink rounded-xl p-4 flex flex-col sm:flex-row items-center gap-6 relative pr-16 border border-brand-pink/10">
             <div class="w-32 h-32 bg-white rounded-xl shadow-sm flex-shrink-0 flex items-center justify-center overflow-hidden">
                 <img src="{{ asset('images/course-littlekoder.avif') }}" class="w-full h-full object-cover">
             </div>
@@ -77,7 +77,7 @@
         </div>
 
         {{-- course junior koders --}}
-        <div class="bg-brand-light-blue rounded-xl p-4 flex flex-col sm:flex-row items-center gap-6 relative pr-16 shadow-sm border border-brand-blue/10">
+        <div class="bg-brand-light-blue rounded-xl p-4 flex flex-col sm:flex-row items-center gap-6 relative pr-16 border border-brand-blue/10">
             <div class="w-32 h-32 bg-white rounded-xl shadow-sm flex-shrink-0 flex items-center justify-center overflow-hidden">
                 <img src="{{ asset('images/course-juniorkoder.avif') }}" class="w-full h-full object-cover">
             </div>
@@ -92,7 +92,7 @@
             </button>
         </div>
 
-        <div class="bg-brand-light-purple rounded-xl p-4 flex flex-col sm:flex-row items-center gap-6 relative pr-16 shadow-md border border-brand-purple/10">
+        <div class="bg-brand-light-purple rounded-xl p-4 flex flex-col sm:flex-row items-center gap-6 relative pr-16 border border-brand-purple/10">
             <div class="w-32 h-32 bg-white rounded-xl shadow-sm flex-shrink-0 flex items-center justify-center overflow-hidden">
                 <img src="{{ asset('images/course-robonext.avif') }}" class="w-full h-full object-cover">
             </div>

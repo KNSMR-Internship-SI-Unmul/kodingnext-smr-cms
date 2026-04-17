@@ -17,11 +17,11 @@
             <span class="text-brand-pink">9</span> Employee
         </h1>
         <div class="flex gap-4">
-            <a href="/employees/roles" class="px-6 py-2.5 bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition shadow-sm text-sm flex items-center">
+            <a href="/employees/roles" class="px-6 py-2.5 h-[42px] bg-brand-white hover:bg-brand-pink text-brand-pink hover:text-white border border-brand-pink font-semibold rounded-lg transition text-sm flex items-center justify-center">
                 Manage Roles
             </a>
             
-            <button @click="showEmployeeModal = true" class="px-6 py-2.5 bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition shadow-sm text-sm flex items-center gap-2">
+            <button @click="showEmployeeModal = true" class="px-6 py-2.5 h-[42px] w-[180px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition text-sm flex items-center justify-center">
                 + Add Candidate
             </button>
         </div>

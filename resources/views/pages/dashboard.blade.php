@@ -27,16 +27,6 @@
 
         <div class="bg-brand-pink rounded-2xl p-6 flex items-center gap-5 shadow-md transform hover:-translate-y-1 transition-transform">
             <div class="w-14 h-14 bg-brand-light-pink-hover rounded-full flex items-center justify-center text-brand-pink flex-shrink-0">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-            </div>
-            <div class="text-white">
-                <p class="text-sm font-medium text-white/90 mb-0.5">Student Projects</p>
-                <p class="text-3xl font-extrabold leading-none">1</p>
-            </div>
-        </div>
-
-        <div class="bg-brand-blue rounded-2xl p-6 flex items-center gap-5 shadow-md transform hover:-translate-y-1 transition-transform">
-            <div class="w-14 h-14 bg-brand-light-blue-hover rounded-full flex items-center justify-center text-brand-blue flex-shrink-0">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                     <text x="12" y="16" text-anchor="middle" font-size="7" font-family="sans-serif" font-weight="bold" fill="currentColor">11</text>
@@ -45,6 +35,16 @@
             <div class="text-white">
                 <p class="text-sm font-medium text-white/90 mb-0.5">Events</p>
                 <p class="text-3xl font-extrabold leading-none">5</p>
+            </div>
+        </div>
+
+        <div class="bg-brand-blue rounded-2xl p-6 flex items-center gap-5 shadow-md transform hover:-translate-y-1 transition-transform">
+            <div class="w-14 h-14 bg-brand-light-blue-hover rounded-full flex items-center justify-center text-brand-blue flex-shrink-0">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            </div>
+            <div class="text-white">
+                <p class="text-sm font-medium text-white/90 mb-0.5">Student Projects</p>
+                <p class="text-3xl font-extrabold leading-none">1</p>
             </div>
         </div>
         

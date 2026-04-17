@@ -16,7 +16,7 @@
             <h1 class="text-3xl font-bold text-brand-pink mb-1 tracking-tight">Courses</h1>
             <p class="text-sm font-medium text-gray-500">Manage courses.</p>
         </div>
-        <button @click="showCourseModal = true" class="px-6 py-2.5 w-[180px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition shadow-sm text-sm">
+        <button @click="showCourseModal = true" class="px-6 py-2.5 w-[180px] h-[42px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition shadow-sm text-sm">
             + Add Course
         </button>
     </div>

@@ -39,6 +39,13 @@
                             'light-purple-active': '#BEB0CF',
                             'purple-hover': '#29005B',
                             'purple-active': '#250051',
+                            yellow: '#FDD43C',
+                            'light-yellow': '#FFFBEC',
+                            'light-yellow-hover': '#FFF9E2',
+                            'light-yellow-active': '#FEF2C3',
+                            'yellow-hover': '#E4BF36',
+                            'yellow-active': '#CAAA30',
+                            'dark-yellow': '#BE9F2D',
                         }
                     }
                 }

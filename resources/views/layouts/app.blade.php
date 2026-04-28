@@ -24,6 +24,7 @@
                             'light-pink-active': '#F7CAE0',
                             'pink-hover': '#CD4D8C',
                             'pink-active': '#B6447C',
+                            'dark-pink': '#BC4B73',
                             blue: '#51A7D3',
                             'light-blue': '#EEF6FB',
                             'light-blue-hover': '#E5F2F8',
@@ -46,6 +47,10 @@
                             'yellow-hover': '#E4BF36',
                             'yellow-active': '#CAAA30',
                             'dark-yellow': '#BE9F2D',
+                            green: '#16A34A',
+                            'light-green': '#E8F6ED',
+                            'light-green-hover': '#DCF1E4',
+                            'light-green-active': '#B7E2C7',
                         }
                     }
                 }

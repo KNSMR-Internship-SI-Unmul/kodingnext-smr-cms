@@ -29,7 +29,7 @@
         </button>
     </div> --}}
 
-    {{-- tabel data testimonial --}}
+    {{-- testimonial table --}}
     <div class="bg-white rounded-xl border border-gray-100 overflow-hidden mb-4">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
@@ -39,15 +39,14 @@
                         <th class="py-3 px-4 text-center w-16">
                             <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-blue focus:ring-brand-blue">
                         </th>
-                        <th class="py-3 px-4 text-md font-bold text-brand-blue whitespace-nowrap">Parents Name</th>
-                        <th class="py-3 px-4 text-md font-bold text-brand-blue whitespace-nowrap">Testimonial Content</th>
-                        <th class="py-3 px-4 text-md font-bold text-brand-blue whitespace-nowrap">Created By</th>
-                        <th class="py-3 px-4 text-md font-bold text-brand-blue text-center whitespace-nowrap">Action</th>
+                        <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Parents Name</th>
+                        <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Testimonial Content</th>
+                        <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Created By</th>
+                        <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Action</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {{-- perulangan untuk menampilkan data event --}}
                     <tr class="border-b border-gray-50 hover:bg-brand-light-blue-active transition-colors bg-brand-light-blue-active/75">
                         <td class="py-3 px-6 text-center">
                             <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-blue focus:ring-brand-blue">
@@ -64,15 +63,12 @@
                         </td>
                         <td class="py-3 px-4">
                             <div class="flex items-center justify-center gap-3">
-                                {{-- tombol view untuk melihat detail --}}
                                 <button @click="showDetailModal = true" class="text-brand-blue hover:text-brand-blue-hover transition-colors" title="View Details">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                 </button>
-                                {{-- tombol edit --}}
                                 <button @click="showTestimonialModal = true" class="text-brand-pink hover:text-brand-pink-hover transition-colors" title="Edit">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                 </button>
-                                {{-- tombol hapus --}}
                                 <button @click="showDeleteModal = true" class="text-red-500 hover:text-red-600 transition-colors" title="Delete">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                 </button>
@@ -95,15 +91,12 @@
                         </td>
                         <td class="py-3 px-4">
                             <div class="flex items-center justify-center gap-3">
-                                {{-- tombol view untuk melihat detail --}}
                                 <button @click="showDetailModal = true" class="text-brand-blue hover:text-brand-blue-hover transition-colors" title="View Details">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                 </button>
-                                {{-- tombol edit --}}
                                 <button @click="showTestimonialModal = true" class="text-brand-pink hover:text-brand-pink-hover transition-colors" title="Edit">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                 </button>
-                                {{-- tombol hapus --}}
                                 <button @click="showDeleteModal = true" class="text-red-500 hover:text-red-600 transition-colors" title="Delete">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                 </button>
@@ -115,9 +108,37 @@
         </div>
     </div>
 
-{{-- form modal untuk create dan edit --}}
+    <div class="flex items-center justify-between text-sm text-gray-500 px-2">
+        <div>
+            Total 1 document
+        </div>
+        
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-2">
+                <span>Rows per page</span>
+                <select class="border border-gray-200 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-pink bg-white">
+                    <option>10</option>
+                    <option>20</option>
+                    <option>50</option>
+                </select>
+            </div>
+            <span>1 of 1</span>
+            <div class="flex items-center gap-4">
+                <button class="text-gray-300 cursor-not-allowed flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    Previous
+                </button>
+                <button class="text-gray-500 hover:text-gray-800 transition-colors flex items-center gap-1">
+                    Next
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {{-- create & edit testimonial modal --}}
     <div x-show="showTestimonialModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
-        <div @click.away="showTestimonialModal = false" class="bg-white rounded-lg p-8 w-full max-w-4xl shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+        <div @click.away="showTestimonialModal = false" class="bg-white rounded-lg p-8 w-full max-w-2xl shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
             
             <button @click="showTestimonialModal = false" class="absolute top-6 right-6 text-gray-400 hover:text-gray-700">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -126,7 +147,6 @@
             <h2 class="text-2xl font-extrabold text-gray-900 mb-8">Add New General Testimonial</h2>
 
             <form action="#" method="POST" class="space-y-5">
-                    
                 <div>
                     <label class="block text-sm font-semibold mb-1 @error('name') text-red-500 @else text-gray-800 @enderror">Parents Name</label>
                     <input type="text" name="name" value="{{ old('name') }}" class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 transition @error('name') border-red-500 bg-red-50 @else border-gray-300 focus:ring-brand-pink @enderror">
@@ -136,19 +156,20 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-semibold mb-1 text-gray-800">Description</label>
-                    <textarea name="description" rows="8" class="w-full px-4 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition" placeholder="Write event description here (5W+1H)..."></textarea>
+                    <label class="block text-sm font-semibold mb-1 text-gray-800">Testimonial Content</label>
+                    <textarea name="description" rows="5" class="block w-full px-4 py-2.5 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition" placeholder="Write testimonial here..."></textarea>
                 </div>
                 
-                <div class="flex items-end justify-end gap-2 pt-2">
-                    <button type="button" @click="showTestimonialModal = false" class="py-2.5 bg-[#EE5B5B] w-48 h-12 hover:bg-red-600 text-white font-semibold rounded-lg transition text-md">Cancel</button>
-                    <button type="submit" class="py-2.5 w-48 h-12 bg-brand-light-pink text-brand-pink hover:bg-brand-pink hover:text-white font-semibold rounded-lg transition text-md">Save</button>
+                <div class="flex gap-3 pt-3 justify-end">
+                    <button type="button" @click="showTestimonialModal = false" class="py-2.5 w-1/4 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition text-sm">Cancel</button>
+                    <button type="submit" class="py-2.5 w-1/4 bg-brand-light-pink text-brand-pink hover:bg-brand-pink hover:text-white font-semibold rounded-lg transition text-sm">Save</button>
                 </div>
             </form>
+            
         </div>
     </div>
 
-    {{-- modal konfirmasi hapus --}}
+    {{-- delete confirm modal --}}
     <div x-show="showDeleteModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
         <div @click.away="showDeleteModal = false" class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl relative overflow-hidden text-center" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
             <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500 shadow-sm">

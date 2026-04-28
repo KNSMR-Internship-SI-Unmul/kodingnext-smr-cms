@@ -21,8 +21,42 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone_number',
         'password',
+        'profile_picture',
+        'hired_date',
+        'role_id'
     ];
+
+    public function role() 
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function students() 
+    {
+        return $this->hasMany(Student::class);
+    }
+
+    public function courseTypes() 
+    {
+        return $this->hasMany(CourseType::class);
+    }
+
+    public function events() 
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    public function promotions() 
+    {
+        return $this->hasMany(Promotion::class);
+    }
+
+    public function generalTestimonials() 
+    {
+        return $this->hasMany(GeneralTestimonial::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -44,6 +78,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'hired_date' => 'date',
         ];
     }
 }

@@ -18,7 +18,7 @@
             Modules
         </a>
 
-        <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-500 rounded-full hover:bg-gray-50 hover:text-gray-800 transition-all group">
+        <a href="/student-projects" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-500 rounded-full hover:bg-gray-50 hover:text-gray-800 transition-all group">
             <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
             Student Projects
         </a>
@@ -33,8 +33,8 @@
             Promotions
         </a>
 
-        <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-500 rounded-full hover:bg-gray-50 hover:text-gray-800 transition-all group">
-            <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+        <a href="/general-testimonials" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-500 rounded-full hover:bg-gray-50 hover:text-gray-800 transition-all group">
+            <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"></path></svg>
             General Testimonials
         </a>
 
@@ -43,7 +43,7 @@
             <p class="px-4 text-[11px] font-semibold text-gray-400 tracking-wider uppercase">Human Resources</p>
         </div>
 
-        <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-500 rounded-full hover:bg-gray-50 hover:text-gray-800 transition-all group">
+        <a href="/students" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-500 rounded-full hover:bg-gray-50 hover:text-gray-800 transition-all group">
             <svg class="w-5 h-5 text-gray-400 group-hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v7"></path></svg>
             Students
         </a>

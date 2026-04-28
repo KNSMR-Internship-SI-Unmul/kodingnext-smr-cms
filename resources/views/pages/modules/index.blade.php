@@ -13,14 +13,12 @@
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </span>
-                {{-- input pencarian berdasarkan 'name' --}}
                 <input type="text" placeholder="Search module by name" class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-pink transition text-sm">
             </div>
         </div>
 
         <div class="flex-1 min-w-[200px]">
             <label class="block text-sm font-semibold text-gray-800 mb-2">Course Types</label>
-            {{-- input pencarian berdasarkan 'program' --}}
             <select class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-pink transition appearance-none bg-white text-sm">
                 <option value="">All Course Type</option>
                 <option value="1">Little Koders</option>
@@ -38,7 +36,6 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
         
         <div class="bg-brand-light-pink rounded-lg p-4 shadow-sm hover:shadow-md flex flex-col h-full relative group transform transition-all hover:-translate-y-1">
-            
             <div class="absolute top-3 right-3 z-20" x-data="{ openDropdown: false }">
                 <button @click="openDropdown = !openDropdown" class="text-brand-pink hover:text-brand-pink-hover focus:outline-none transition-colors rounded-full p-1 hover:bg-brand-pink/10">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
@@ -70,7 +67,7 @@
                     <p class="text-sm text-gray-500">Little Koders</p>
                 </div>
                 
-                {{-- gambar ilustrasi ukuran 106x106 --}}
+                {{-- icon size must be 106x106 --}}
                 <div class="flex-shrink-0 relative z-10">
                     <img src="{{ asset('images/module-icon.png') }}" alt="Module Illustration" class="w-[106px] h-[106px] object-contain drop-shadow-sm">
                 </div>
@@ -126,7 +123,7 @@
                     <p class="text-sm text-gray-500">Junior Koders</p>
                 </div>
                 
-                {{-- gambar ilustrasi ukuran 106x106 --}}
+                {{-- icon size must be 106x106 --}}
                 <div class="flex-shrink-0 relative z-10">
                     <img src="{{ asset('images/module-icon.png') }}" alt="Module Illustration" class="w-[106px] h-[106px] object-contain drop-shadow-sm">
                 </div>
@@ -152,7 +149,7 @@
         
     </div>
 
-    {{-- form modal untuk create dan edit --}}
+    {{-- create & edit module modal --}}
     <div 
         x-show="showModuleModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
         <div @click.away="showModuleModal = false" class="bg-white rounded-lg p-8 w-full max-w-4xl shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
@@ -165,10 +162,10 @@
 
             <form action="#" method="POST">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                    
                     <div class="space-y-5">
-                        
                         <div>
-                            <label class="block text-sm font-semibold mb-2 @error('name') text-red-500 @else text-gray-800 @enderror">
+                            <label class="block text-sm font-semibold mb-1 @error('name') text-red-500 @else text-gray-800 @enderror">
                                 Module Name
                             </label>
                             
@@ -180,18 +177,18 @@
                         
                         <div class="flex gap-4">
                             <div class="flex-1">
-                                <label class="block text-sm font-semibold text-gray-800 mb-2">Age Range</label>
+                                <label class="block text-sm font-semibold text-gray-800 mb-1">Age Range</label>
                                 <input type="text" name="age_range" class="w-full px-4 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition" placeholder="e.g. 6 - 8">
                             </div>
                             
                             <div class="flex-1">
-                                <label class="block text-sm font-semibold text-gray-800 mb-2">Duration / Sessions (Mins)</label>
+                                <label class="block text-sm font-semibold text-gray-800 mb-1">Duration / Sessions (Mins)</label>
                                 <input type="number" name="duration_per_session" class="w-full px-4 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition" placeholder="e.g. 60">
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-semibold text-gray-800 mb-2">Course Type</label>
+                            <label class="block text-sm font-semibold text-gray-800 mb-1">Course Type</label>
                             <select name="course_type_id" class="w-full px-4 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition appearance-none bg-white">
                                 <option value="" disabled selected>Select Course Type...</option>
                                 <option value="1">Little Koders</option>
@@ -200,7 +197,7 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-semibold text-gray-800 mb-2">Description</label>
+                            <label class="block text-sm font-semibold text-gray-800 mb-1">Description</label>
                             <textarea name="description" rows="4" class="w-full px-4 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition" placeholder="Write module description here..."></textarea>
                         </div>
                     </div>
@@ -226,10 +223,11 @@
 
                 </div>
             </form>
+
         </div>
     </div>
 
-    {{-- modal konfirmasi untuk hapus --}}
+    {{-- delete confirm modal --}}
     <div x-show="showDeleteModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
         <div @click.away="showDeleteModal = false" class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl relative overflow-hidden text-center" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
             
@@ -243,7 +241,7 @@
             <div class="flex gap-3">
                 <button @click="showDeleteModal = false" class="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition">Cancel</button>
                 <form action="#" method="POST" class="flex-1">
-                    <button type="submit" class="w-full py-2.5 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition shadow-md">Yes, delete</button>
+                    <button type="submit" class="w-full py-2.5 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition">Yes, delete</button>
                 </form>
             </div>
         </div>

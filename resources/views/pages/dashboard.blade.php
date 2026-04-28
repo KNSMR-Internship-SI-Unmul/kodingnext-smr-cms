@@ -3,6 +3,7 @@
 @section('content')
 <div class="max-w-7xl mx-auto">
 
+    {{-- statistic information --}}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-9">
         
         <div class="bg-brand-pink rounded-2xl p-6 flex items-center gap-5 shadow-md transform hover:-translate-y-1 transition-transform">
@@ -53,7 +54,8 @@
     {{-- courses overview --}}
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-brand-pink tracking-tight">Courses Overview</h2>
-        <a href="/dashboard/courses" class="px-6 py-2.5 h-[42px] bg-brand-white hover:bg-brand-pink text-brand-pink hover:text-white border border-brand-pink font-semibold rounded-lg transition-colors text-sm justify-center flex">
+        <a href="/dashboard/courses" class="px-6 py-2.5 h-[42px] gap-2 bg-brand-white hover:bg-brand-pink text-brand-pink hover:text-white border border-brand-pink font-semibold rounded-lg transition-colors text-sm justify-center flex">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"></path></svg>
             Manage Courses
         </a>
     </div>

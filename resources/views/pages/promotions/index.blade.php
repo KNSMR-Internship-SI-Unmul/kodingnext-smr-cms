@@ -109,11 +109,11 @@
         </div>
 
         @if(request('search') || request('date'))
-        <div class="flex gap-2">
-            <a href="{{ route('promotions.index') }}" class="px-4 py-2.5 h-[42px] bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition text-sm flex items-center justify-center" title="Clear Filters">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </a>
-        </div>
+            <div class="flex gap-2">
+                <a href="{{ route('promotions.index') }}" class="px-4 py-2.5 h-[42px] bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition text-sm flex items-center justify-center" title="Clear Filters">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </a>
+            </div>
         @endif
 
         <div class="flex items-center gap-4">
@@ -127,6 +127,7 @@
         </div>
     </form>
 
+    {{-- empty state --}}
     @if($promotions->isEmpty())
         <div class="w-full">
             <x-empty-state 
@@ -143,6 +144,7 @@
             </x-empty-state>
         </div>
     @else
+        {{-- promotion table --}}
         <div class="bg-white rounded-xl border border-gray-100 overflow-hidden mb-4">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
@@ -197,6 +199,7 @@
             </div>
         </div>
         
+        {{-- pagination --}}
         <div class="flex flex-col sm:flex-row items-center justify-between text-sm text-gray-500 px-2 mt-4">
             <div>
                 Showing <span class="font-medium text-gray-900">{{ $promotions->firstItem() ?? 0 }}</span> to <span class="font-medium text-gray-900">{{ $promotions->lastItem() ?? 0 }}</span> of <span class="font-semibold text-brand-blue">{{ $promotions->total() }}</span> promotions
@@ -221,7 +224,6 @@
                 <span>Page {{ $promotions->currentPage() }} of {{ $promotions->lastPage() }}</span>
                 
                 <div class="flex items-center gap-4">
-                    <!-- Tombol Previous -->
                     @if ($promotions->onFirstPage())
                         <span class="text-gray-300 cursor-not-allowed flex items-center gap-1">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
@@ -234,7 +236,6 @@
                         </a>
                     @endif
 
-                    <!-- Tombol Next -->
                     @if ($promotions->hasMorePages())
                         <a href="{{ $promotions->nextPageUrl() }}&search={{ request('search') }}&date={{ request('date') }}&per_page={{ request('per_page') }}" class="text-brand-blue hover:text-brand-blue-hover transition-colors flex items-center gap-1 font-medium">
                             Next
@@ -251,7 +252,6 @@
         </div>
     @endif
     
-
     {{-- create & edit promotion modal --}}
     <div x-show="showPromotionModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
         <div @click.away="closeEditModal()" class="bg-white rounded-lg p-8 w-full max-w-4xl shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
@@ -391,7 +391,6 @@
                 <form :action="actionUrl" method="POST" class="flex-1">
                     @csrf
                     @method('DELETE')
-                    
                     <template x-if="deleteMode === 'bulk'">
                         <template x-for="id in selectedPromotions" :key="id">
                             <input type="hidden" name="ids[]" :value="id">
@@ -406,6 +405,7 @@
         </div>
     </div>
 
+    {{-- detail modal --}}
     <div x-show="showDetailModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
         <div @click.away="showDetailModal = false" class="bg-white rounded-lg p-8 md:p-10 w-full max-w-3xl shadow-2xl relative mx-4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
             
@@ -449,6 +449,7 @@
         </div>
     </div>
 
+    {{-- toast notification --}}
     @if(session('success') || session('delete'))
         <div class="fixed bottom-10 right-10 z-50 flex flex-col gap-3">
             @if(session('success'))

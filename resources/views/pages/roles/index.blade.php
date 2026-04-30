@@ -60,10 +60,10 @@
         </button>
     </div>
 
+    {{-- role table --}}
     <div class="bg-white rounded-xl border border-gray-100 overflow-hidden mb-4">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
-
                 <thead>
                     <tr class="h-12 border-b border-gray-100 bg-brand-light-blue">
                         <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap w-16 text-center">No.</th>
@@ -73,7 +73,6 @@
                         <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap w-32">Action</th>
                     </tr>
                 </thead>
-                
                 <tbody>
                     @foreach ($roles as $role)
                         <tr class="border-b border-gray-50 hover:bg-brand-light-blue-active transition-colors bg-brand-light-blue-active/75">
@@ -158,6 +157,7 @@
         </div>
     </div>
 
+    {{-- toast notification --}}
     @if(session('success') || session('delete'))
         <div class="fixed bottom-10 right-10 z-50 flex flex-col gap-3">
             @if(session('success'))

@@ -62,11 +62,11 @@
         </div>
 
         @if(request('search') || request('date'))
-        <div class="flex gap-2">
-            <a href="{{ route('students.index') }}" class="px-4 py-2.5 h-[42px] bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition text-sm flex items-center justify-center" title="Clear Filters">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </a>
-        </div>
+            <div class="flex gap-2">
+                <a href="{{ route('students.index') }}" class="px-4 py-2.5 h-[42px] bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition text-sm flex items-center justify-center" title="Clear Filters">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </a>
+            </div>
         @endif
     </form>
 
@@ -81,6 +81,7 @@
         </div>
     </div>
 
+    {{-- empty state --}}
     @if($students->isEmpty())
         <div class="w-full">
             <x-empty-state 
@@ -97,6 +98,7 @@
             </x-empty-state>
         </div>
     @else
+        {{-- student cards --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach ($students as $student)
                 <div class="bg-white rounded-2xl shadow-sm hover:shadow-md border border-gray-200 overflow-hidden flex flex-col h-full relative transition-all duration-300 hover:-translate-y-1">
@@ -162,7 +164,7 @@
             @endforeach
         </div>
     @endif
-     
+    
     {{-- create & edit student modal --}}
     <div x-show="showStudentModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
         <div @click.away="closeEditModal()" class="bg-white rounded-lg p-8 w-full max-w-2xl shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
@@ -254,6 +256,7 @@
         </div>
     </div>
 
+    {{-- toast notification --}}
     @if(session('success') || session('delete'))
         <div class="fixed bottom-10 right-10 z-50 flex flex-col gap-3">
             @if(session('success'))

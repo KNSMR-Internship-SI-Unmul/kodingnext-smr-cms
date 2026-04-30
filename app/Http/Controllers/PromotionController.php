@@ -14,12 +14,24 @@ class PromotionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $promotions = Promotion::with('user')->latest('updated_at')->get();
-        $users = User::all();
+        $query = Promotion::with('user')->latest('updated_at');
 
-        return view('pages.promotions.index', compact('promotions', 'users'));
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('start_date', '<=', $request->date)
+                  ->whereDate('end_date', '>=', $request->date);
+        }
+
+        $perPage = $request->input('per_page', 10);
+
+        $promotions = $query->paginate($perPage)->withQueryString();
+
+        return view('pages.promotions.index', compact('promotions'));
     }
 
     /**
@@ -37,6 +49,7 @@ class PromotionController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = 1;
+        // $data['user_id'] = auth()->id();
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('promotions', 'public');
@@ -76,6 +89,8 @@ class PromotionController extends Controller
                 Storage::disk('public')->delete($promotion->image);
             }
             $data['image'] = $request->file('image')->store('promotions', 'public');
+        } else {
+            unset($data['image']);
         }
 
         $promotion->update($data);
@@ -97,5 +112,25 @@ class PromotionController extends Controller
         $promotion->delete();
 
         return redirect()->route('promotions.index')->with('delete', 'Promotion deleted successfully!');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (empty($ids)) {
+            return redirect()->back()->with('error', 'No promotions selected.');
+        }
+
+        $promotions = Promotion::whereIn('id', $ids)->get();
+
+        foreach ($promotions as $promotion) {
+            if ($promotion->image) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($promotion->image);
+            }
+            $promotion->delete();
+        }
+
+        return redirect()->route('promotions.index')->with('delete', count($ids) . ' promotions deleted successfully!');
     }
 }

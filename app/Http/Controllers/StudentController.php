@@ -12,9 +12,15 @@ class StudentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index (Request $request)
     {
-        $students = Student::with('user')->latest('updated_at')->get();
+        $query = Student::with('user')->latest('updated_at');
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $students = $query->get();
 
         return view('pages.students.index', compact('students'));
     }

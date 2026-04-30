@@ -29,6 +29,8 @@ Route::resource('/employees', EmployeeController::class);
 
 Route::resource('/students', StudentController::class);
 
+Route::delete('promotions/bulk-delete', [\App\Http\Controllers\PromotionController::class, 'bulkDestroy'])->name('promotions.bulkDestroy');
+
 Route::resource('/promotions', PromotionController::class);
 
 Route::get('/student-projects', function () {

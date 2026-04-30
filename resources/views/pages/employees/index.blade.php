@@ -8,21 +8,24 @@
         showDeleteModal: false,
         editMode: {{ old('employee_id') ? 'true' : 'false' }},
         actionUrl: '{{ route('employees.store') }}',
+        imagePreview: @js(old('existing_image') ? '/storage/' . old('existing_image') : null),
         
         employeeData: { 
             id: @js(old('employee_id', '')),
             name: @js(old('name', '')),
             email: @js(old('email', '')),
             phone_number: @js(old('phone_number', '')),
-            profile_picture: '',
+            profile_picture: @js(old('existing_image', '')),
             hired_date: @js(old('hired_date', '')),
             role_id: @js(old('role_id', '')) 
         },
 
         openEditModal(employee) {
             this.editMode = true;
-            this.employeeData = { ...employee, profile_picture: '' };
+            let formattedDate = employee.hired_date ? String(employee.hired_date).substring(0, 10) : '';
+            this.employeeData = { ...employee, profile_picture: '', hired_date: formattedDate, profile_picture: employee.profile_picture };
             this.actionUrl = `/employees/${employee.id}`;
+            this.imagePreview = employee.profile_picture ? '/storage/' + employee.profile_picture : null;
             this.showEmployeeModal = true;
         },
 
@@ -42,6 +45,7 @@
                 window.location.href = window.location.href;
             @else
                 this.showEmployeeModal = false;
+                this.imagePreview = null;
             @endif
         },
 
@@ -49,18 +53,29 @@
             this.editMode = false;
             this.actionUrl = '{{ route('employees.store') }}';
             this.employeeData = { id: '', name: '', email: '', phone_number: '', profile_picture: '', hired_date: '', role_id: '' };
+            this.imagePreview = null;
             this.showEmployeeModal = true;
         }
     }" 
     class="max-w-7xl mx-auto"
 >
 
-    <div class="mb-8 relative">
-        <span class="absolute inset-y-0 left-0 flex items-center pl-4">
-            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-        </span>
-        <input type="text" placeholder="Search user by name" class="w-full pl-12 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-pink transition text-sm">
-    </div>
+    <form method="GET" action="{{ route('employees.index') }}" class="flex flex-wrap gap-4 w-full">
+        <div class="flex-[2] mb-8 relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-4">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </span>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search user by name" class="w-full pl-12 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-pink transition text-sm" @input.debounce.500ms="$el.form.submit()">
+        </div>
+
+        @if(request('search') || request('date'))
+        <div class="flex gap-2">
+            <a href="{{ route('employees.index') }}" class="px-4 py-2.5 h-[42px] bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition text-sm flex items-center justify-center" title="Clear Filters">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </a>
+        </div>
+        @endif
+    </form>
 
     <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-semibold text-gray-900 tracking-tight">
@@ -123,7 +138,7 @@
                         </div>
                     </div>
 
-                    <img src="{{ $employee->profile_picture ? asset('storage/' . $employee->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($employee->name) . '&color=3D7D9E&background=EEF6FB' }}" alt="Profile Picture" class="w-full h-full object-cover">
+                    <img src="{{ $employee->profile_picture ? asset('storage/' . $employee->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($employee->name) . '&color=3D7D9E&background=EEF6FB' }}" alt="{{ $employee->name }}'s Profile Picture" class="w-full h-full object-cover">
                     
                     <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-brand-blue/90 via-brand-blue/40 to-transparent pt-12">
                         <h3 class="font-bold text-white text-md leading-tight mb-0.5">{{ $employee->name }}</h3>
@@ -167,6 +182,7 @@
                 @csrf
                 <input type="hidden" name="_method" value="PUT" x-bind:disabled="!editMode">
                 <input type="hidden" name="employee_id" x-model="employeeData.id">
+                <input type="hidden" name="existing_image" x-model="employeeData.profile_picture23">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                     <div class="space-y-5">
                         <div>
@@ -229,9 +245,18 @@
                                 name="profile_picture" 
                                 accept="image/*"
                                 class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                @change="fileName = $event.target.files[0] ? $event.target.files[0].name : null">
+                                @change="
+                                    const file = $event.target.files[0];
+                                    if (file) {
+                                        fileName = file.name;
+                                        imagePreview = URL.createObjectURL(file);
+                                    } else {
+                                        fileName = null;
+                                        imagePreview = null;
+                                    }
+                                ">
                             
-                            <template x-if="!fileName">
+                            <template x-if="!imagePreview && !fileName">
                                 <div class="flex flex-col items-center pointer-events-none">
                                     <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-4 shadow-md text-white">
                                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -243,20 +268,25 @@
                                 </div>
                             </template>
 
-                            <template x-if="fileName">
-                                <div class="flex flex-col items-center pointer-events-none text-center px-4">
-                                    <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-4 shadow-md text-white">
-                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                    </div>
-                                    <h4 class="font-semibold text-gray-900 mb-1">Image Uploaded</h4>
+                            <template x-if="imagePreview || fileName">
+                                <div class="flex flex-col items-center pointer-events-none text-center px-4 w-full h-full py-4 justify-center">
+                                    
+                                    <template x-if="imagePreview">
+                                        <img :src="imagePreview" alt="Image Preview" class="w-24 h-24 rounded-full object-cover mb-3 shadow-md border-4 border-brand-pink">
+                                    </template>
+                                    
+                                    <template x-if="!imagePreview">
+                                        <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-3 shadow-md text-white">
+                                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                        </div>
+                                    </template>
+
+                                    <h4 class="font-semibold text-gray-900 mb-1" x-text="fileName ? 'Image Ready' : 'Current Profile Picture'"></h4>
                                     <p class="text-xs font-medium text-gray-600 truncate max-w-[200px]" x-text="fileName"></p>
-                                    <p class="text-xs font-normal text-gray-400 mt-2">(Click again to change image)</p>
+                                    <p class="text-xs font-normal text-gray-400 mt-2">(Click to change image)</p>
                                 </div>
                             </template>
                         </div>
-
                         @error('profile_picture')
                             <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                         @enderror

@@ -53,12 +53,22 @@
     class="max-w-7xl mx-auto"
 >
 
-    <div class="mb-8 relative">
-        <span class="absolute inset-y-0 left-0 flex items-center pl-4">
-            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-        </span>
-        <input type="text" placeholder="Search student by name" class="w-full pl-12 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-pink transition text-sm">
-    </div>
+    <form method="GET" action="{{ route('students.index') }}" class="flex flex-wrap gap-4 w-full">
+        <div class="flex-[2] mb-8 relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-4">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </span>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search student by name" class="w-full pl-12 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-pink transition text-sm" @input.debounce.500ms="$el.form.submit()">
+        </div>
+
+        @if(request('search') || request('date'))
+        <div class="flex gap-2">
+            <a href="{{ route('students.index') }}" class="px-4 py-2.5 h-[42px] bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition text-sm flex items-center justify-center" title="Clear Filters">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </a>
+        </div>
+        @endif
+    </form>
 
     <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-semibold text-gray-900 tracking-tight">

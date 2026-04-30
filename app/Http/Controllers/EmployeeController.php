@@ -16,10 +16,16 @@ class EmployeeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $employees = User::with('role')->latest('updated_at')->get();
+        $query = User::with('role')->latest('updated_at');
         $roles = Role::all();
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $employees = $query->get();
 
         return view('pages.employees.index', compact('employees', 'roles'));
     }

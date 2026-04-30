@@ -23,12 +23,12 @@ class UserSeeder extends Seeder
                 'role_id' => 1,
                 'hired_date' => now(),
             ], [
-            'name' => 'Rinda Lailatul Arofah, S. Kom.',
-            'email' => 'riindalaiilatul@gmail.com',
-            'password' => Hash::make('password'),
-            'profile_picture' => 'employees/JBpa0iExu5Gfn9mInohMUGu1EhhdSzj7AzEdBJF4.jpg',
-            'hired_date' => '2025-10-01',
-            'role_id' => 2,
+                'name' => 'Rinda Lailatul Arofah, S. Kom.',
+                'email' => 'riindalaiilatul@gmail.com',
+                'password' => Hash::make('password'),
+                'profile_picture' => 'employees/4ZTjMl72n6aGvCpxSSHCj07a5NPgs0KBgCzcdCG0.jpg',
+                'hired_date' => '2025-10-01',
+                'role_id' => 2,
             ]
         ];
 

@@ -15,17 +15,25 @@ class Promotion extends Model
         'user_id'
     ];
 
-    public function user() 
-    {
-        return $this->belongsTo(User::class);
-    }
-
     protected function casts(): array
     {
         return [
             'start_date' => 'date',
             'end_date' => 'date',
         ];
+    }
+
+    public function getFileFormatAttribute()
+    {
+        if (!$this->image) {
+            return '-';
+        }
+        return strtoupper(pathinfo($this->image, PATHINFO_EXTENSION));
+    }
+
+    public function user() 
+    {
+        return $this->belongsTo(User::class);
     }
 
 }

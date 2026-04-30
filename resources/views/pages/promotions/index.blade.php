@@ -8,26 +8,50 @@
         showDeleteModal: false, 
         showDetailModal: false,
         editMode: {{ old('promotion_id') ? 'true' : 'false' }},
+        deleteMode: 'single',
         actionUrl: '{{ route('promotions.store') }}',
+        imagePreview: @js(old('existing_image') ? '/storage/' . old('existing_image') : null),
 
         promotionData: {
             id: @js(old('promotion_id', '')),
             title: @js(old('title', '')),
             description: @js(old('description', '')),
-            image: '',
-            start_date: @js(old('start_date', '')),
+            image: @js(old('existing_image', '')),
+            start_date: @js(old('start_date', '')),  
             end_date: @js(old('end_date', '')),
+        },
+
+        selectedPromotions: [],
+        get allSelected() {
+            return this.selectedPromotions.length === {{ $promotions->count() }} && {{ $promotions->count() }} > 0;
+        },
+        toggleAll() {
+            if (this.allSelected) {
+                this.selectedPromotions = [];
+            } else {
+                this.selectedPromotions = {{ $promotions->pluck('id')->toJson() }};
+            }
         },
 
         openEditModal(promotion) {
             this.editMode = true;
+            let startDate = promotion.start_date ? String(promotion.start_date).substring(0, 10) : '';
+            let endDate = promotion.end_date ? String(promotion.end_date).substring(0, 10) : '';
+            this.promotionData = { ...promotion, start_date: startDate, end_date: endDate, image: promotion.image };
             this.actionUrl = `/promotions/${promotion.id}`;
-            this.promotionData = { ...promotion };
+            this.imagePreview = promotion.image ? `/storage/${promotion.image}` : null;
             this.showPromotionModal = true;
         },
 
         openDeleteModal(promotionId) {
+            this.deleteMode = 'single';
             this.actionUrl = `/promotions/${promotionId}`;
+            this.showDeleteModal = true;
+        },
+
+        openBulkDeleteModal() {
+            this.deleteMode = 'bulk';
+            this.actionUrl = '{{ route('promotions.bulkDestroy') }}';
             this.showDeleteModal = true;
         },
 
@@ -36,6 +60,7 @@
                 window.location.href = window.location.href;
             @else
                 this.showPromotionModal = false;
+                this.imagePreview = null;
             @endif
         },
 
@@ -43,41 +68,64 @@
             this.editMode = false;
             this.actionUrl = '{{ route('promotions.store') }}';
             this.promotionData = { id: '', title: '', description: '', image: '', start_date: '', end_date: '' };
+            this.imagePreview = null;
             this.showPromotionModal = true;
         },
 
         openDetailModal(promotion) {
-            this.promotionData = { ...promotion };
+            let options = { day: 'numeric', month: 'long', year: 'numeric' };
+            let formattedStart = promotion.start_date ? new Date(promotion.start_date).toLocaleDateString('en-GB', options) : '-';
+            let formattedEnd = promotion.end_date ? new Date(promotion.end_date).toLocaleDateString('en-GB', options) : '-';
+
+            this.promotionData = { 
+                ...promotion, 
+                formatted_start: formattedStart, 
+                formatted_end: formattedEnd 
+            };
+            
             this.showDetailModal = true;
         }
     }" 
     class="max-w-7xl mx-auto"
 >
 
-    <div class="flex flex-wrap items-end gap-4 mb-8">
+    <form method="GET" action="{{ route('promotions.index') }}" class="flex flex-wrap items-end gap-4 mb-8 w-full">
+        <input type="hidden" name="per_page" id="per_page_input" value="{{ request('per_page', 10) }}">
         <div class="flex-[2] min-w-[250px]">
             <label class="block text-sm font-semibold text-gray-800 mb-2">Search Promotion</label>
             <div class="relative">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </span>
-                <input type="text" placeholder="Search promotion by title" class="w-full pl-10 pr-4 h-[42px] rounded-lg border border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-pink transition text-sm">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search promotion by title" class="w-full pl-10 pr-4 h-[42px] rounded-lg border border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-pink transition text-sm" @input.debounce.500ms="$el.form.submit()">
             </div>
         </div>
 
         <div class="flex-[2] min-w-[200px]">
             <label class="block text-sm font-semibold text-gray-800 mb-2">Search by Date</label>
             <div class="relative">
-                <input type="date" class="w-full px-4 h-[42px] rounded-lg border border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-pink transition appearance-none bg-white text-sm">
+                <input type="date" name="date" value="{{ request('date') }}" class="w-full px-4 h-[42px] rounded-lg border border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-pink transition appearance-none bg-white text-sm" @change="$el.form.submit()">
             </div>
         </div>
 
+        @if(request('search') || request('date'))
         <div class="flex gap-2">
-            <button @click="resetModal()" class="px-6 py-2.5 h-[42px] w-[180px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition text-sm">
+            <a href="{{ route('promotions.index') }}" class="px-4 py-2.5 h-[42px] bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition text-sm flex items-center justify-center" title="Clear Filters">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </a>
+        </div>
+        @endif
+
+        <div class="flex items-center gap-4">
+            <button type="button" x-show="selectedPromotions.length > 0" @click="openBulkDeleteModal()" x-transition class="px-4 py-2.5 h-[42px] gap-1 bg-red-100 hover:bg-red-500 text-red-600 hover:text-white font-semibold rounded-lg transition text-sm flex items-center justify-center" style="display: none;">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            </button>
+
+            <button type="button" @click="resetModal()" class="px-6 py-2.5 h-[42px] w-[180px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition text-sm">
                 + Add Promotion
             </button>
         </div>
-    </div>
+    </form>
 
     @if($promotions->isEmpty())
         <div class="w-full">
@@ -101,13 +149,13 @@
                     <thead>
                         <tr class="border-b border-gray-100 bg-brand-light-blue">
                             <th class="py-3 px-6 text-center w-16">
-                                <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-blue focus:ring-brand-blue">
+                                <input type="checkbox" @click="toggleAll()" :checked="allSelected" class="w-4 h-4 rounded border-gray-300 text-brand-blue focus:ring-brand-blue cursor-pointer">
                             </th>
                             <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Promotion Title</th>
-                            <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Start Date</th>
-                            <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">End Date</th>
-                            <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Format</th>
-                            <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Created By</th>
+                            <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Start Date</th>
+                            <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">End Date</th>
+                            <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Format</th>
+                            <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Created By</th>
                             <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Action</th>
                         </tr>
                     </thead>
@@ -115,18 +163,18 @@
                         @foreach($promotions as $promotion)
                             <tr class="border-b border-gray-50 hover:bg-brand-light-blue-active transition-colors bg-brand-light-blue-active/75">
                                 <td class="py-3 px-6 text-center">
-                                    <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-brand-blue focus:ring-brand-blue">
+                                    <input type="checkbox" value="{{ $promotion->id }}" x-model="selectedPromotions" class="w-4 h-4 rounded border-gray-300 text-brand-blue focus:ring-brand-blue cursor-pointer">
                                 </td>
                                 <td class="py-3 px-4 text-sm font-bold text-gray-800">{{ $promotion->title }}</td>
-                                <td class="py-3 px-4 text-sm font-semibold text-gray-700">{{ $promotion->start_date->format('d/m/Y') }}</td>
-                                <td class="py-3 px-4 text-sm font-semibold text-gray-700">{{ $promotion->end_date->format('d/m/Y') }}</td>
-                                <td class="py-3 px-4 text-sm font-semibold text-gray-700">{{ $promotion->format }}</td>
+                                <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center">{{ $promotion->start_date->format('d/m/Y') }}</td>
+                                <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center">{{ $promotion->end_date->format('d/m/Y') }}</td>
+                                <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center uppercase">{{ $promotion->file_format }}</td>
                                 <td class="py-3 px-4">
-                                    <div class="flex items-center gap-2">
+                                    <div class="flex items-center justify-center gap-2">
                                         <div class="w-6 h-6 rounded-full bg-gray-200 overflow-hidden">
-                                            <img src="{{ $promotion->user->profile_picture ? asset('storage/' . $promotion->user->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($promotion->user->name) . '&color=3D7D9E&background=EEF6FB' }}" alt="Profile Picture" class="w-full h-full object-cover">
+                                            <img src="{{ $promotion->user?->profile_picture ? asset('storage/' . $promotion->user->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($promotion->user?->name ?? 'Unknown') . '&color=3D7D9E&background=EEF6FB' }}" alt="{{ $promotion->user?->name }}'s Profile Picture" class="w-full h-full object-cover">
                                         </div>
-                                        <span class="text-sm font-semibold text-gray-700">{{ $promotion->user->name ?? 'N/A' }}</span>
+                                        <span class="text-sm font-semibold text-gray-700">{{ $promotion->user?->short_name ?? 'Unknown' }}</span>
                                     </div>
                                 </td>
                                 <td class="py-3 px-6">
@@ -149,30 +197,55 @@
             </div>
         </div>
         
-        <div class="flex items-center justify-between text-sm text-gray-500 px-2">
+        <div class="flex flex-col sm:flex-row items-center justify-between text-sm text-gray-500 px-2 mt-4">
             <div>
-                Total 1 document
+                Showing <span class="font-medium text-gray-900">{{ $promotions->firstItem() ?? 0 }}</span> to <span class="font-medium text-gray-900">{{ $promotions->lastItem() ?? 0 }}</span> of <span class="font-semibold text-brand-blue">{{ $promotions->total() }}</span> promotions
             </div>
             
-            <div class="flex items-center gap-6">
+            <div class="flex items-center gap-6 mt-4 sm:mt-0">
                 <div class="flex items-center gap-2">
                     <span>Rows per page</span>
-                    <select class="border border-gray-200 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-pink bg-white">
-                        <option>10</option>
-                        <option>20</option>
-                        <option>50</option>
+                    <select 
+                        class="border border-gray-200 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-pink bg-white"
+                        @change="
+                            document.getElementById('per_page_input').value = $event.target.value;
+                            document.getElementById('per_page_input').closest('form').submit();
+                        "
+                    >
+                        <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                        <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
+                        <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
                     </select>
                 </div>
-                <span>1 of 1</span>
+
+                <span>Page {{ $promotions->currentPage() }} of {{ $promotions->lastPage() }}</span>
+                
                 <div class="flex items-center gap-4">
-                    <button class="text-gray-300 cursor-not-allowed flex items-center gap-1">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-                        Previous
-                    </button>
-                    <button class="text-gray-500 hover:text-gray-800 transition-colors flex items-center gap-1">
-                        Next
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                    </button>
+                    <!-- Tombol Previous -->
+                    @if ($promotions->onFirstPage())
+                        <span class="text-gray-300 cursor-not-allowed flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                            Prev
+                        </span>
+                    @else
+                        <a href="{{ $promotions->previousPageUrl() }}&search={{ request('search') }}&date={{ request('date') }}&per_page={{ request('per_page') }}" class="text-brand-blue hover:text-brand-blue-hover transition-colors flex items-center gap-1 font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                            Prev
+                        </a>
+                    @endif
+
+                    <!-- Tombol Next -->
+                    @if ($promotions->hasMorePages())
+                        <a href="{{ $promotions->nextPageUrl() }}&search={{ request('search') }}&date={{ request('date') }}&per_page={{ request('per_page') }}" class="text-brand-blue hover:text-brand-blue-hover transition-colors flex items-center gap-1 font-medium">
+                            Next
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </a>
+                    @else
+                        <span class="text-gray-300 cursor-not-allowed flex items-center gap-1">
+                            Next
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </span>
+                    @endif
                 </div>
             </div>
         </div>
@@ -193,11 +266,12 @@
                 @csrf
                 <input type="hidden" name="_method" value="PUT" x-bind:disabled="!editMode">
                 <input type="hidden" name="promotion_id" x-model="promotionData.id">
+                <input type="hidden" name="existing_image" x-model="promotionData.image">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                     <div class="space-y-5">
                         <div>
                             <label class="block text-sm font-semibold mb-1 text-gray-800">Title</label>
-                            <input type="text" name="title" x-model="promotionData.name" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('title') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror">
+                            <input type="text" name="title" x-model="promotionData.title" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('title') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror">
                             @error('title')
                                 <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                             @enderror
@@ -229,17 +303,26 @@
                     </div>
                     
                     <div class="flex flex-col h-full" x-data="{ fileName: null }">
-                        <label class="block text-xl font-semibold text-gray-800 mb-3">Image</label>
+                        <label class="block text-xl font-semibold text-gray-800 mb-3">Promotion Image</label>
                         
                         <div class="flex-1 min-h-[250px] flex flex-col items-center justify-center bg-brand-light-pink rounded-lg cursor-pointer transition relative hover:opacity-90">
                             <input type="file" 
                                 name="image" 
                                 accept="image/*"
-                                required
+                                :required="!editMode"
                                 class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                @change="fileName = $event.target.files[0] ? $event.target.files[0].name : null">
+                                @change="
+                                    const file = $event.target.files[0];
+                                    if (file) {
+                                        fileName = file.name;
+                                        imagePreview = URL.createObjectURL(file);
+                                    } else {
+                                        fileName = null;
+                                        imagePreview = null;
+                                    }
+                                ">
                             
-                            <template x-if="!fileName">
+                            <template x-if="!imagePreview && !fileName">
                                 <div class="flex flex-col items-center pointer-events-none">
                                     <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-4 shadow-md text-white">
                                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -247,24 +330,29 @@
                                         </svg>
                                     </div>
                                     <h4 class="font-semibold text-gray-900 mb-1">Click for Upload Image</h4>
-                                    <p class="text-xs font-medium text-gray-500">JPEG,PNG,JPG,GIF,SVG up to 2MB</p>
+                                    <p class="text-xs font-medium text-gray-500">JPG, PNG, JPEG, GIF, SVG up to 2MB</p>
                                 </div>
                             </template>
 
-                            <template x-if="fileName">
-                                <div class="flex flex-col items-center pointer-events-none text-center px-4">
-                                    <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-4 shadow-md text-white">
-                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                    </div>
-                                    <h4 class="font-semibold text-gray-900 mb-1">Image Uploaded</h4>
+                            <template x-if="imagePreview || fileName">
+                                <div class="flex flex-col items-center pointer-events-none text-center px-4 w-full h-full py-4 justify-center">
+                                    
+                                    <template x-if="imagePreview">
+                                        <img :src="imagePreview" alt="Image Preview" class="w-24 h-24 rounded-full object-cover mb-3 shadow-md border-4 border-brand-pink">
+                                    </template>
+                                    
+                                    <template x-if="!imagePreview">
+                                        <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-3 shadow-md text-white">
+                                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                        </div>
+                                    </template>
+
+                                    <h4 class="font-semibold text-gray-900 mb-1" x-text="fileName ? 'Image Ready' : 'Current Promotion Image'"></h4>
                                     <p class="text-xs font-medium text-gray-600 truncate max-w-[200px]" x-text="fileName"></p>
-                                    <p class="text-xs font-normal text-gray-400 mt-2">(Click again to change image)</p>
+                                    <p class="text-xs font-normal text-gray-400 mt-2">(Click to change image)</p>
                                 </div>
                             </template>
                         </div>
-
                         @error('image')
                             <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                         @enderror
@@ -288,19 +376,36 @@
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
             </div>
             
-            <h3 class="text-xl font-extrabold text-gray-900 mb-2">Delete Promotion?</h3>
-            <p class="text-sm text-gray-500 mb-6 font-medium">Are you sure you want to remove this promotion data? This action cannot be undone.</p>
+            <h3 class="text-xl font-extrabold text-gray-900 mb-2">
+                <span x-show="deleteMode === 'single'">Delete Promotion?</span>
+                <span x-show="deleteMode === 'bulk'">Delete <span x-text="selectedPromotions.length"></span> Promotions?</span>
+            </h3>
             
+            <p class="text-sm text-gray-500 mb-6 font-medium" 
+                x-text="deleteMode === 'single' ? 'Are you sure you want to remove this promotion data? This action cannot be undone.' : 'Are you sure you want to remove all selected data? This action cannot be undone.'">
+            </p>
+
             <div class="flex gap-3">
                 <button @click="showDeleteModal = false" class="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition">Cancel</button>
-                <form action="#" method="POST" class="flex-1">
-                    <button type="submit" class="w-full py-2.5 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition">Yes, delete</button>
+                
+                <form :action="actionUrl" method="POST" class="flex-1">
+                    @csrf
+                    @method('DELETE')
+                    
+                    <template x-if="deleteMode === 'bulk'">
+                        <template x-for="id in selectedPromotions" :key="id">
+                            <input type="hidden" name="ids[]" :value="id">
+                        </template>
+                    </template>
+
+                    <button type="submit" class="w-full py-2.5 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition" 
+                            x-text="deleteMode === 'single' ? 'Yes, delete' : 'Yes, delete all'">
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 
-    {{-- promotion view modal --}}
     <div x-show="showDetailModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
         <div @click.away="showDetailModal = false" class="bg-white rounded-lg p-8 md:p-10 w-full max-w-3xl shadow-2xl relative mx-4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
             
@@ -311,8 +416,13 @@
             <h2 class="text-3xl font-semibold text-brand-pink mb-8">Promotion Details</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-8 md:gap-12">
-                <div class="w-full rounded-lg border border-gray-200 overflow-hidden bg-gray-50 aspect-[3/4] flex items-center justify-center">
-                    <div class="w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjZTVlN2ViIi8+PHJlY3QgeD0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2Y5ZmFmYiIvPjxyZWN0IHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNmOWZhZmIiLz48cmVjdCB4PSIxMCIgeT0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2U1ZTdlYiIvPjwvc3ZnPg==')] opacity-50"></div>
+                <div class="w-full rounded-lg border border-gray-200 overflow-hidden bg-gray-50 aspect-[3/4] flex items-center justify-center relative">
+                    <template x-if="promotionData.image">
+                        <img :src="'/storage/' + promotionData.image" class="w-full h-full object-cover">
+                    </template>
+                    <template x-if="!promotionData.image">
+                        <div class="w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjZTVlN2ViIi8+PHJlY3QgeD0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2Y5ZmFmYiIvPjxyZWN0IHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNmOWZhZmIiLz48cmVjdCB4PSIxMCIgeT0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2U1ZTdlYiIvPjwvc3ZnPg==')] opacity-50"></div>
+                    </template>
                 </div>
 
                 <div class="flex flex-col">
@@ -322,24 +432,34 @@
                         </span>
                     </div>
 
-                    <p class="text-gray-800 text-sm leading-relaxed mb-4 flex-1">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at dapibus risus. Donec eu odio id risus laoreet vehicula nec quis massa. Phasellus dapibus turpis eget lacus pretium varius. Nulla at quam non augue dapibus ultricies.
-                    </p>
+                    <p class="text-gray-800 text-sm leading-relaxed mb-4 flex-1" x-text="promotionData.description"></p>
 
                     <div class="flex items-center mt-auto pt-6">
                         <div class="flex-1 text-center border-r-2 border-gray-300">
                             <p class="text-brand-pink font-bold mb-2 text-lg">Start Date</p>
-                            <p class="text-gray-900 font-medium text-lg">13 March 2026</p>
+                            <p class="text-gray-900 font-medium text-lg" x-text="promotionData.formatted_start"></p>
                         </div>
                         <div class="flex-1 text-center">
                             <p class="text-brand-pink font-bold mb-2 text-lg">End Date</p>
-                            <p class="text-gray-900 font-medium text-lg">20 April 2026</p>
+                            <p class="text-gray-900 font-medium text-lg" x-text="promotionData.formatted_end"></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    @if(session('success') || session('delete'))
+        <div class="fixed bottom-10 right-10 z-50 flex flex-col gap-3">
+            @if(session('success'))
+                <x-toast type="success" message="{{ session('success') }}" />
+            @endif
+
+            @if(session('delete'))
+                <x-toast type="delete" message="{{ session('delete') }}" />
+            @endif
+        </div>
+    @endif
 
 </div>
 @endsection

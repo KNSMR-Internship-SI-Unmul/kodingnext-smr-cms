@@ -7,6 +7,8 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
@@ -18,6 +20,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    use SoftDeletes;
     protected $fillable = [
         'name',
         'email',
@@ -56,6 +59,11 @@ class User extends Authenticatable
     public function generalTestimonials() 
     {
         return $this->hasMany(GeneralTestimonial::class);
+    }
+
+    public function getShortNameAttribute()
+    {
+        return Str::limit($this->name, 15);
     }
 
     /**

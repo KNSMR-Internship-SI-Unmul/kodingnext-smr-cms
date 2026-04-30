@@ -12,7 +12,7 @@ class UpdatePromotionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -27,7 +27,7 @@ class UpdatePromotionRequest extends FormRequest
             'description' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
         ];
     }
 }

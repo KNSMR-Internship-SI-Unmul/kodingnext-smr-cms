@@ -12,13 +12,14 @@
 <div x-data="{
         showEmployeeModal: {{ $errors->any() ? 'true' : 'false' }}, 
         showDeleteModal: false,
+        imagePreview: @js(old('existing_image') ? '/storage/' . old('existing_image') : null),
         
         employeeData: { 
             name: @js(old('name', $employee->name)),
             email: @js(old('email', $employee->email)),
             phone_number: @js(old('phone_number', $employee->phone_number)),
             password: '',
-            profile_picture: '',
+            profile_picture: @js(old('existing_image', $employee->profile_picture)),
             hired_date: @js(old("hired_date", $employee->hired_date ? $employee->hired_date->format("Y-m-d") : "")),
             role_id: @js(old("role_id", $employee->role_id))
         },
@@ -36,6 +37,7 @@
                 window.location.href = window.location.href;
             @else
                 this.showEmployeeModal = false;
+                this.imagePreview = null;
             @endif
         }
     }" 
@@ -51,7 +53,7 @@
                 <svg class="w-4 h-4 mr-1 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                 Back
             </a>
-            <button @click="showEmployeeModal = true" class="flex items-center justify-center px-6 py-2.5 w-[180px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition text-sm gap-2">
+            <button @click="showEmployeeModal = true; imagePreview = {{ $employee->profile_picture ? "'/storage/" . $employee->profile_picture . "'" : "null" }}" class="flex items-center justify-center px-6 py-2.5 w-[180px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition text-sm gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                 Edit Data
             </button>
@@ -62,7 +64,7 @@
         
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full">
             <div class="h-64 w-full bg-gray-100 relative">
-                <img src="{{ $employee->profile_picture ? asset('storage/' . $employee->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($employee->name) . '&color=3D7D9E&background=EEF6FB' }}" alt="Profile Picture" class="w-full h-full object-cover">
+                <img src="{{ $employee->profile_picture ? asset('storage/' . $employee->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($employee->name) . '&color=3D7D9E&background=EEF6FB' }}" alt="{{ $employee->name }}'s Profile Picture" class="w-full h-full object-cover">
             </div>
                 
             <div class="p-6 flex flex-col items-center flex-1">
@@ -156,6 +158,7 @@
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="employee_id" x-model="employeeData.id">
+                <input type="hidden" name="existing_image" x-model="employeeData.profile_picture">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                     <div class="space-y-5">
                         <div>
@@ -218,9 +221,18 @@
                                 name="profile_picture" 
                                 accept="image/*"
                                 class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                @change="fileName = $event.target.files[0] ? $event.target.files[0].name : null">
+                                @change="
+                                    const file = $event.target.files[0];
+                                    if (file) {
+                                        fileName = file.name;
+                                        imagePreview = URL.createObjectURL(file);
+                                    } else {
+                                        fileName = null;
+                                        imagePreview = null;
+                                    }
+                                ">
                             
-                            <template x-if="!fileName">
+                            <template x-if="!imagePreview && !fileName">
                                 <div class="flex flex-col items-center pointer-events-none">
                                     <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-4 shadow-md text-white">
                                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -232,20 +244,25 @@
                                 </div>
                             </template>
 
-                            <template x-if="fileName">
-                                <div class="flex flex-col items-center pointer-events-none text-center px-4">
-                                    <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-4 shadow-md text-white">
-                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                    </div>
-                                    <h4 class="font-semibold text-gray-900 mb-1">Image Uploaded</h4>
+                            <template x-if="imagePreview || fileName">
+                                <div class="flex flex-col items-center pointer-events-none text-center px-4 w-full h-full py-4 justify-center">
+                                    
+                                    <template x-if="imagePreview">
+                                        <img :src="imagePreview" alt="Image Preview" class="w-24 h-24 rounded-full object-cover mb-3 shadow-md border-4 border-brand-pink">
+                                    </template>
+                                    
+                                    <template x-if="!imagePreview">
+                                        <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-3 shadow-md text-white">
+                                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                        </div>
+                                    </template>
+
+                                    <h4 class="font-semibold text-gray-900 mb-1" x-text="fileName ? 'Image Ready' : 'Current Profile Picture'"></h4>
                                     <p class="text-xs font-medium text-gray-600 truncate max-w-[200px]" x-text="fileName"></p>
-                                    <p class="text-xs font-normal text-gray-400 mt-2">(Click again to change image)</p>
+                                    <p class="text-xs font-normal text-gray-400 mt-2">(Click to change image)</p>
                                 </div>
                             </template>
                         </div>
-
                         @error('profile_picture')
                             <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                         @enderror
@@ -254,7 +271,7 @@
                             <button type="button" @click="closeEditModal(); fileName = null" class="flex-1 py-3 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition">Cancel</button>
                             <button type="submit" class="flex-1 py-3 bg-brand-light-pink text-brand-pink hover:bg-brand-pink hover:text-white font-semibold rounded-lg transition">Save</button>
                         </div>
-                    </div>  
+                    </div>   
                 </div>
             </form>
             

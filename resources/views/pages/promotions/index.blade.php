@@ -76,13 +76,11 @@
             let options = { day: 'numeric', month: 'long', year: 'numeric' };
             let formattedStart = promotion.start_date ? new Date(promotion.start_date).toLocaleDateString('en-GB', options) : '-';
             let formattedEnd = promotion.end_date ? new Date(promotion.end_date).toLocaleDateString('en-GB', options) : '-';
-
             this.promotionData = { 
                 ...promotion, 
                 formatted_start: formattedStart, 
                 formatted_end: formattedEnd 
             };
-            
             this.showDetailModal = true;
         }
     }" 
@@ -187,7 +185,7 @@
                                         <button @click="openEditModal({{ json_encode($promotion) }})" class="text-brand-pink hover:text-brand-pink-hover transition-colors" title="Edit">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                         </button>
-                                        <button @click="openDeleteModal({{ $promotion->id }})" class="text-red-500 hover:text-red-600 transition-colors" title="Delete">
+                                        <button @click="openDeleteModal({{ json_encode($promotion) }})" class="text-red-500 hover:text-red-600 transition-colors" title="Delete">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                         </button>
                                     </div>
@@ -279,7 +277,7 @@
                         
                         <div>
                             <label class="block text-sm font-semibold mb-1 text-gray-800">Start Date</label>
-                            <input type="date" name="start_date" x-model="promotionData.start_date" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('start_date') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror"">
+                            <input type="date" name="start_date" x-model="promotionData.start_date" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('start_date') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror">
                             @error('start_date')
                                 <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                             @enderror
@@ -287,7 +285,7 @@
 
                         <div>
                             <label class="block text-sm font-semibold mb-1 text-gray-800">End Date</label>
-                            <input type="date" name="end_date" x-model="promotionData.end_date" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('end_date') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror"">
+                            <input type="date" name="end_date" x-model="promotionData.end_date" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('end_date') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror">
                             @error('end_date')
                                 <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                             @enderror
@@ -295,7 +293,7 @@
 
                         <div>
                             <label class="block text-sm font-semibold mb-1 text-gray-800">Description</label>
-                            <textarea name="description" x-model="promotionData.description" rows="4" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('description') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror""></textarea>
+                            <textarea name="description" x-model="promotionData.description" rows="4" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('description') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror"></textarea>
                             @error('description')
                                 <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                             @enderror

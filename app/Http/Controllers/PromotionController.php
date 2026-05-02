@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Promotion;
-use App\Models\User;
 use App\Http\Requests\AddPromotionRequest;
 use App\Http\Requests\UpdatePromotionRequest;
 use Illuminate\Support\Facades\Storage;

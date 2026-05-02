@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\PromotionController;   
+use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\EventController;
 
 
 Route::get('/', function () {
@@ -33,16 +34,16 @@ Route::delete('promotions/bulk-delete', [\App\Http\Controllers\PromotionControll
 
 Route::resource('/promotions', PromotionController::class);
 
+Route::delete('events/bulk-delete', [\App\Http\Controllers\EventController::class, 'bulkDestroy'])->name('events.bulkDestroy');
+
+Route::resource('/events', EventController::class);
+
 Route::get('/student-projects', function () {
     return view('pages.student-projects.index');
 });
 
 Route::get('/student-projects/{id}', function ($id) {
     return view('pages.student-projects.show', ['projectId' => $id]);
-});
-
-Route::get('/events', function () {
-    return view('pages.events.index');
 });
 
 Route::get('/general-testimonials', function () {

@@ -14,6 +14,21 @@ class Event extends Model
         'user_id'
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'event_date' => 'date',
+        ];
+    }
+
+    public function getFileFormatAttribute()
+    {
+        if (!$this->image) {
+            return '-';
+        }
+        return strtoupper(pathinfo($this->image, PATHINFO_EXTENSION));
+    }
+
     public function user() 
     {
         return $this->belongsTo(User::class);

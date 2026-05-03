@@ -6,10 +6,16 @@ use App\Http\Controllers\Api\PromotionController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\ModuleController;
 use App\Http\Controllers\Api\CourseTypeController;
+use App\Http\Controllers\Api\EmployeeController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+Route::prefix('employees')->group(function () {
+    Route::get('/', [EmployeeController::class, 'index']);
+    Route::get('/{id}', [EmployeeController::class, 'show']);
+});
 
 Route::prefix('promotions')->group(function () {
     Route::get('/', [PromotionController::class, 'index']);

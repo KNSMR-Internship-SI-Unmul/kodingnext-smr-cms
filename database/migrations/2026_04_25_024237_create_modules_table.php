@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('age_range');
             $table->string('duration_per_session');
-            // $table->string('category')->nullable(); // Game Development or Apps Development
+            $table->string('category')->nullable(); // Game Development or Apps Development for Junior Koders 
             $table->foreignId('course_type_id')->constrained('course_types')->onDelete('cascade');
             $table->timestamps();
         });

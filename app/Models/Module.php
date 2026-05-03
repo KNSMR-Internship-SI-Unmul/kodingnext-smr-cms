@@ -12,7 +12,7 @@ class Module extends Model
         'description',
         'age_range',
         'duration_per_session',
-        // 'category',
+        'category',
         'course_type_id'
     ];
 

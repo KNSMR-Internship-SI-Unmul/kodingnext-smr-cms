@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->date('date');
-            $table->string('media_type');
             $table->string('media_url');
             $table->string('project_url')->nullable();
             $table->foreignId('module_id')->constrained('modules');

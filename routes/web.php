@@ -6,6 +6,8 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\CourseTypeController;
+use App\Http\Controllers\ModuleController;
 
 
 Route::get('/', function () {
@@ -16,13 +18,9 @@ Route::get('/dashboard', function () {
     return view('pages.dashboard');
 });
 
-Route::get('/dashboard/courses', function () {
-    return view('pages.courses.index');
-});
+Route::resource('/dashboard/courses', CourseTypeController::class);
 
-Route::get('/modules', function () {
-    return view('pages.modules.index');
-});
+Route::resource('/modules', ModuleController::class);
 
 Route::resource('/employees/roles', RoleController::class);
 

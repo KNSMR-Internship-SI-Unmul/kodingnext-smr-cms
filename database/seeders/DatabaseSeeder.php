@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Module;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,6 +21,8 @@ class DatabaseSeeder extends Seeder
             StudentSeeder::class,
             PromotionSeeder::class,
             EventSeeder::class,
+            CourseTypeSeeder::class,
+            ModuleSeeder::class,
         ]);
 
         // User::factory()->create([

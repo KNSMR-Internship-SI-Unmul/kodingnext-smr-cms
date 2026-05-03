@@ -27,9 +27,17 @@ class AddModuleRequest extends FormRequest
             'description'           => 'required|string',
             'image'                 => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
             'age_range'             => 'required|string|max:255',
-            'duration_per_session'  => 'required|string|max:255',
+            'duration_per_session'  => 'required|integer|min:0|multiple_of:5|max:255',
             'category'              => 'nullable|string|max:255',
             'course_type_id'        => 'required|exists:course_types,id',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'duration_per_session.min'         => 'Duration cannot be a negative number.',
+            'duration_per_session.multiple_of' => 'Duration must be a multiple of 5 (e.g., 5, 10, 15, 60).',
         ];
     }
 }

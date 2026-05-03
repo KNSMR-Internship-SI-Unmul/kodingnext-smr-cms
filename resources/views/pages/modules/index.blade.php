@@ -232,7 +232,7 @@
                             
                             <div class="flex-1">
                                 <label class="block text-sm font-semibold text-gray-800 mb-1">Duration / Sessions (Mins)</label>
-                                <input type="number" name="duration_per_session" x-model="moduleData.duration_per_session" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('duration_per_session') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror" placeholder="e.g. 60">
+                                <input type="number" name="duration_per_session" min="0" step="5" x-model="moduleData.duration_per_session" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('duration_per_session') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror" placeholder="e.g. 60">
                                 @error('duration_per_session')
                                     <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                                 @enderror

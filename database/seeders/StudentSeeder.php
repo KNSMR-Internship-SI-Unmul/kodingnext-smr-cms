@@ -18,14 +18,13 @@ class StudentSeeder extends Seeder
             'name' => 'John Doe',
             'school' => 'SMA Kristen Cita Hati',
             'address' => 'Jl. Juanda, Perumahan Batu Alam Permai, No. 1',
-            'is_profile_complete' => false,
             'user_id' => 1,
-            ], [
+            ], 
+            [
             'name' => 'Jane Doe',
             'school' => 'SMAN 1 Samarinda',
             'phone_number' => '0812987654',
             'address' => 'Jl. Siradj Salman, Perumahan Grand Mahakam, Blok A No. 1',
-            'is_profile_complete' => true,
             'user_id' => 1, 
             ]
         ];

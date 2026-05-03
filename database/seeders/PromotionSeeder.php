@@ -21,7 +21,8 @@ class PromotionSeeder extends Seeder
                 'description' => 'Jika sudah lama ingin mengenalkan coding kepada anak, ini bisa jadi waktu yang tepat. Belajar coding bukan hanya tentang mengikuti perkembangan teknologi, tetapi juga melatih cara berpikir, kreativitas, dan problem solving yang akan bermanfaat dalam jangka panjang. Di momen spesial ini, kami juga menyiapkan kejutan menarik yang bisa parents pilih langsung saat mendaftar 😉 Karena belajar untuk masa depan juga bisa dibuat menyenangkan dan penuh semangat. Promo ini berlaku terbatas selama periode Ramadan, mulai 23 Februari hingga 28 Maret 2026. Jangan sampai terlewat ya!',
                 'image' => 'promotions/koSwh8CdGDFB7z2dDdWUx4STIXdCCQycrrDxzZBC.jpg',
                 'user_id' => 1,
-            ], [
+            ], 
+            [
                 'title' => 'Pick Your Lucky Angpao',
                 'start_date' => '2026-02-13',
                 'end_date' => '2026-02-22',

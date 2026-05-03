@@ -5,7 +5,7 @@
 @section('content')
 <div x-data="{
         showModuleModal: {{ $errors->any() ? 'true' : 'false' }}, 
-        juniorKoderId: {{ $courseTypes->where('name', 'Junior Koder')->first()->id ?? 'null' }},
+        juniorKoderId: {{ $courseTypes->where('name', 'Junior Koders')->first()->id ?? 'null' }},
         showDeleteModal: false,
         editMode: {{ old('module_id') ? 'true' : 'false' }},
         actionUrl: '{{ route('modules.store') }}',
@@ -157,7 +157,16 @@
                     <div class="flex justify-between items-center px-3 pt-5 pb-3">
                         <div class="flex-1 min-h-16">
                             <h3 class="font-extrabold {{ $textColor }} text-xl leading-tight mb-1">{{ $module->name }}</h3>
-                            <p class="text-sm text-gray-500">{{ $module->courseType->name }}</p>
+                            
+                            <div class="flex justify-between">
+                                <p class="text-sm text-gray-500">{{ $module->courseType->name }}</p>
+                                
+                                @if($module->category)
+                                    <span class="inline-block px-2.5 py-1 mt-2 border {{ $borderColor }} {{ $textColor }} text-xs font-semibold rounded-md w-fit">
+                                        {{ $module->category }}
+                                    </span>
+                                @endif
+                            </div>
                         </div>
                         
                         @if($module->image)
@@ -247,8 +256,9 @@
                             <label class="block text-sm font-semibold text-gray-800 mb-1">Roadmap Category <span class="text-brand-pink">*</span></label>
                             <select name="category" x-model="moduleData.category" class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('category') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror">
                                 <option value="">Select Category...</option>
-                                <option value="Games Development">Games Development</option>
-                                <option value="Apps Development">Apps Development</option>
+                                <option value="Game Development">Game Development</option>
+                                <option value="Tech Innovator">Tech Innovator</option>
+                                <option value="Software Development">Software Development</option>
                             </select>
                             <p class="text-xs text-gray-500 mt-1">*Required for Junior Koder</p>
                             @error('category')

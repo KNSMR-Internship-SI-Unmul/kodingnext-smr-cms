@@ -184,7 +184,7 @@
                 @csrf
                 <input type="hidden" name="_method" value="PUT" x-bind:disabled="!editMode">
                 <input type="hidden" name="employee_id" x-model="employeeData.id">
-                <input type="hidden" name="existing_image" x-model="employeeData.profile_picture23">
+                <input type="hidden" name="existing_image" x-model="employeeData.profile_picture">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                     <div class="space-y-5">
                         <div>

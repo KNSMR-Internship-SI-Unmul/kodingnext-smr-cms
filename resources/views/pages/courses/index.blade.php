@@ -9,136 +9,217 @@
 @endsection
 
 @section('content')
-<div x-data="{ showCourseModal: {{ $errors->any() ? 'true' : 'false' }}, showDeleteModal: false, showDetailModal: false }" class="max-w-7xl mx-auto">
+<div x-data="{ 
+        showCourseModal: {{ $errors->any() ? 'true' : 'false' }}, 
+        showDeleteModal: false, 
+        showDetailModal: false,
+        editMode: {{ old('coursetype_id') ? 'true' : 'false' }},
+        actionUrl: '{{ route('courses.store') }}',
+        imagePreview: @js(old('existing_image') ? '/storage/' . old('existing_image') : null),
+
+        courseTypeData: {
+            id: @js(old('coursetype_id', '')),
+            name: @js(old('name', '')),
+            description: @js(old('description', '')),
+            image: @js(old('existing_image', '')),
+        },
+
+        openEditModal(courseType) {
+            this.editMode = true;
+            this.courseTypeData = { ...courseType, image: courseType.image };
+            this.actionUrl = `/dashboard/courses/${courseType.id}`;
+            this.imagePreview = courseType.image ? `/storage/${courseType.image}` : null;
+            this.showCourseModal = true;
+        },
+
+        openDeleteModal(courseTypeId) {
+            this.actionUrl = `/dashboard/courses/${courseTypeId}`;
+            this.showDeleteModal = true;
+        },
+
+        closeEditModal() {
+            @if($errors->any())
+                window.location.href = window.location.href;
+            @else
+                this.showCourseModal = false;
+            @endif
+        },
+
+        resetModal() {
+            this.editMode = false;
+            this.actionUrl = '{{ route('courses.store') }}';
+            this.courseTypeData = { id: '', name: '', description: '', image: '' };
+            this.imagePreview = null;
+            this.showCourseModal = true;
+        },
+
+        openDetailModal(courseType) {
+            this.courseTypeData = { ...courseType };
+            this.showDetailModal = true;
+        }
+    }" 
+    class="max-w-7xl mx-auto"
+>
 
     <div class="flex justify-between items-end mb-8">
         <div>
             <h1 class="text-3xl font-bold text-brand-pink mb-1 tracking-tight">Courses</h1>
             <p class="text-sm font-medium text-gray-500">Manage courses.</p>
         </div>
-        <button @click="showCourseModal = true" class="px-6 py-2.5 w-[180px] h-[42px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition shadow-sm text-sm">
+        <button @click="resetModal()" class="px-6 py-2.5 w-[180px] h-[42px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition shadow-sm text-sm">
             + Add Course
         </button>
     </div>
 
-    {{-- course table --}}
-    <div class="bg-white rounded-xl border border-gray-100 overflow-hidden mb-4">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+    @if ($courseTypes->isEmpty())
+        <div class="w-full">
+            <x-empty-state 
+                title="No courses yet" 
+                description="No course data available yet."
+            >
+                <x-slot name="icon">
+                    <svg class="w-10 h-10 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path></svg>
+                </x-slot>
 
-                <thead>
-                    <tr class="h-12 border-b border-gray-100 bg-brand-light-blue">
-                        <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap w-16 text-center">No.</th>
-                        <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Course Name</th>
-                        <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap text-center">Created At</th>
-                        <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap w-32">Action</th>
-                    </tr>
-                </thead>
-                
-                <tbody>
-                    <tr class="border-b border-gray-50 hover:bg-brand-light-blue-active transition-colors bg-brand-light-blue-active/75">
-                        <td class="py-3 px-4 text-center font-semibold text-gray-900 text-sm">1</td>
-                        <td class="py-3 px-4 font-bold text-gray-900 text-sm">Little Koders</td>
-                        <td class="py-3 px-4 text-center font-medium text-gray-500 text-sm">14 Mar 2026</td>
-                        <td class="py-3 px-4">
-                            <div class="flex items-center justify-center gap-3">
-                                <button @click="showDetailModal = true" class="text-brand-blue hover:text-brand-blue-hover transition-colors" title="View Details">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                </button>
-                                <button @click="showCourseModal = true" class="text-brand-pink hover:text-brand-pink-hover transition-colors" title="Edit">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                </button>
-                                <button @click="showDeleteModal = true" class="text-red-500 hover:text-red-600 transition-colors" title="Delete">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr class="border-b border-gray-50 hover:bg-brand-light-blue-active transition-colors bg-brand-light-blue-active/75">
-                        <td class="py-3 px-4 text-center font-semibold text-gray-900 text-sm">2</td>
-                        <td class="py-3 px-4 font-bold text-gray-900 text-sm">Junior Koders</td>
-                        <td class="py-3 px-4 text-center font-medium text-gray-500 text-sm">14 Mar 2026</td>
-                        <td class="py-3 px-4">
-                            <div class="flex items-center justify-center gap-3">
-                                <button @click="showDetailModal = false" class="text-brand-blue hover:text-brand-blue-hover transition-colors" title="View Details">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                </button>
-                                <button @click="showCourseModal = true" class="text-brand-pink hover:text-brand-pink-hover transition-colors" title="Edit">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                </button>
-                                <button @click="showDeleteModal = true" class="text-red-500 hover:text-red-600 transition-colors" title="Delete">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr class="border-b border-gray-50 hover:bg-brand-light-blue-active transition-colors bg-brand-light-blue-active/75">
-                        <td class="py-3 px-4 text-center font-semibold text-gray-900 text-sm">3</td>
-                        <td class="py-3 px-4 font-bold text-gray-900 text-sm">RoboNext</td>
-                        <td class="py-3 px-4 text-center font-medium text-gray-500 text-sm">14 Mar 2026</td>
-                        <td class="py-3 px-4">
-                            <div class="flex items-center justify-center gap-3">
-                                <button @click="showDetailModal = false" class="text-brand-blue hover:text-brand-blue-hover transition-colors" title="View Details">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                </button>
-                                <button @click="showCourseModal = true" class="text-brand-pink hover:text-brand-pink-hover transition-colors" title="Edit">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                </button>
-                                <button @click="showDeleteModal = true" class="text-red-500 hover:text-red-600 transition-colors" title="Delete">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                <button @click="resetModal()" class="px-8 py-3 bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition shadow-sm text-sm">
+                    Add your first course
+                </button>
+            </x-empty-state>
         </div>
-    </div>
+    @else
+        {{-- course table --}}
+        <div class="bg-white rounded-xl border border-gray-100 overflow-hidden mb-4">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="h-12 border-b border-gray-100 bg-brand-light-blue">
+                            <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap w-16 text-center">No.</th>
+                            <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Course Name</th>
+                            <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap text-center">Created At</th>
+                            <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap w-32">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($courseTypes as $courseType) 
+                            <tr class="border-b border-gray-50 hover:bg-brand-light-blue-active transition-colors bg-brand-light-blue-active/75">
+                                <td class="py-3 px-4 text-center font-semibold text-gray-900 text-sm">{{ $loop->iteration }}</td>
+                                <td class="py-3 px-4 font-bold text-gray-900 text-sm">{{ $courseType->name }}</td>
+                                <td class="py-3 px-4 text-center font-medium text-gray-500 text-sm">{{ $courseType->created_at->format('d F Y') }}</td>
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center justify-center gap-3">
+                                        <button @click="openDetailModal({{ json_encode($courseType) }})" class="text-brand-blue hover:text-brand-blue-hover transition-colors" title="View Details">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                        </button>
+                                        <button @click="openEditModal({{ json_encode($courseType) }})" class="text-brand-pink hover:text-brand-pink-hover transition-colors" title="Edit">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                        </button>
+                                        <button @click="openDeleteModal({{ $courseType->id }})" class="text-red-500 hover:text-red-600 transition-colors" title="Delete">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
 
     {{-- create & edit course modal --}}
     <div x-show="showCourseModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
-        <div @click.away="showCourseModal = false" class="bg-white rounded-lg p-8 w-full max-w-2xl shadow-2xl relative overflow-hidden" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+        <div @click.away="closeEditModal()" class="bg-white rounded-lg p-8 w-full max-w-2xl shadow-2xl relative overflow-hidden" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
             
-            <button @click="showCourseModal = false" class="absolute top-6 right-6 text-gray-400 hover:text-gray-700">
+            <button @click="closeEditModal()" class="absolute top-6 right-6 text-gray-400 hover:text-gray-700">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
             <h2 class="text-2xl font-extrabold text-gray-900 mb-8">Course Information</h2>
 
-            <form action="#" method="POST">
+            <form :action="actionUrl" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="_method" value="PUT" x-bind:disabled="!editMode">
+                <input type="hidden" name="coursetype_id" x-model="courseTypeData.id">
+                <input type="hidden" name="existing_image" x-model="courseTypeData.image">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                     <div class="space-y-5">
                         <div>
                             <label class="block text-sm font-semibold mb-1 text-gray-800">Course Name</label>
-                            <input type="text" name="name" class="w-full px-4 py-2.5 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition">
+                            <input type="text" name="name" x-model="courseTypeData.name" required class="w-full px-4 py-2.5 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('name') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror">
+                            @error('name')
+                                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div>
                             <label class="block text-sm font-semibold mb-1 text-gray-800">Description</label>
-                            <textarea type="text" name="description" rows="9" class="w-full px-4 py-2.5 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition"></textarea>
+                            <textarea type="text" name="description" rows="9" x-model="courseTypeData.description" class="w-full px-4 py-2.5 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition"></textarea>
+                            @error('description')
+                                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
-                    {{-- form upload file --}}
-                    <div class="flex flex-col h-full">
+                    <div class="flex flex-col h-full" x-data="{ fileName: null }">
                         <label class="block text-xl font-semibold text-gray-800 mb-3">Module Image</label>
                         
-                        <div class="flex-1 min-h-[200px] flex flex-col items-center justify-center bg-brand-light-pink rounded-lg cursor-pointer hover:opacity-80 transition relative">
-                            <input type="file" name="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*">
-                            <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-4 shadow-md text-white">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                            </div>
-                            <h4 class="font-semibold text-gray-900 mb-1">Click for Upload Image</h4>
-                            <p class="text-xs font-medium text-gray-500">PNG, JPG, WEBP up to 2MB</p>
-                        </div>
+                        <div class="flex-1 min-h-[250px] flex flex-col items-center justify-center bg-brand-light-pink rounded-lg cursor-pointer transition relative hover:opacity-90">
+                            <input type="file" 
+                                name="image" 
+                                accept="image/*"
+                                :required="!editMode"
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                @change="
+                                    const file = $event.target.files[0];
+                                    if (file) {
+                                        fileName = file.name;
+                                        imagePreview = URL.createObjectURL(file);
+                                    } else {
+                                        fileName = null;
+                                        imagePreview = null;
+                                    }
+                                ">
+                            
+                            <template x-if="!imagePreview && !fileName">
+                                <div class="flex flex-col items-center pointer-events-none">
+                                    <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-4 shadow-md text-white">
+                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                        </svg>
+                                    </div>
+                                    <h4 class="font-semibold text-gray-900 mb-1">Click for Upload Image</h4>
+                                    <p class="text-xs font-medium text-gray-500">JPG, PNG, JPEG, GIF, SVG up to 2MB</p>
+                                </div>
+                            </template>
 
-                        <div class="flex gap-3 mt-8 justify-end">
-                            <button type="button" @click="showCourseModal = false" class="py-2.5 w-full bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition text-sm">Cancel</button>
-                            <button type="submit" class="py-2.5 w-full bg-brand-light-pink text-brand-pink hover:bg-brand-pink hover:text-white font-semibold rounded-lg transition text-sm">Save</button>
+                            <template x-if="imagePreview || fileName">
+                                <div class="flex flex-col items-center pointer-events-none text-center px-4 w-full h-full py-4 justify-center">
+                                    
+                                    <template x-if="imagePreview">
+                                        <img :src="imagePreview" alt="Image Preview" class="w-24 h-24 rounded-full object-cover mb-3 shadow-md border-4 border-brand-pink">
+                                    </template>
+                                    
+                                    <template x-if="!imagePreview">
+                                        <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-3 shadow-md text-white">
+                                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                        </div>
+                                    </template>
+
+                                    <h4 class="font-semibold text-gray-900 mb-1" x-text="fileName ? 'Image Ready' : 'Current Module Image'"></h4>
+                                    <p class="text-xs font-medium text-gray-600 truncate max-w-[200px]" x-text="fileName"></p>
+                                    <p class="text-xs font-normal text-gray-400 mt-2">(Click to change image)</p>
+                                </div>
+                            </template>
                         </div>
-                    </div>
+                        @error('image')
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                        @enderror
+
+                        <div class="flex gap-4 mt-8">
+                            <button type="button" @click="closeEditModal(); fileName = null" class="flex-1 py-3 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition">Cancel</button>
+                            <button type="submit" class="flex-1 py-3 bg-brand-light-pink text-brand-pink hover:bg-brand-pink hover:text-white font-semibold rounded-lg transition">Save</button>
+                        </div>
+                    </div> 
                 </div>
             </form>
 
@@ -155,8 +236,9 @@
             <p class="text-sm text-gray-500 mb-6 font-medium">Are you sure you want to delete this course?This action cannot be undone.</p>
             <div class="flex gap-3">
                 <button @click="showDeleteModal = false" class="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition">Cancel</button>
-                <form action="#" method="POST" class="flex-1">
+                <form :action="actionUrl" method="POST" class="flex-1">
                     @csrf
+                    @method('DELETE')
                     <button type="submit" class="w-full py-2.5 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition">Yes, delete</button>
                 </form>
             </div>
@@ -172,19 +254,35 @@
             </button>
 
             <div class="max-w h-[350px] bg-gray-50 relative flex items-center justify-center">                
-                <img src="{{ asset('images/course-littlekoder.avif') }}" class="w-full h-full object-cover">
+                <div class="w-full h-full object-cover">
+                    <template x-if="courseTypeData.image">
+                        <img :src="'/storage/' + courseTypeData.image">
+                    </template>
+                    <template x-if="!courseTypeData.image">
+                        <div class="w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjZTVlN2ViIi8+PHJlY3QgeD0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2Y5ZmFmYiIvPjxyZWN0IHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNmOWZhZmIiLz48cmVjdCB4PSIxMCIgeT0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2U1ZTdlYiIvPjwvc3ZnPg==')] opacity-50"></div>
+                    </template>
+                </div>
             </div>
 
             <div class="p-8 md:p-8 text-center flex flex-col items-center">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4 tracking-tight">Little Koders</h2>
-                
-                <p class="text-sm leading-relaxed text-brand-pink font-medium">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at dapibus risus. Donec eu odio id risus laoreet vehicula nec quis massa. Phasellus dapibus turpis eget lacus pretium varius. Nulla at quam non augue dapibus ultricies.
-                </p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4 tracking-tight" x-text="courseTypeData.name"></h2>
+                <p class="text-sm leading-relaxed text-gray-600 font-medium" x-text="courseTypeData.description"></p>
             </div>
 
         </div>
     </div>
 
+    {{-- toast notification --}}
+    @if(session('success') || session('delete'))
+        <div class="fixed bottom-10 right-10 z-50 flex flex-col gap-3">
+            @if(session('success'))
+                <x-toast type="success" message="{{ session('success') }}" />
+            @endif
+
+            @if(session('delete'))
+                <x-toast type="delete" message="{{ session('delete') }}" />
+            @endif
+        </div>
+    @endif
 </div>
 @endsection

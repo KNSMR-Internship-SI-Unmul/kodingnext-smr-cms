@@ -19,7 +19,8 @@ class PromotionController extends Controller
         $promotions = Promotion::with('user')
             ->whereDate('start_date', '<=', $today) 
             ->whereDate('end_date', '>=', $today)
-            ->orderBy('end_date', 'asc') 
+            ->latest('updated_at')  
+            // ->orderBy('end_date', 'asc') 
             ->get();
 
         return response()->json([

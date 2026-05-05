@@ -3,87 +3,19 @@
 @section('header_title', 'Promotion Management')
 
 @section('content')
-<div x-data="{ 
-        showPromotionModal: {{ $errors->any() ? 'true' : 'false' }}, 
-        showDeleteModal: false, 
-        showDetailModal: false,
-        editMode: {{ old('promotion_id') ? 'true' : 'false' }},
-        deleteMode: 'single',
-        actionUrl: '{{ route('promotions.store') }}',
-        imagePreview: @js(old('existing_image') ? '/storage/' . old('existing_image') : null),
-
-        promotionData: {
-            id: @js(old('promotion_id', '')),
-            title: @js(old('title', '')),
-            description: @js(old('description', '')),
-            image: @js(old('existing_image', '')),
-            start_date: @js(old('start_date', '')),  
-            end_date: @js(old('end_date', '')),
-        },
-
-        selectedPromotions: [],
-        get allSelected() {
-            return this.selectedPromotions.length === {{ $promotions->count() }} && {{ $promotions->count() }} > 0;
-        },
-        toggleAll() {
-            if (this.allSelected) {
-                this.selectedPromotions = [];
-            } else {
-                this.selectedPromotions = {{ $promotions->pluck('id')->toJson() }};
-            }
-        },
-
-        openEditModal(promotion) {
-            this.editMode = true;
-            let startDate = promotion.start_date ? String(promotion.start_date).substring(0, 10) : '';
-            let endDate = promotion.end_date ? String(promotion.end_date).substring(0, 10) : '';
-            this.promotionData = { ...promotion, start_date: startDate, end_date: endDate, image: promotion.image };
-            this.actionUrl = `/promotions/${promotion.id}`;
-            this.imagePreview = promotion.image ? `/storage/${promotion.image}` : null;
-            this.showPromotionModal = true;
-        },
-
-        openDeleteModal(promotionId) {
-            this.deleteMode = 'single';
-            this.actionUrl = `/promotions/${promotionId}`;
-            this.showDeleteModal = true;
-        },
-
-        openBulkDeleteModal() {
-            this.deleteMode = 'bulk';
-            this.actionUrl = '{{ route('promotions.bulkDestroy') }}';
-            this.showDeleteModal = true;
-        },
-
-        closeEditModal() {
-            @if($errors->any())
-                window.location.href = window.location.href;
-            @else
-                this.showPromotionModal = false;
-                this.imagePreview = null;
-            @endif
-        },
-
-        resetModal() {
-            this.editMode = false;
-            this.actionUrl = '{{ route('promotions.store') }}';
-            this.promotionData = { id: '', title: '', description: '', image: '', start_date: '', end_date: '' };
-            this.imagePreview = null;
-            this.showPromotionModal = true;
-        },
-
-        openDetailModal(promotion) {
-            let options = { day: 'numeric', month: 'long', year: 'numeric' };
-            let formattedStart = promotion.start_date ? new Date(promotion.start_date).toLocaleDateString('en-GB', options) : '-';
-            let formattedEnd = promotion.end_date ? new Date(promotion.end_date).toLocaleDateString('en-GB', options) : '-';
-            this.promotionData = { 
-                ...promotion, 
-                formatted_start: formattedStart, 
-                formatted_end: formattedEnd 
-            };
-            this.showDetailModal = true;
-        }
-    }" 
+<div x-data="promotionManager({ 
+        hasErrors: {{ $errors->any() ? 'true' : 'false' }},
+        storeRoute: '{{ route('promotions.store') }}',
+        bulkDestroyRoute: '{{ route('promotions.bulkDestroy') }}',
+        promotionIds: @js($promotions->pluck('id')),
+        promotionCount: {{ $promotions->count() }},
+        oldPromotionId: @js(old('promotion_id', '')),
+        oldTitle: @js(old('title', '')),
+        oldDescription: @js(old('description', '')),
+        oldImage: @js(old('existing_image', '')),
+        oldStartDate: @js(old('start_date', '')),
+        oldEndDate: @js(old('end_date', ''))
+    })"
     class="max-w-7xl mx-auto"
 >
 

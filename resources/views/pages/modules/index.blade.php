@@ -3,54 +3,19 @@
 @section('header_title', 'Module Management')
 
 @section('content')
-<div x-data="{
-        showModuleModal: {{ $errors->any() ? 'true' : 'false' }}, 
+<div x-data="moduleManager({
+        hasErrors: {{ $errors->any() ? 'true' : 'false' }},
+        storeRoute: '{{ route('modules.store') }}',
         juniorKoderId: {{ $courseTypes->where('name', 'Junior Koders')->first()->id ?? 'null' }},
-        showDeleteModal: false,
-        editMode: {{ old('module_id') ? 'true' : 'false' }},
-        actionUrl: '{{ route('modules.store') }}',
-        imagePreview: @js(old('existing_image') ? '/storage/' . old('existing_image') : null),
-
-        moduleData: {
-            id: @js(old('module_id', '')),
-            name: @js(old('name', '')),
-            description: @js(old('description', '')),
-            age_range: @js(old('age_range', '')),
-            duration_per_session: @js(old('duration_per_session', '')),
-            category: @js(old('category', '')),
-            course_type_id: @js(old('course_type_id', '')),
-            image: @js(old('existing_image', '')),
-        },
-
-        openEditModal(module) {
-            this.editMode = true;
-            this.moduleData = { ...module, image: module.image, category: module.category || '' };
-            this.actionUrl = `/modules/${module.id}`;
-            this.imagePreview = module.image ? `/storage/${module.image}` : null;
-            this.showModuleModal = true;
-        },
-
-        openDeleteModal(moduleId) {
-            this.actionUrl = `/modules/${moduleId}`;
-            this.showDeleteModal = true;
-        },
-
-        closeEditModal() {
-            @if($errors->any())
-                window.location.href = window.location.href;
-            @else
-                this.showModuleModal = false;
-            @endif
-        },
-
-        resetModal() {
-            this.editMode = false;
-            this.actionUrl = '{{ route('modules.store') }}';
-            this.moduleData = { id: '', name: '', description: '', age_range: '', duration_per_session: '', category: '', course_type_id: '', image: '' };
-            this.imagePreview = null;
-            this.showModuleModal = true;
-        },
-    }" 
+        oldModuleId: @js(old('module_id', '')),
+        oldName: @js(old('name', '')),
+        oldDescription: @js(old('description', '')),
+        oldAgeRange: @js(old('age_range', '')),
+        oldDurationPerSession: @js(old('duration_per_session', '')),
+        oldCategory: @js(old('category', '')),
+        oldCourseTypeId: @js(old('course_type_id', '')),
+        oldImage: @js(old('existing_image', ''))
+    })" 
     class="max-w-7xl mx-auto"
 >
     <form method="GET" action="{{ route('modules.index') }}" class="flex flex-wrap items-end gap-4 mb-9">
@@ -124,13 +89,19 @@
                         2 => 'border-brand-blue',
                         3 => 'border-brand-purple/75',
                     ];
+                    $bgPrimaryColors = [
+                        1 => 'bg-brand-pink',
+                        2 => 'bg-brand-blue', 
+                        3 => 'bg-brand-purple',
+                    ];
                     $bgColor = $bgColors[$module->course_type_id];
                     $textColor = $textColors[$module->course_type_id];
                     $borderColor = $borderColors[$module->course_type_id];
+                    $bgPrimaryColor = $bgPrimaryColors[$module->course_type_id];
                 @endphp
                 <div class="{{ $bgColor }} rounded-lg p-4 shadow-sm hover:shadow-md flex flex-col h-full relative group transform transition-all hover:-translate-y-1">
                     <div class="absolute top-3 right-3 z-20" x-data="{ openDropdown: false }">
-                        <button @click="openDropdown = !openDropdown" class="{{ $textColor }} hover:text-brand-pink-hover focus:outline-none transition-colors rounded-full p-1 hover:bg-brand-pink/10">
+                        <button @click="openDropdown = !openDropdown" class="{{ $textColor }} hover:{{ $textColor }} focus:outline-none transition-colors rounded-full p-1 hover:{{ $bgPrimaryColor }}/10">
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
                         </button>
                         
@@ -143,7 +114,7 @@
                             x-transition:enter-start="transform opacity-0 scale-95"
                             x-transition:enter-end="transform opacity-100 scale-100"
                         >
-                            <button @click="openDropdown = false; openEditModal({{ json_encode($module) }})" class="w-full text-left px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-brand-pink flex items-center gap-2 transition-colors">
+                            <button @click="openDropdown = false; openEditModal({{ json_encode($module) }})" class="w-full text-left px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:{{ $textColor }} flex items-center gap-2 transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                 Edit
                             </button>

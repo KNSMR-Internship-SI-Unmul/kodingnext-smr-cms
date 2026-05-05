@@ -3,83 +3,18 @@
 @section('header_title', 'Event Management')
 
 @section('content')
-<div x-data="{ 
-        showEventModal: {{ $errors->any() ? 'true' : 'false' }}, 
-        showDeleteModal: false, 
-        showDetailModal: false,
-        editMode: {{ old('event_id') ? 'true' : 'false' }},
-        deleteMode: 'single',
-        actionUrl: '{{ route('events.store') }}',
-        imagePreview: @js(old('existing_image') ? '/storage/' . old('existing_image') : null),
-
-        eventData: {
-            id: @js(old('event_id', '')),
-            name: @js(old('name', '')),
-            event_date: @js(old('event_date', '')),
-            description: @js(old('description', '')),
-            image: @js(old('existing_image', ''))
-        },
-
-        selectedEvents: [],
-        get allSelected() {
-            return this.selectedEvents.length === {{ $events->count() }} && {{ $events->count() }} > 0;
-        },
-        toggleAll() {
-            if (this.allSelected) {
-                this.selectedEvents = [];
-            } else {
-                this.selectedEvents = {{ $events->pluck('id')->toJson() }};
-            }
-        },
-
-        openEditModal(event) {
-            this.editMode = true;
-            let eventDate = event.event_date ? String(event.event_date).substring(0, 10) : '';
-            this.eventData = { ...event, event_date: eventDate, image: event.image };
-            this.actionUrl = `/events/${event.id}`;
-            this.imagePreview = event.image ? `/storage/${event.image}` : null;
-            this.showEventModal = true;
-        },
-
-        openDeleteModal(eventId) {
-            this.deleteMode = 'single';
-            this.actionUrl = `/events/${eventId}`;
-            this.showDeleteModal = true;
-        },
-
-        openBulkDeleteModal() {
-            this.deleteMode = 'bulk';
-            this.actionUrl = '{{ route('events.bulkDestroy') }}';
-            this.showDeleteModal = true;
-        },
-
-        closeEditModal() {
-            @if($errors->any())
-                window.location.href = window.location.href;
-            @else
-                this.showEventModal = false;
-                this.imagePreview = null;
-            @endif
-        },
-
-        resetModal() {
-            this.editMode = false;
-            this.actionUrl = '{{ route('events.store') }}';
-            this.eventData = { id: '', name: '', event_date: '', description: '', image: '' };
-            this.imagePreview = null;
-            this.showEventModal = true;
-        },
-
-        openDetailModal(event) {
-            let options = { day: 'numeric', month: 'long', year: 'numeric' };
-            let formattedEventDate = event.event_date ? new Date(event.event_date).toLocaleDateString('en-GB', options) : '-';
-            this.eventData = { 
-                ...event, 
-                formatted_event_date: formattedEventDate 
-            };
-            this.showDetailModal = true;
-        }
-    }" 
+<div x-data="eventManager({ 
+        hasErrors: {{ $errors->any() ? 'true' : 'false' }},
+        storeRoute: '{{ route('events.store') }}',
+        bulkDestroyRoute: '{{ route('events.bulkDestroy') }}',
+        eventIds: @js($events->pluck('id')),
+        eventCount: {{ $events->count() }},
+        oldEventId: @js(old('event_id', '')),
+        oldName: @js(old('name', '')),
+        oldDescription: @js(old('description', '')),
+        oldImage: @js(old('existing_image', '')),
+        oldEventDate: @js(old('event_date', '')),
+    })"
     class="max-w-7xl mx-auto"
 >
 
@@ -106,7 +41,7 @@
             <div class="flex gap-2">
                 <a href="{{ route('events.index') }}" class="px-4 py-2.5 h-[42px] bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition text-sm flex items-center justify-center" title="Clear Filters">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3"></path></svg>
-                </a>
+                </a>    
             </div>
         @endif
 

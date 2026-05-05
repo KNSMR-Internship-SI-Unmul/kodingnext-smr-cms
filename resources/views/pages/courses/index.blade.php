@@ -9,55 +9,14 @@
 @endsection
 
 @section('content')
-<div x-data="{ 
-        showCourseModal: {{ $errors->any() ? 'true' : 'false' }}, 
-        showDeleteModal: false, 
-        showDetailModal: false,
-        editMode: {{ old('coursetype_id') ? 'true' : 'false' }},
-        actionUrl: '{{ route('courses.store') }}',
-        imagePreview: @js(old('existing_image') ? '/storage/' . old('existing_image') : null),
-
-        courseTypeData: {
-            id: @js(old('coursetype_id', '')),
-            name: @js(old('name', '')),
-            description: @js(old('description', '')),
-            image: @js(old('existing_image', '')),
-        },
-
-        openEditModal(courseType) {
-            this.editMode = true;
-            this.courseTypeData = { ...courseType, image: courseType.image };
-            this.actionUrl = `/dashboard/courses/${courseType.id}`;
-            this.imagePreview = courseType.image ? `/storage/${courseType.image}` : null;
-            this.showCourseModal = true;
-        },
-
-        openDeleteModal(courseTypeId) {
-            this.actionUrl = `/dashboard/courses/${courseTypeId}`;
-            this.showDeleteModal = true;
-        },
-
-        closeEditModal() {
-            @if($errors->any())
-                window.location.href = window.location.href;
-            @else
-                this.showCourseModal = false;
-            @endif
-        },
-
-        resetModal() {
-            this.editMode = false;
-            this.actionUrl = '{{ route('courses.store') }}';
-            this.courseTypeData = { id: '', name: '', description: '', image: '' };
-            this.imagePreview = null;
-            this.showCourseModal = true;
-        },
-
-        openDetailModal(courseType) {
-            this.courseTypeData = { ...courseType };
-            this.showDetailModal = true;
-        }
-    }" 
+<div x-data="courseTypeManager({
+        hasErrors: {{ $errors->any() ? 'true' : 'false' }},
+        storeRoute: '{{ route('courses.store') }}',
+        oldCourseTypeId: @js(old('coursetype_id', '')),
+        oldName: @js(old('name', '')),
+        oldDescription: @js(old('description', '')),
+        oldImage: @js(old('existing_image', '')),
+    })"
     class="max-w-7xl mx-auto"
 >
 

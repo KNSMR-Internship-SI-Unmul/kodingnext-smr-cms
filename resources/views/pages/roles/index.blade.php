@@ -9,44 +9,12 @@
 @endsection
 
 @section('content')
-<div x-data="{ 
-        showRoleModal: {{ $errors->any() ? 'true' : 'false' }},
-        showDeleteModal: false,
-        editMode: {{ old('role_id') ? 'true' : 'false' }},
-        actionUrl: '{{ route('roles.store') }}',
-        
-        roleData: {
-                id: @js(old('id', '')),
-                name: @js(old('name', ''))
-            },
-        
-        openEditModal(role) {
-            this.editMode = true;
-            this.roleData = { ...role };
-            this.actionUrl = `/employees/roles/${role.id}`;
-            this.showRoleModal = true;
-        },
-        
-        openDeleteModal(roleId) {
-            this.actionUrl = `/employees/roles/${roleId}`;
-            this.showDeleteModal = true;
-        },
-
-        closeEditModal() {
-            @if($errors->any())
-                window.location.href = window.location.href;
-            @else
-                this.showRoleModal = false;
-            @endif
-        },
-
-        resetModal() {
-            this.editMode = false;
-            this.actionUrl = '{{ route('roles.store') }}';
-            this.roleData = { id: '', name: '' };
-            this.showRoleModal = true;
-        }
-    }" 
+<div x-data="roleManager({
+        hasErrors: {{ $errors->any() ? 'true' : 'false' }},
+        storeRoute: '{{ route('roles.store') }}',
+        oldRoleId: @js(old('role_id', '')),
+        oldName: @js(old('name', ''))
+    })"
     class="max-w-7xl mx-auto"
 >
 

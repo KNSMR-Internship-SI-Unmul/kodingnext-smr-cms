@@ -3,63 +3,19 @@
 @section('header_title', 'Employees')
 
 @section('content')
-<div x-data="{ 
-        showEmployeeModal: {{ $errors->any() ? 'true' : 'false' }}, 
-        showDeleteModal: false,
-        editMode: {{ old('employee_id') ? 'true' : 'false' }},
-        actionUrl: '{{ route('employees.store') }}',
-        imagePreview: @js(old('existing_image') ? '/storage/' . old('existing_image') : null),
-        
-        employeeData: { 
-            id: @js(old('employee_id', '')),
-            name: @js(old('name', '')),
-            email: @js(old('email', '')),
-            phone_number: @js(old('phone_number', '')),
-            profile_picture: @js(old('existing_image', '')),
-            hired_date: @js(old('hired_date', '')),
-            role_id: @js(old('role_id', '')) 
-        },
-
-        openEditModal(employee) {
-            this.editMode = true;
-            let formattedDate = employee.hired_date ? String(employee.hired_date).substring(0, 10) : '';
-            this.employeeData = { ...employee, profile_picture: '', hired_date: formattedDate, profile_picture: employee.profile_picture };
-            this.actionUrl = `/employees/${employee.id}`;
-            this.imagePreview = employee.profile_picture ? '/storage/' + employee.profile_picture : null;
-            this.showEmployeeModal = true;
-        },
-
-        openDeleteModal(employeeId) {
-            this.actionUrl = `/employees/${employeeId}`;
-            this.showDeleteModal = true;
-        },
-
-        init() {
-            if (this.employeeData.id) {
-                this.actionUrl = `/employees/${this.employeeData.id}`;
-            }
-        },
-
-        closeEditModal() {
-            @if($errors->any())
-                window.location.href = window.location.href;
-            @else
-                this.showEmployeeModal = false;
-                this.imagePreview = null;
-            @endif
-        },
-
-        resetModal() {
-            this.editMode = false;
-            this.actionUrl = '{{ route('employees.store') }}';
-            this.employeeData = { id: '', name: '', email: '', phone_number: '', profile_picture: '', hired_date: '', role_id: '' };
-            this.imagePreview = null;
-            this.showEmployeeModal = true;
-        }
-    }" 
+<div x-data="employeeManager({
+        hasErrors: {{ $errors->any() ? 'true' : 'false' }},
+        storeRoute: '{{ route('employees.store') }}',
+        oldEmployeeId: @js(old('employee_id', '')),
+        oldName: @js(old('name', '')),
+        oldEmail: @js(old('email', '')),
+        oldPhoneNumber: @js(old('phone_number', '')),
+        oldProfilePicture: @js(old('existing_image', '')),
+        oldHiredDate: @js(old('hired_date', '')),
+        oldRoleId: @js(old('role_id', '')) 
+    })"
     class="max-w-7xl mx-auto"
 >
-
     <form method="GET" action="{{ route('employees.index') }}" class="flex flex-wrap gap-4 w-full">
         <div class="flex-[2] mb-8 relative">
             <span class="absolute inset-y-0 left-0 flex items-center pl-4">
@@ -142,7 +98,7 @@
 
                     <img src="{{ $employee->profile_picture ? asset('storage/' . $employee->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($employee->name) . '&color=3D7D9E&background=EEF6FB' }}" alt="{{ $employee->name }}'s Profile Picture" class="w-full h-full object-cover">
                     
-                    <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-brand-blue/90 via-brand-blue/40 to-transparent pt-12">
+                    <div class="absolute bottom-0 left-0 right-0 p-5 pt-12 bg-gradient-to-t from-brand-blue">
                         <h3 class="font-bold text-white text-md leading-tight mb-0.5">{{ $employee->name }}</h3>
                     </div>
                 </div>

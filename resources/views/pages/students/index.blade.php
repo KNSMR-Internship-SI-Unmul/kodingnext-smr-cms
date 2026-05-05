@@ -3,53 +3,15 @@
 @section('header_title', 'Students')
 
 @section('content')
-<div x-data="{ 
-        showStudentModal: {{ $errors->any() ? 'true' : 'false' }}, 
-        showDeleteModal: false,
-        editMode: {{ old('student_id') ? 'true' : 'false' }},
-        actionUrl: '{{ route('students.store') }}',
-        
-        studentData: { 
-            id: @js(old('student_id', '')),
-            name: @js(old('name', '')), 
-            school: @js(old('school', '')),
-            phone_number: @js(old('phone_number', '')),
-            address: @js(old('address', ''))
-        },
-        
-        openEditModal(student) {
-            this.editMode = true;
-            this.studentData = { ...student, is_profile_complete: student.is_profile_complete == 1 };
-            this.actionUrl = `/students/${student.id}`;
-            this.showStudentModal = true;
-        },
-        
-        openDeleteModal(studentId) {
-            this.actionUrl = `/students/${studentId}`;
-            this.showDeleteModal = true;
-        },
-
-        init() {
-            if (this.studentData.id) {
-                this.actionUrl = `/students/${this.studentData.id}`;
-            }
-        },
-
-        closeEditModal() {
-            @if($errors->any())
-                window.location.href = window.location.href;
-            @else
-                this.showStudentModal = false;
-            @endif
-        },
-
-        resetModal() {
-            this.editMode = false;
-            this.actionUrl = '{{ route('students.store') }}';
-            this.studentData = { id: '', name: '', school: '', phone_number: '', address: '' };
-            this.showStudentModal = true;
-        }
-    }"
+<div x-data="studentManager({ 
+        hasErrors: {{ $errors->any() ? 'true' : 'false' }},
+        storeRoute: '{{ route('students.store') }}',
+        oldStudentId: @js(old('student_id', '')),
+        oldName: @js(old('name', '')),
+        oldSchool: @js(old('school', '')),
+        oldPhoneNumber: @js(old('phone_number', '')),
+        oldAddress: @js(old('address', ''))
+    })"
     class="max-w-7xl mx-auto"
 >
 

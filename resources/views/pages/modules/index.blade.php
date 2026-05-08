@@ -16,7 +16,6 @@
         oldCourseTypeId: @js(old('course_type_id', '')),
         oldImage: @js(old('existing_image', ''))
     })" 
-    class="max-w-7xl mx-auto"
 >
     <form method="GET" action="{{ route('modules.index') }}" class="flex flex-wrap items-end gap-4 mb-9">
         <div class="flex-[2] min-w-[250px]">
@@ -195,7 +194,13 @@
                         <div class="flex gap-4">
                             <div class="flex-1">
                                 <label class="block text-sm font-semibold text-gray-800 mb-1">Age Range</label>
-                                <input type="text" name="age_range" x-model="moduleData.age_range" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('age_range') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror" placeholder="e.g. 6 - 8">
+                                <input type="text" 
+                                       name="age_range" 
+                                       x-model="moduleData.age_range" 
+                                       required
+                                       pattern="\d+-\d+" 
+                                       class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('age_range') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror" 
+                                       placeholder="e.g. 6-8">
                                 @error('age_range')
                                     <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                                 @enderror

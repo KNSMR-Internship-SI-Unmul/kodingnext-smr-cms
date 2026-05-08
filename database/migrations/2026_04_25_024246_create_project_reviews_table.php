@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('project_reviews', function (Blueprint $table) {
             $table->id();
-            $table->text('review_contentt');
-            $table->integer('rating'); // 1-5
+            $table->text('review_content');
+            $table->integer('rating');
             $table->boolean('is_approved')->default(false);
             $table->foreignId('student_project_id')->constrained('student_projects')->onDelete('cascade');
             $table->timestamps();

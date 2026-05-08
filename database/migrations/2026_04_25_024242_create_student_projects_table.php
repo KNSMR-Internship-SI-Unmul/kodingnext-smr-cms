@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->date('date');
-            $table->string('media_url');
+            $table->string('media');
             $table->string('project_url')->nullable();
+            $table->boolean('is_published')->default(false);
             $table->foreignId('module_id')->constrained('modules');
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
             $table->timestamps();

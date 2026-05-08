@@ -118,7 +118,7 @@
                             <td class="py-3 px-4 text-sm font-bold text-gray-800">{{ $studentProject->title }}</td>
                             <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center">{{ $studentProject->student->name }}</td>
                             <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center">{{ $studentProject->module->name }}</td>
-                            <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center">{{ $studentProject->date }}</td>
+                            <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center">{{ $studentProject->date->format('d/m/Y') }}</td>
                             <td class="py-3 px-6">
                                 <div class="flex items-center justify-center gap-3">
                                     @if($studentProject->projectReview)
@@ -281,7 +281,7 @@
 
                         <div>
                             <label class="block text-sm font-semibold text-gray-800 mb-1">Description</label>
-                            <textarea name="description" rows="4" x-model="studentProjectData.description" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('description') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror" placeholder="Write module description here..."></textarea>
+                            <textarea name="description" rows="6     " x-model="studentProjectData.description" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('description') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror" placeholder="Write module description here..."></textarea>
                             @error('description')
                                 <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                             @enderror
@@ -349,6 +349,16 @@
                             <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                         @enderror
 
+                        <div>
+                            <label class="block text-sm font-semibold mb-1 text-gray-800 mt-5">Project URL</label>
+                            <input type="url" name="project_url" x-model="studentProjectData.project_url" class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 transition @error('project_url') border-red-500 bg-red-50 @else border-gray-300 focus:ring-brand-pink @enderror">
+                        </div>
+
+                        <div class="flex items-center gap-2 mt-5">
+                            <input type="checkbox" id="is_published" name="is_published" value="1" x-model="studentProjectData.is_published" class="w-5 h-5 text-brand-pink focus:ring-brand-pink border-gray-300 rounded cursor-pointer transition">
+                            <label for="is_published" class="text-sm font-semibold text-gray-900 cursor-pointer select-none">Publish Project</label>
+                        </div>
+
                         <div class="flex gap-4 mt-8">
                             <button type="button" @click="closeEditModal(); fileName = null" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition">Cancel</button>
                             <button type="submit" class="flex-1 py-3 bg-brand-pink text-white hover:bg-brand-pink-hover font-semibold rounded-lg transition">Save</button>
@@ -361,9 +371,9 @@
 
     {{-- create, edit & delete project review modal --}}
     <div x-show="showReviewModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
-        <div @click.away="if(!showDeleteReviewModal) closeReviewModal()" class="bg-white rounded-lg p-8 w-full max-w-2xl shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+        <div @click.away="showReviewModal = false" class="bg-white rounded-lg p-8 w-full max-w-2xl shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
             
-            <button @click="closeReviewModal()" class="absolute top-6 right-6 text-gray-400 hover:text-gray-700">
+            <button @click="showReviewModal = false" class="absolute top-6 right-6 text-gray-400 hover:text-gray-700">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
@@ -413,7 +423,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 mt-10 pt-5 border-t border-gray-100 items-center justify-center">
                     <div>
                         <template x-if="editModeReview">
-                            <button type="button" @click="openDeleteReviewModal()" class="group flex gap-2 w-2/4 text-gray-400 hover:text-red-500 transition-colors">
+                            <button type="button" @click="showDeleteReviewModal = true" class="group flex gap-2 w-2/4 text-gray-400 hover:text-red-500 transition-colors">
                                 <div>
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                 </div>

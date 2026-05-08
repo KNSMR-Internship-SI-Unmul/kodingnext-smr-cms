@@ -26,7 +26,7 @@ class AddStudentProjectRequest extends FormRequest
             'title'       => 'required|string|max:255',
             'student_id'  => 'required|exists:students,id',
             'module_id'   => 'required|exists:modules,id',
-            'date'        => 'nullable|date',
+            'date'        => 'required|date|before_or_equal:today',
             'description' => 'required|string',
             'project_url' => 'nullable|url|max:255',
             'media'       => 'required|file|mimes:mimes:jpeg,png,jpg,gif,pdf,mp4,webm|max:5120', 

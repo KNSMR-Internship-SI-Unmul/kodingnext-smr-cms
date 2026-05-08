@@ -17,6 +17,13 @@ class StudentProject extends Model
         'student_id'
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'date' => 'date',
+        ];
+    }
+
     public function module() 
     {
         return $this->belongsTo(Module::class);

@@ -114,7 +114,7 @@
                             x-transition:enter-start="transform opacity-0 scale-95"
                             x-transition:enter-end="transform opacity-100 scale-100"
                         >
-                            <button @click="openDropdown = false; openEditModal({{ json_encode($module) }})" class="w-full text-left px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:{{ $textColor }} flex items-center gap-2 transition-colors">
+                            <button @click="openDropdown = false; openEditModal({{ json_encode($module) }})" class="w-full text-left px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-brand-pink flex items-center gap-2 transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                 Edit
                             </button>
@@ -301,8 +301,8 @@
                         @enderror
 
                         <div class="flex gap-4 mt-8">
-                            <button type="button" @click="closeEditModal(); fileName = null" class="flex-1 py-3 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition">Cancel</button>
-                            <button type="submit" class="flex-1 py-3 bg-brand-light-pink text-brand-pink hover:bg-brand-pink hover:text-white font-semibold rounded-lg transition">Save</button>
+                            <button type="button" @click="closeEditModal(); fileName = null" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition">Cancel</button>
+                            <button type="submit" class="flex-1 py-3 bg-brand-pink text-white hover:bg-brand-pink-hover font-semibold rounded-lg transition">Save</button>
                         </div>
                     </div> 
                 </div>

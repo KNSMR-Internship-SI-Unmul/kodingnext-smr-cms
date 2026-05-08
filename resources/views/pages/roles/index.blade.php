@@ -94,8 +94,8 @@
                 </div>
 
                 <div class="flex gap-3 pt-3 justify-end">
-                    <button type="button" @click="closeEditModal()" class="py-2.5 w-1/4 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition text-sm">Cancel</button>
-                    <button type="submit" class="py-2.5 w-1/4 bg-brand-light-pink text-brand-pink hover:bg-brand-pink hover:text-white font-semibold rounded-lg transition text-sm">Save</button>
+                    <button type="button" @click="closeEditModal()" class="py-2.5 w-1/4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition text-sm">Cancel</button>
+                    <button type="submit" class="py-2.5 w-1/4 bg-brand-pink text-white hover:bg-brand-pink-hover font-semibold rounded-lg transition text-sm">Save</button> 
                 </div>
             </form>
 

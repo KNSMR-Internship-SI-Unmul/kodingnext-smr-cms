@@ -12,7 +12,7 @@
 <div x-data="courseTypeManager({
         hasErrors: {{ $errors->any() ? 'true' : 'false' }},
         storeRoute: '{{ route('courses.store') }}',
-        oldCourseTypeId: @js(old('coursetype_id', '')),
+        oldCourseTypeId: @js(old('course_type_id', '')),
         oldName: @js(old('name', '')),
         oldDescription: @js(old('description', '')),
         oldImage: @js(old('existing_image', '')),
@@ -98,7 +98,7 @@
             <form :action="actionUrl" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="_method" value="PUT" x-bind:disabled="!editMode">
-                <input type="hidden" name="coursetype_id" x-model="courseTypeData.id">
+                <input type="hidden" name="course_type_id" x-model="courseTypeData.id">
                 <input type="hidden" name="existing_image" x-model="courseTypeData.image">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                     <div class="space-y-5">
@@ -175,8 +175,8 @@
                         @enderror
 
                         <div class="flex gap-4 mt-8">
-                            <button type="button" @click="closeEditModal(); fileName = null" class="flex-1 py-3 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition">Cancel</button>
-                            <button type="submit" class="flex-1 py-3 bg-brand-light-pink text-brand-pink hover:bg-brand-pink hover:text-white font-semibold rounded-lg transition">Save</button>
+                            <button type="button" @click="closeEditModal(); fileName = null" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition">Cancel</button>
+                            <button type="submit" class="flex-1 py-3 bg-brand-pink text-white hover:bg-brand-pink-hover font-semibold rounded-lg transition">Save</button>
                         </div>
                     </div> 
                 </div>

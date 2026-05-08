@@ -9,33 +9,15 @@
 @endsection
 
 @section('content')
-<div x-data="{ 
-        showStudentModal: {{ $errors->any() ? 'true' : 'false' }}, 
-        showDeleteModal: false,
-
-        studentData: {
-            name: @js(old('name', $student->name)),
-            school: @js(old('school', $student->school)),
-            phone_number: @js(old('phone_number', $student->phone_number)),
-            address: @js(old('address', $student->address))
-        },
-
-        init() {
-            @if($errors->any())
-                setTimeout(() => {
-                    this.showStudentModal = true;
-                }, 100);
-            @endif
-        },
-
-        closeEditModal() {
-            @if($errors->any())
-                window.location.href = window.location.href;
-            @else
-                this.showStudentModal = false;
-            @endif
-        }
-    }" 
+<div x-data="studentManager({ 
+        hasErrors: {{ $errors->any() ? 'true' : 'false' }},
+        storeRoute: '{{ route('students.store') }}',
+        oldStudentId: @js(old('student_id', $student->id)),
+        oldName: @js(old('name', $student->name)),
+        oldSchool: @js(old('school', $student->school)),
+        oldPhoneNumber: @js(old('phone_number', $student->phone_number)),
+        oldAddress: @js(old('address', $student->address)),
+    })"
     class="max-w-7xl mx-auto"
 >
     
@@ -49,7 +31,7 @@
                 <svg class="w-4 h-4 mr-1 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                 Back
             </a>
-            <button @click="showStudentModal = true" class="flex items-center justify-center px-6 py-2.5 w-[180px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition text-sm gap-2">
+            <button @click="openEditModal({{ json_encode($student) }})" class="flex items-center justify-center px-6 py-2.5 w-[180px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition text-sm gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                 Edit Data
             </button>
@@ -189,9 +171,9 @@
 
             <h2 class="text-2xl font-extrabold text-gray-900 mb-8">Student Information</h2>
 
-            <form action="{{ route('students.update', $student->id) }}" method="POST">
+            <form :action="actionUrl" method="POST">
                 @csrf
-                @method('PUT')
+                <input type="hidden" name="_method" value="PUT" x-bind:disabled="!editMode">
                 <input type="hidden" name="student_id" x-model="studentData.id">
                 <div class="space-y-5">
                     <div>
@@ -227,8 +209,8 @@
                     </div>
 
                     <div class="flex gap-3 pt-1 justify-end">
-                        <button type="button" @click="closeEditModal()" class="py-2.5 w-1/4 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition text-sm">Cancel</button>
-                        <button type="submit" class="py-2.5 w-1/4 bg-brand-light-pink text-brand-pink hover:bg-brand-pink hover:text-white font-semibold rounded-lg transition text-sm">Save</button>
+                        <button type="button" @click="closeEditModal()" class="py-2.5 w-1/4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition text-sm">Cancel</button>
+                        <button type="submit" class="py-2.5 w-1/4 bg-brand-pink text-white hover:bg-brand-pink-hover font-semibold rounded-lg transition text-sm">Save</button>
                     </div>
                 </div>
             </form>
@@ -261,7 +243,7 @@
             
             <div class="flex gap-3">
                 <button @click="showDeleteModal = false" class="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition">Cancel</button>
-                <form action="{{ route('students.destroy', $student->id) }}" method="POST" class="flex-1">
+                <form :action="actionUrl" method="POST" class="flex-1">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="w-full py-2.5 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition">Yes, delete</button>
@@ -270,6 +252,7 @@
         </div>
     </div>
 
+    {{-- toast notification --}}
     @if(session('success') || session('delete'))
         <div class="fixed bottom-10 right-10 z-50 flex flex-col gap-3">
             @if(session('success'))

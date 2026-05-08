@@ -10,9 +10,9 @@ class StudentProject extends Model
         'title',
         'description',
         'date',
-        'media_type',
-        'media_url',
+        'media',
         'project_url',
+        'is_published',
         'module_id',
         'student_id'
     ];

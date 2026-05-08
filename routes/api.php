@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\ModuleController;
 use App\Http\Controllers\Api\CourseTypeController;
 use App\Http\Controllers\Api\EmployeeController;
+use App\Http\Controllers\Api\StudentProjectController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -35,4 +36,9 @@ Route::prefix('courses')->group(function () {
 Route::prefix('modules')->group(function () {
     Route::get('/', [ModuleController::class, 'index']);
     Route::get('/{id}', [ModuleController::class, 'show']);
+});
+
+Route::prefix('student-projects')->group(function () {
+    Route::get('/', [StudentProjectController::class, 'index']);
+    Route::get('/{id}', [StudentProjectController::class, 'show']);
 });

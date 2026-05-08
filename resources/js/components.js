@@ -47,7 +47,7 @@ export const employeeManager = (config) => ({
     showEmployeeModal: config.hasErrors,
     showDeleteModal: false,
     editMode: config.oldEmployeeId ? true : false,
-    actionUrl: config.oldEmployeeId ? `/modules/${config.oldEmployeeId}` : config.storeRoute,
+    actionUrl: config.oldEmployeeId ? `/employees/${config.oldEmployeeId}` : config.storeRoute,
     imagePreview: config.oldImage ? `/storage/${config.oldImage}` : null,
 
     employeeData: {
@@ -58,6 +58,7 @@ export const employeeManager = (config) => ({
         profile_picture: config.oldProfilePicture || '',
         hired_date: config.oldHiredDate || '',
         role_id: config.oldRoleId || '',
+        password: '',
     },
 
     openEditModal(employee) {
@@ -427,54 +428,139 @@ export const studentManager = (config) => ({
     }
 });
 
-    // Alpine.data('studentProjectManager', (config) => ({
-        
-    //     showStudentProjectModal: config.hasErrors,
-    //     showDeleteModal: false,
-    //     showReviewModal: false,
-    //     editModeProject: config.oldProjectId ? true : false,
-    //     editModeReview: config.oldReviewId ? true : false,
-    //     actionUrlProject: config.storeProjectRoute,
-    //     actionUrlReview: config.storeReviewRoute,
-    //     mediaPreview: config.oldMedia || '',
+export const studentProjectManager = (config) => ({
+    hasProjectErrors: config.hasProjectErrors,
+    hasReviewErrors: config.hasReviewErrors,
+    storeRoute: config.storeRoute,
+    storeReviewRoute: config.storeReviewRoute,
+    bulkDestroyRoute: config.bulkDestroyRoute,
+    studentProjectIds: config.studentProjectIds,
+    studentProjectCount: config.studentProjectCount,
 
-    //     studentProjectData: {
-    //         id: config.oldProjectId || '',
-    //         title: config.oldTitle || '',
-    //         description: config.oldDescription || '',
-    //         date: config.oldDate || '',
-    //         media_url: config.oldMedia || '',
-    //         project_url: config.oldProjectUrl || '',
-    //         is_published: config.oldIsPublished || false,
-    //         module_id: config.oldModuleId || '',
-    //         student_id: config.oldStudentId || '',
-    //     },
+    showStudentProjectModal: config.hasProjectErrors,
+    showReviewModal: config.hasReviewErrors,
 
-    //     isVideo(url) {
-    //         if (!url) return false;
-    //         const ext = url.split('.').pop().toLowerCase();
-    //         return ['mp4', 'webm', 'ogg'].includes(ext);
-    //     },
+    showDeleteProjectModal: false,
+    showDeleteReviewModal: false,
+    editModeProject: config.oldStudentProjectId ? true : false,
+    editModeReview: false,
+    actionUrlProject: config.oldStudentProjectId ? `/student-projects/${config.oldStudentProjectId}` : config.storeRoute,
+    actionUrlReview: config.storeReviewRoute,
+    mediaPreview: config.oldMedia ? `/storage/${config.oldMedia}` : null,
+    mediaUrl: config.mediaUrl,
 
-    //     isPdf(url) {
-    //         if (!url) return false;
-    //         return url.split('.').pop().toLowerCase() === 'pdf';
-    //     },
+    studentProjectData: {
+        id: config.oldStudentProjectId || '',
+        title: config.oldTitle || '',
+        description: config.oldDescription || '',
+        date: config.oldDate || '',
+        media: config.oldMedia || '',
+        project_url: config.oldProjectUrl || '',
+        is_published: config.oldIsPublished || false,
+        module_id: config.oldModuleId || '',
+        student_id: config.oldStudentId || '',
+    },
 
-    //     openEditModal(project) {
-    //         this.editModeProject = true;
-    //         this.studentProjectData = { ...project };
-    //         // Format URL dinamis (mirip fitur sebelumnya)
-    //         this.actionUrlProject = `/student-projects/${project.id}`;
-    //         this.showStudentProjectModal = true;
-    //     },
+    projectReviewData: {
+        id: '',
+        student_project_id: '',
+        rating: 0,
+        review_content: '',
+        is_approved: false
+    },
 
-    //     resetModal() {
-    //         this.editModeProject = false;
-    //         this.actionUrlProject = config.storeProjectRoute;
-    //         this.studentProjectData = { id: '', title: '', description: '', date: '', media_url: '', project_url: '', is_published: false, module_id: '', student_id: '' };
-    //         this.showStudentProjectModal = true;
-    //     }
+    selectedStudentProjects: [],
+    get allSelected() {
+        return this.selectedStudentProjects.length === this.studentProjectCount && this.studentProjectCount > 0;
+    },
+    
+    toggleAll() {
+        if (this.allSelected) {
+            this.selectedStudentProjects = [];
+        } else {
+            this.selectedStudentProjects = [...this.studentProjectIds];
+        }
+    },
 
-    // }));
+    isVideo(mediaUrl) {
+        if (!mediaUrl) return false;
+        const ext = String(mediaUrl).split('.').pop().toLowerCase();
+        return ['mp4', 'webm', 'ogg'].includes(ext);
+    },
 
+    isPdf(mediaUrl) {
+        if (!mediaUrl) return false;
+        return String(mediaUrl).split('.').pop().toLowerCase() === 'pdf';
+    },
+
+    openEditModal(studentProject) {
+        this.editModeProject = true;
+        let date = studentProject.date ? String(studentProject.date).substring(0, 10) : '';
+        this.studentProjectData = { ...studentProject, date: date, media: studentProject.media };
+        this.actionUrlProject = `/student-projects/${studentProject.id}`;
+        this.mediaPreview = studentProject.media ? `/storage/${studentProject.media}` : null;
+        this.showStudentProjectModal = true;
+    },
+
+    closeEditModal() {
+        if (this.hasErrors) {
+            window.location.href = window.location.href;
+        } else {
+            this.showStudentProjectModal = false;
+            this.mediaPreview = null;
+        }
+    },  
+
+    resetModal() {
+        this.editModeProject = false;
+        this.actionUrlProject = this.storeRoute;
+        this.studentProjectData = { id: '', title: '', description: '', date: '', media: '', project_url: '', is_published: false, module_id: '', student_id: '' };
+        this.mediaPreview = null;
+        this.showStudentProjectModal = true;
+    },
+
+    openReviewModal(studentProject) {
+        if (studentProject.project_review) {
+            this.editModeReview = true;
+            this.actionUrlReview = `/project-reviews/${studentProject.project_review.id}`;
+            this.projectReviewData = {
+                id: studentProject.project_review.id,
+                student_project_id: studentProject.id,
+                rating: studentProject.project_review.rating || 0,
+                review_content: studentProject.project_review.review_content || '',
+                is_approved: studentProject.project_review.is_approved == 1
+            };
+        } else {
+            this.editModeReview = false;
+            this.actionUrlReview = this.storeReviewRoute;
+            this.projectReviewData = {
+                id: '',
+                student_project_id: studentProject.id,
+                rating: 0,
+                review_content: '',
+                is_approved: false
+            };
+        }
+        this.showReviewModal = true;
+    },
+
+    openDeleteReviewModal() {
+        this.showDeleteReviewModal = true;
+    },
+
+    closeDeleteReviewModal() {
+        this.showDeleteReviewModal = false;
+    },
+
+    openDeleteProjectModal(studentProjectId) {
+        this.deleteMode = 'single';
+        this.actionUrlProject = `/student-projects/${studentProjectId}`;
+        this.showDeleteProjectModal = true;
+    },
+
+    openBulkDeleteModal() {
+        this.deleteMode = 'bulk';
+        this.actionUrlProject = this.bulkDestroyRoute;
+        this.showDeleteProjectModal = true;
+    }
+});

@@ -1,7 +1,7 @@
 import './bootstrap';
 import Alpine from 'alpinejs';
 
-import { roleManager, employeeManager, promotionManager, eventManager, courseTypeManager, moduleManager, studentManager,  } from './components.js';
+import { roleManager, employeeManager, promotionManager, eventManager, courseTypeManager, moduleManager, studentManager, studentProjectManager } from './components.js';
 
 window.Alpine = Alpine;
 
@@ -13,7 +13,7 @@ Alpine.data('eventManager', eventManager);
 Alpine.data('courseTypeManager', courseTypeManager);
 Alpine.data('moduleManager', moduleManager);
 Alpine.data('studentManager', studentManager);
-// Alpine.data('studentProjectManager', studentProjectManager);
+Alpine.data('studentProjectManager', studentProjectManager);
 
 
 Alpine.start();

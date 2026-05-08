@@ -23,7 +23,6 @@ class UpdateProjectReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'student_project_id'=> 'required|exists:student_projects,id',
             'review_content'    => 'required|string',
             'rating'            => 'required|integer|min:1|max:5',
             'is_approved'       => 'nullable|boolean', 

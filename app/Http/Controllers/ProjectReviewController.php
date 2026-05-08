@@ -28,18 +28,15 @@ class ProjectReviewController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'student_project_id' => 'required|exists:student_projects,id',
-            'rating'             => 'required|integer|min:1|max:5',
-            'review_content'     => 'required|string',
-            'is_approved'        => 'nullable|boolean',
-        ]);
+    public function store(AddProjectReviewRequest $request)
+    {   
+        $data = $request->validated();
+        $data['user_id'] = 1;
+        // $data['user_id'] = auth()->id();
 
-        $validated['is_approved'] = $request->has('is_approved');
+        $data['is_approved'] = $request->has('is_approved');
 
-        ProjectReview::create($validated);
+        ProjectReview::create($data);
 
         return redirect()->route('student-projects.index')->with('success', 'Project review added successfully!');
     }
@@ -63,19 +60,14 @@ class ProjectReviewController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateProjectReviewRequest $request, string $id)
     {
         $review = ProjectReview::findOrFail($id);
+        $data = $request->validated();
 
-        $validated = $request->validate([
-            'rating'         => 'required|integer|min:1|max:5',
-            'review_content' => 'required|string',
-            'is_approved'    => 'nullable|boolean',
-        ]);
+        $data['is_approved'] = $request->has('is_approved');
 
-        $validated['is_approved'] = $request->has('is_approved');
-
-        $review->update($validated);
+        $review->update($data);
 
         return redirect()->route('student-projects.index')->with('success', 'Project review updated successfully!');
     }

@@ -15,18 +15,25 @@ class StudentSeeder extends Seeder
     {
         $students = [
             [
-            'name' => 'John Doe',
-            'school' => 'SMA Kristen Cita Hati',
-            'address' => 'Jl. Juanda, Perumahan Batu Alam Permai, No. 1',
-            'user_id' => 1,
+            'name' => 'Eugenia Goshen Kurniawan',
+            'school' => 'Nido Montessori School',
+            'user_id'       => 1,
             ], 
             [
-            'name' => 'Jane Doe',
-            'school' => 'SMAN 1 Samarinda',
-            'phone_number' => '0812987654',
-            'address' => 'Jl. Siradj Salman, Perumahan Grand Mahakam, Blok A No. 1',
-            'user_id' => 1, 
-            ]
+            'name' => 'Faiha Farzana Halwa',
+            'school' => 'TK ABA 7 Samarinda',
+            'user_id'       => 1,
+            ],
+            [
+            'name' => 'Abdurahman Nur Tajri',
+            'school' => 'SDIT Al Firdaus samarinda',
+            'user_id'       => 1,
+            ],
+            [
+            'name' => 'Aisyah Ayudia Inara',
+            'school' => 'SD Muhamadiyah',
+            'user_id'       => 1,
+            ],
         ];
 
         foreach ($students as $student) {

@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             EventSeeder::class,
             CourseTypeSeeder::class,
             ModuleSeeder::class,
+            StudentProjectSeeder::class,
+            ProjectReviewSeeder::class,
         ]);
 
         // User::factory()->create([

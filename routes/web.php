@@ -10,6 +10,7 @@ use App\Http\Controllers\CourseTypeController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\StudentProjectController;
 use App\Http\Controllers\ProjectReviewController;
+use App\Http\Controllers\GeneralTestimonialController;
 
 
 Route::get('/', function () {
@@ -46,7 +47,7 @@ Route::delete('events/bulk-delete', [EventController::class, 'bulkDestroy'])->na
 
 Route::resource('/events', EventController::class);
 
-Route::get('/general-testimonials', function () {
-    return view('pages.general-testimonials.index');
-});
+Route::delete('general-testimonials/bulk-delete', [GeneralTestimonialController::class, 'bulkDestroy'])->name('general-testimonials.bulkDestroy');
+
+Route::resource('/general-testimonials', GeneralTestimonialController::class);
 

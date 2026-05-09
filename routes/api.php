@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ModuleController;
 use App\Http\Controllers\Api\CourseTypeController;
 use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\StudentProjectController;
+use App\Http\Controllers\Api\GeneralTestimonialController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -41,4 +42,9 @@ Route::prefix('modules')->group(function () {
 Route::prefix('student-projects')->group(function () {
     Route::get('/', [StudentProjectController::class, 'index']);
     Route::get('/{id}', [StudentProjectController::class, 'show']);
+});
+
+Route::prefix('reviews')->group(function () {
+    Route::get('/', [GeneralTestimonialController::class, 'index']);
+    Route::get('/{id}', [GeneralTestimonialController::class, 'show']);
 });

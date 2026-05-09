@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             ModuleSeeder::class,
             StudentProjectSeeder::class,
             ProjectReviewSeeder::class,
+            GeneralTestimonialSeeder::class,
         ]);
 
         // User::factory()->create([

@@ -434,6 +434,7 @@ export const studentProjectManager = (config) => ({
     storeRoute: config.storeRoute,
     storeReviewRoute: config.storeReviewRoute,
     bulkDestroyRoute: config.bulkDestroyRoute,
+    deleteMode: 'single',
     studentProjectIds: config.studentProjectIds,
     studentProjectCount: config.studentProjectCount,
 
@@ -544,12 +545,9 @@ export const studentProjectManager = (config) => ({
         this.showReviewModal = true;
     },
 
-    openDeleteReviewModal() {
-        this.showDeleteReviewModal = true;
-    },
-
     closeDeleteReviewModal() {
         this.showDeleteReviewModal = false;
+        this.showReviewModal = true;
     },
 
     openDeleteProjectModal(studentProjectId) {
@@ -562,5 +560,78 @@ export const studentProjectManager = (config) => ({
         this.deleteMode = 'bulk';
         this.actionUrlProject = this.bulkDestroyRoute;
         this.showDeleteProjectModal = true;
+    }
+});
+
+export const generalTestimonialManager = (config) => ({
+    hasErrors: config.hasErrors,
+    storeRoute: config.storeRoute,
+    bulkDestroyRoute: config.bulkDestroyRoute,
+    testimonialIds: config.testimonialIds,
+    testimonialCount: config.testimonialCount,
+
+    showTestimonialModal: config.hasErrors,
+    showDeleteModal: false,
+    showDetailModal: false,
+    deleteMode: 'single',
+    editMode: config.oldTestimonialId ? true : false,
+    actionUrl: config.oldTestimonialId ? `/general-testimonials/${config.oldTestimonialId}` : config.storeRoute,
+
+    testimonialData: {
+        id: config.oldTestimonialId || '',
+        parents_name: config.oldParentsName || '',
+        review_content: config.oldReviewContent || '',
+        is_published: config.oldIsPublished || '',
+    },
+    
+    selectedTestimonials: [],
+    get allSelected() {
+        return this.selectedTestimonials.length === this.testimonialCount && this.testimonialCount > 0;
+    },
+    toggleAll() {
+        if (this.allSelected) {
+            this.selectedTestimonials = [];
+        } else {
+            this.selectedTestimonials = [...this.testimonialIds]; 
+        }
+    },
+
+    openEditModal(testimonial) {
+        this.editMode = true;
+        this.testimonialData = { ...testimonial };
+        this.actionUrl = `/general-testimonials/${testimonial.id}`;
+        this.showTestimonialModal = true;
+    },
+
+    openDeleteModal(testimonialId) {
+        this.deleteMode = 'single';
+        this.actionUrl = `/general-testimonials/${testimonialId}`;
+        this.showDeleteModal = true;
+    },
+
+    openBulkDeleteModal() {
+        this.deleteMode = 'bulk';
+        this.actionUrl = this.bulkDestroyRoute;
+        this.showDeleteModal = true;
+    },
+
+    closeEditModal() {
+        if (this.hasErrors) {
+            window.location.href = window.location.href;
+        } else {
+            this.showTestimonialModal = false;
+        }
+    },
+
+    resetModal() {
+        this.editMode = false;
+        this.actionUrl = this.storeRoute;
+        this.testimonialData = { id: '', parents_name: '', review_content: '', is_published: false };
+        this.showTestimonialModal = true;
+    },
+
+    openDetailModal(testimonial) {
+        this.testimonialData = { ...testimonial };
+        this.showDetailModal = true;
     }
 });

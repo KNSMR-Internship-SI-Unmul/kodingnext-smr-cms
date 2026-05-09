@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('general_testimonials', function (Blueprint $table) {
             $table->id();
             $table->string('parents_name');
-            $table->text('review_contentt');
+            $table->text('review_content');
             $table->boolean('is_published')->default(false);
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();

@@ -443,10 +443,11 @@ export const studentProjectManager = (config) => ({
 
     showDeleteProjectModal: false,
     showDeleteReviewModal: false,
+
     editModeProject: config.oldStudentProjectId ? true : false,
-    editModeReview: false,
+    editModeReview: config.oldReviewId ? true : false, 
     actionUrlProject: config.oldStudentProjectId ? `/student-projects/${config.oldStudentProjectId}` : config.storeRoute,
-    actionUrlReview: config.storeReviewRoute,
+    actionUrlReview: config.oldReviewId ? `/project-reviews/${config.oldReviewId}` : config.storeReviewRoute,
     mediaPreview: config.oldMedia ? `/storage/${config.oldMedia}` : null,
     mediaUrl: config.mediaUrl,
 
@@ -463,11 +464,11 @@ export const studentProjectManager = (config) => ({
     },
 
     projectReviewData: {
-        id: '',
-        student_project_id: '',
-        rating: 0,
-        review_content: '',
-        is_approved: false
+        id: config.oldReviewId || '',
+        student_project_id: config.oldReviewStudentProjectId || '',
+        rating: Number(config.oldReviewRating) || 0,
+        review_content: config.oldReviewContent || '',
+        is_approved: config.oldReviewIsApproved ? true : false
     },
 
     selectedStudentProjects: [],
@@ -543,6 +544,14 @@ export const studentProjectManager = (config) => ({
             };
         }
         this.showReviewModal = true;
+    },
+
+    closeReviewModal() {
+        if (this.hasReviewErrors) {
+            window.location.href = window.location.pathname; 
+        } else {
+            this.showReviewModal = false;
+        }
     },
 
     closeDeleteReviewModal() {

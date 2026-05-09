@@ -19,7 +19,12 @@
         oldProjectUrl: @js(old('project_url', '')),
         oldIsPublished: @js(old('is_published', false)),
         oldModuleId: @js(old('module_id', '')),
-        oldStudentId: @js(old('student_id', ''))
+        oldStudentId: @js(old('student_id', '')),
+        oldReviewId: @js(old('review_id', '')),
+        oldReviewStudentProjectId: @js(old('student_project_id', '')),
+        oldReviewRating: @js(old('rating', 0)),
+        oldReviewContent: @js(old('review_content', '')),
+        oldReviewIsApproved: @js(old('is_approved', false))
     })"
 >
 
@@ -378,9 +383,9 @@
 
     {{-- create, edit & delete project review modal --}}
     <div x-show="showReviewModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
-        <div @click.away="showReviewModal = false" class="bg-white rounded-lg p-8 w-full max-w-2xl shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+        <div @click.away="if(!showDeleteReviewModal) closeReviewModal()" class="bg-white rounded-lg p-8 w-full max-w-2xl shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
             
-            <button @click="showReviewModal = false" class="absolute top-6 right-6 text-gray-400 hover:text-gray-700">
+            <button @click="closeReviewModal()" class="absolute top-6 right-6 text-gray-400 hover:text-gray-700">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
@@ -389,8 +394,8 @@
             <form :action="actionUrlReview" method="POST" class="space-y-5">
                 @csrf
                 <input type="hidden" name="_method" value="PUT" x-bind:disabled="!editModeReview">
+                <input type="hidden" name="review_id" x-model="projectReviewData.id">
                 <input type="hidden" name="student_project_id" x-model="projectReviewData.student_project_id">
-
                 <div x-data="{ hover: 0 }">
                     <label class="block text-sm font-semibold mb-1 text-gray-800">Rating</label>
                     <div class="flex items-center gap-1">
@@ -440,7 +445,7 @@
                     </div>
 
                     <div class="flex gap-3">
-                        <button type="button" @click="showReviewModal = false" class="py-2.5 w-2/4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition text-sm">Cancel</button>
+                        <button type="button" @click="closeReviewModal()" class="py-2.5 w-2/4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition text-sm">Cancel</button>
                         <button type="submit" class="py-2.5 w-2/4 bg-brand-pink text-white hover:bg-brand-pink-hover font-semibold rounded-lg transition text-sm">Save</button>
                     </div>
                 </div>

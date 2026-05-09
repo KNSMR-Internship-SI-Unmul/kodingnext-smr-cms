@@ -9,11 +9,19 @@
 @endsection
 
 @section('content')
-<div x-data="{
-        showStudentModal: {{ $errors->any() ? 'true' : 'false' }}, 
-        showDeleteModal: false,
-    }"
-    class="max-w-7xl mx-auto"
+<div x-data="studentProjectManager({
+        hasProjectErrors: {{ $errors->hasAny(['title', 'student_id', 'module_id', 'date', 'description', 'media']) ? 'true' : 'false' }},
+        storeRoute: '{{ route('student-projects.store') }}',
+        oldStudentProjectId: @js(old('student_project_id', $studentProject->id)),
+        oldTitle: @js(old('title', $studentProject->title)),
+        oldDescription: @js(old('description', $studentProject->description)),
+        oldDate: @js(old('date', $studentProject->date)),
+        oldMedia: @js(old('existing_media', $studentProject->media)),
+        oldProjectUrl: @js(old('project_url', $studentProject->project_url)),
+        oldIsPublished: @js(old('is_published', false)),
+        oldModuleId: @js(old('module_id', $studentProject->module_id)),
+        oldStudentId: @js(old('student_id', $studentProject->student_id))
+    })"
 >
 
     <div class="flex justify-between items-end mb-8">
@@ -26,7 +34,7 @@
                 <svg class="w-4 h-4 mr-1 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                 Back
             </a>
-            <button @click="showStudentModal = true" class="flex items-center justify-center px-6 py-2.5 w-[180px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition text-sm gap-2">
+            <button @click="openEditModal({{ json_encode($studentProject) }})" class="flex items-center justify-center px-6 py-2.5 w-[180px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition text-sm gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                 Edit Data
             </button>

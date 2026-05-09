@@ -29,7 +29,7 @@ class UpdateStudentProjectRequest extends FormRequest
             'date'        => 'required|date|before_or_equal:today',
             'description' => 'required|string',
             'project_url' => 'nullable|url|max:255',
-            'media'       => 'nullable|file|mimes:mimes:jpeg,png,jpg,gif,pdf,mp4,webm|max:5120', 
+            'media'       => 'nullable|file|mimes:mimes:jpeg,png,jpg,gif,mp4,webm|max:5120', 
             'is_published'=> 'nullable|boolean', 
         ];
     }

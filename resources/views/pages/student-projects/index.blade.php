@@ -293,7 +293,7 @@
 
                         <div>
                             <label class="block text-sm font-semibold text-gray-800 mb-1">Description</label>
-                            <textarea name="description" rows="6     " x-model="studentProjectData.description" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('description') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror" placeholder="Write module description here..."></textarea>
+                            <textarea name="description" rows="6" x-model="studentProjectData.description" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('description') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror" placeholder="Write module description here..."></textarea>
                             @error('description')
                                 <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                             @enderror
@@ -306,7 +306,7 @@
                         <div class="flex-1 min-h-[250px] flex flex-col items-center justify-center bg-brand-light-pink rounded-lg cursor-pointer transition relative hover:opacity-90">
                             <input type="file" 
                                 name="media" 
-                                accept="image/*,application/pdf,video/mp4,video/webm"
+                                accept="image/*,video/mp4,video/webm"
                                 :required="!editModeProject"
                                 class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                 @change="
@@ -342,13 +342,7 @@
                                         </div>
                                     </template>
 
-                                    <template x-if="isPdf(fileName || mediaPreview)">
-                                        <div class="w-24 h-24 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-3 shadow-md border-4 border-red-200">
-                                            <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path></svg>
-                                        </div>
-                                    </template>
-
-                                    <template x-if="!isVideo(fileName || mediaPreview) && !isPdf(fileName || mediaPreview)">
+                                    <template x-if="!isVideo(fileName || mediaPreview)">
                                         <img :src="mediaPreview" alt="Media Preview" class="w-24 h-24 rounded-full object-cover mb-3 shadow-md border-4 border-brand-pink">
                                     </template>
 

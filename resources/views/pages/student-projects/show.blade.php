@@ -41,73 +41,255 @@
         </div>
     </div>
 
-    <div class="flex flex-col lg:flex-row bg-[#FDF0F5] rounded-3xl overflow-hidden mb-12 shadow-sm border border-[#FADCE6]">
-        
-        {{-- Left Side: Image & Link (Placeholder for Video/Image) --}}
-        <div class="lg:w-1/2 relative bg-gray-200 min-h-[300px] lg:min-h-full">
-            {{-- Ganti dengan tag img jika ada gambar --}}
-            {{-- <img src="{{ asset('storage/' . $studentProject->image) }}" alt="Project Image" class="w-full h-full object-cover"> --}}
+    <div class="flex flex-col lg:flex-row bg-brand-light-pink rounded-3xl overflow-hidden mb-12 shadow-sm border border-brand-pink/10">
+        <div class="lg:w-1/2 relative bg-gray-200 min-h-80 lg:min-h-full">
+            @php
+                $mediaExt = strtolower(pathinfo($studentProject->media, PATHINFO_EXTENSION));
+                $isVideo = in_array($mediaExt, ['mp4', 'webm', 'ogg']);
+            @endphp
+
+            @if($isVideo)
+                <video controls class="w-full h-full object-cover">
+                    <source src="{{ asset('storage/' . $studentProject->media) }}" type="video/{{ $mediaExt === 'ogg' ? 'ogg' : $mediaExt }}">
+                    Your browser does not support the video tag.
+                </video>
+            @else
+                <img src="{{ asset('storage/' . $studentProject->media) }}" alt="{{ $studentProject->student->name }}'s Project Media" class="w-full h-full object-cover">
+            @endif
             
-            {{-- Link Project Button --}}
-            <div class="absolute bottom-6 left-6 right-6">
-                <a href="{{ $studentProject->project_link ?? '#' }}" target="_blank" class="block w-full bg-[#D46C9A] hover:bg-[#C25886] transition-colors rounded-xl p-4 shadow-md group">
-                    <p class="text-white/90 text-sm font-semibold mb-1">Link Project</p>
-                    <p class="text-white text-xs truncate group-hover:underline">
-                        {{ $studentProject->project_link ?? 'https://www.figma.com/design/hnaki9uEJr8BZytIOH8M4' }}
-                    </p>
-                </a>
-            </div>
+            {{-- @if($studentProject->project_url)
+                <div class="absolute bottom-6 left-6 right-6">
+                    <a href="{{ $studentProject->project_url }}" target="_blank" class="block w-full bg-brand-pink hover:bg-brand-pink-hover transition-colors rounded-xl p-4 shadow-md group">
+                        <p class="text-white/90 text-sm font-semibold mb-1">Project Link</p>
+                        <p class="text-white text-xs truncate group-hover:underline">
+                            {{ $studentProject->project_url }}
+                        </p>
+                    </a>
+                </div>
+            @endif --}}
         </div>
 
-        {{-- Right Side: Project Info --}}
-        <div class="lg:w-1/2 p-10 flex flex-col justify-center">
-            <h2 class="text-3xl font-bold text-black mb-6 leading-tight">
-                {{ $studentProject->title ?? 'Game Labirin by Ben' }}
+        <div class="lg:w-1/2 p-9 flex flex-col justify-center">
+            <h2 class="text-3xl font-semibold text-black mb-5 leading-tight">
+                {{ $studentProject->title }} by {{ $studentProject->student->name }}
             </h2>
             
-            <div class="flex items-center gap-6 mb-8">
-                <div class="flex items-center gap-2 text-[#D46C9A]">
+            <div class="flex items-center gap-6 mb-5">
+                <div class="flex items-center gap-2 text-brand-pink">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    <span class="font-semibold text-lg">
-                        {{ $studentProject->created_at ? $studentProject->created_at->format('d F Y') : '30 April 2026' }}
+                    <span class="font-semibold text-md">
+                        {{ $studentProject->date->format('d F Y') }}
                     </span>
                 </div>
                 
-                {{-- Kategori/Course Type Tag --}}
-                <span class="px-6 py-2 bg-[#F3CEDB] text-[#D46C9A] font-semibold rounded-full text-sm">
-                    {{ $studentProject->category ?? 'Little Koders' }}
+                <span class="px-6 py-2 bg-brand-light-pink-active/75 text-brand-pink font-semibold rounded-full text-sm">
+                    {{ $studentProject->module->name }}
                 </span>
             </div>
 
-            <p class="text-black font-medium leading-relaxed">
-                {{ $studentProject->description ?? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at dapibus risus. Donec eu odio id risus laoreet vehicula nec quis massa. Phasellus dapibus turpis eget lacus pretium varius. Nulla at quam non augue dapibus ultricies.' }}
+            <p class="text-black text-sm font-medium leading-relaxed">
+                {{ $studentProject->description }}
+            </p>
+
+            @if($studentProject->project_url)
+                <div class="mt-5">
+                    <a href="{{ $studentProject->project_url }}" target="_blank" class="max-w-full inline-flex items-center gap-3 bg-brand-pink hover:bg-brand-pink-hover transition-colors rounded-xl px-3 py-2 group">
+                        <svg class="w-6 h-6 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        <div class="text-left flex-1 min-w-0">
+                            <p class="text-white/90 text-xs font-semibold mb-0.5">View Live Project</p>
+                            <p class="truncate text-white text-[10px] font-bold group-hover:underline">{{ str_replace(['http://', 'https://'], '', $studentProject->project_url) }}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    @if($studentProject->projectReview)
+        <div>
+            <div class="flex justify-between items-center mb-5">
+                <div class="flex items-center gap-4">
+                    <h3 class="text-3xl font-bold text-brand-pink">Project Review</h3>
+                    
+                    @if($studentProject->projectReview->is_approved)
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200 mt-1">Approved</span>
+                    @else
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-brand-light-yellow text-brand-yellow-active border border-brand-yellow/50 mt-1">Not Approved</span>
+                    @endif
+                </div>
+                
+                <div class="flex gap-2 text-brand-yellow">
+                    @for($i = 1; $i <= 5; $i++)
+                        @if($i <= $studentProject->projectReview->rating)
+                            <svg class="w-8 h-8 drop-shadow-sm" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        @else
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                        @endif
+                    @endfor
+                </div>
+            </div>
+
+            <p class="text-black text-lg font-medium leading-relaxed">
+                {{ $studentProject->projectReview->review_content }}
             </p>
         </div>
-    </div>
-
-    {{-- Review Section --}}
-    <div>
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="text-3xl font-bold text-[#D46C9A]">Project Review</h3>
-            
-            {{-- Star Rating (Static example for 3 out of 5 stars) --}}
-            {{-- Nanti bisa dibuat dinamis menggunakan loop foreach atau for berdasarkan nilai di database --}}
-            <div class="flex gap-2 text-[#F4C542]">
-                <svg class="w-8 h-8 drop-shadow-sm" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                <svg class="w-8 h-8 drop-shadow-sm" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                <svg class="w-8 h-8 drop-shadow-sm" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                {{-- Empty Stars --}}
-                <svg class="w-8 h-8 text-[#F4C542]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
-                <svg class="w-8 h-8 text-[#F4C542]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
-            </div>
+    @else
+        <div class="mt-8 p-8 bg-gray-50 rounded-2xl border border-gray-200 text-center">
+            <h3 class="text-xl font-bold text-gray-500 mb-2">No review yet</h3>
+            <p class="text-sm text-gray-500 font-medium">This student project hasn't received a review.</p>
         </div>
+    @endif
+    
+    {{-- edit student project modal --}}
+    <div x-show="showStudentProjectModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
+        <div @click.away="closeEditModal()" class="bg-white rounded-lg p-8 w-full max-w-4xl shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+            
+            <button @click="closeEditModal()" class="absolute top-6 right-6 text-gray-400 hover:text-gray-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
 
-        <p class="text-black text-xl font-medium leading-relaxed max-w-4xl">
-            {{ $studentProject->review ?? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at dapibus risus. Donec eu odio id risus laoreet vehicula nec quis massa. Phasellus dapibus turpis eget lacus pretium varius. Nulla at quam non augue dapibus ultricies.' }}
-        </p>
+            <h2 class="text-2xl font-extrabold text-gray-900 mb-8">Student Project Information</h2>
+
+            <form :action="actionUrlProject" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="_method" value="PUT" x-bind:disabled="!editModeProject">
+                <input type="hidden" name="student_project_id" x-model="studentProjectData.id">
+                <input type="hidden" name="existing_media" x-model="studentProjectData.media">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                    <div class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-semibold mb-1 text-gray-800">Title</label>
+                            <input type="text" name="title" x-model="studentProjectData.title" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('title') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror">
+                            @error('title')
+                                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold mb-1 text-gray-800">Student Name</label>
+                            <select name="student_id" x-model="studentProjectData.student_id" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('student_id') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror">
+                                <option value="" disabled selected>Select Student...</option>
+                                @foreach($students as $student)
+                                    <option value="{{ $student->id }}">{{ $student->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('student_id')
+                                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-1 text-gray-800">Module</label>
+                            <select name="module_id" x-model="studentProjectData.module_id" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('module_id') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror">
+                                <option value="" disabled selected>Select Module</option>
+                                @foreach($modules as $module)
+                                    <option value="{{ $module->id }}">{{ $module->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('module_id')
+                                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-1 text-gray-800">Date</label>
+                            <input type="date" name="date" x-model="studentProjectData.date" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('date') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror">
+                            @error('date')
+                                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-800 mb-1">Description</label>
+                            <textarea name="description" rows="6" x-model="studentProjectData.description" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('description') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror" placeholder="Write module description here..."></textarea>
+                            @error('description')
+                                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col h-full" x-data="{ fileName: null }">
+                        <label class="block text-xl font-semibold text-gray-800 mb-3">Student Project Media</label>
+                        
+                        <div class="flex-1 min-h-[250px] flex flex-col items-center justify-center bg-brand-light-pink rounded-lg cursor-pointer transition relative hover:opacity-90">
+                            <input type="file" 
+                                name="media" 
+                                accept="image/*,video/mp4,video/webm"
+                                :required="!editModeProject"
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                @change="
+                                    const file = $event.target.files[0];
+                                    if (file) {
+                                        fileName = file.name;
+                                        mediaPreview = URL.createObjectURL(file);
+                                    } else {
+                                        fileName = null;
+                                        mediaPreview = null;
+                                    }
+                                ">
+                            
+                            <template x-if="!mediaPreview && !fileName">
+                                <div class="flex flex-col items-center pointer-events-none">
+                                    <div class="w-16 h-16 bg-brand-pink rounded-full flex items-center justify-center mb-4 shadow-md text-white">
+                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                        </svg>
+                                    </div>
+                                    <h4 class="font-semibold text-gray-900 mb-1">Click for Upload Media</h4>
+                                    <p class="text-xs font-medium text-gray-500">JPG, PNG, JPEG, GIF, SVG up to 2MB</p>
+                                </div>
+                            </template>
+
+                            <template x-if="mediaPreview || fileName">
+                                <div class="flex flex-col items-center pointer-events-none text-center px-4 w-full h-full py-4 justify-center">
+                                    <template x-if="isVideo(fileName || mediaPreview)">
+                                        <div class="w-24 h-24 rounded-full overflow-hidden mb-3 shadow-md border-4 border-brand-pink bg-black">
+                                            <video autoplay loop muted playsinline class="w-full h-full object-cover">
+                                                <source :src="mediaPreview">
+                                            </video>
+                                        </div>
+                                    </template>
+
+                                    <template x-if="!isVideo(fileName || mediaPreview)">
+                                        <img :src="mediaPreview" alt="Media Preview" class="w-24 h-24 rounded-full object-cover mb-3 shadow-md border-4 border-brand-pink">
+                                    </template>
+
+                                    <h4 class="font-semibold text-gray-900 mb-1" x-text="fileName ? 'Media Ready to Save' : 'Current Project Media'"></h4>
+                                    <p class="text-xs font-normal text-gray-400 mt-2">(Click anywhere to change media)</p>
+                                </div>
+                            </template>
+                        </div>
+                        @error('media')
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                        @enderror
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-1 text-gray-800 mt-5">Project URL</label>
+                            <input type="url" name="project_url" x-model="studentProjectData.project_url" class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 transition @error('project_url') border-red-500 bg-red-50 @else border-gray-300 focus:ring-brand-pink @enderror">
+                        </div>
+
+                        <div class="flex items-center gap-2 mt-5">
+                            <input type="checkbox" id="is_published" name="is_published" value="1" x-model="studentProjectData.is_published" class="w-5 h-5 text-brand-pink focus:ring-brand-pink border-gray-300 rounded cursor-pointer transition">
+                            <label for="is_published" class="text-sm font-semibold text-gray-900 cursor-pointer select-none">Publish Project</label>
+                        </div>
+
+                        <div class="flex gap-4 mt-8">
+                            <button type="button" @click="closeEditModal(); fileName = null" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition">Cancel</button>
+                            <button type="submit" class="flex-1 py-3 bg-brand-pink text-white hover:bg-brand-pink-hover font-semibold rounded-lg transition">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-
+    
+    {{-- toast notification --}}
+    @if(session('success'))
+        <div class="fixed bottom-10 right-10 z-50 flex flex-col gap-3">
+            <x-toast type="success" message="{{ session('success') }}" />
+        </div>
+    @endif
 
 </div>
-
 @endsection

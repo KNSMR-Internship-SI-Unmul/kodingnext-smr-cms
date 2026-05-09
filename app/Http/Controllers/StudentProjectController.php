@@ -81,8 +81,10 @@ class StudentProjectController extends Controller
     public function show(string $id)
     {
         $studentProject = StudentProject::with(['module.courseType', 'student', 'projectReview'])->findOrFail($id);
+        $students = Student::all();
+        $modules = Module::all();
 
-        return view('pages.student-projects.show', compact('studentProject'));
+        return view('pages.student-projects.show', compact('studentProject', 'students', 'modules'));
     }
 
     /**
@@ -114,7 +116,7 @@ class StudentProjectController extends Controller
 
         $studentProject->update($data);
 
-        return redirect()->route('student-projects.index')->with('success', 'Student project updated successfully!');
+        return redirect()->back()->with('success', 'Student project updated successfully!');
     }
 
     /**

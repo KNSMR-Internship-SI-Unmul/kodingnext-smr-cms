@@ -69,7 +69,7 @@ class ProjectReviewController extends Controller
 
         $review->update($data);
 
-        return redirect()->route('student-projects.index')->with('success', 'Project review updated successfully!');
+        return redirect()->back()->with('success', 'Project review saved successfully!');
     }
 
     /**

@@ -490,11 +490,6 @@ export const studentProjectManager = (config) => ({
         return ['mp4', 'webm', 'ogg'].includes(ext);
     },
 
-    isPdf(mediaUrl) {
-        if (!mediaUrl) return false;
-        return String(mediaUrl).split('.').pop().toLowerCase() === 'pdf';
-    },
-
     openEditModal(studentProject) {
         this.editModeProject = true;
         let date = studentProject.date ? String(studentProject.date).substring(0, 10) : '';

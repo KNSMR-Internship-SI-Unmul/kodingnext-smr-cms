@@ -106,6 +106,7 @@
                             <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Module</th>
                             <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Date</th>
                             <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Review</th>
+                            <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Published</th>
                             <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Action</th>
                         </tr>
                     </thead>
@@ -119,33 +120,39 @@
                             <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center">{{ $studentProject->student->name }}</td>
                             <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center">{{ $studentProject->module->name }}</td>
                             <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center">{{ $studentProject->date->format('d/m/Y') }}</td>
-                            <td class="py-3 px-6">
+                            <td class="py-3 px-4 text-center whitespace-nowrap">
                                 <div class="flex items-center justify-center gap-3">
                                     @if($studentProject->projectReview)
-                                        <button @click="openReviewModal({{ json_encode($studentProject) }})" class="group transition-colors" title="Edit Review">
+                                        <button @click="openReviewModal({{ json_encode($studentProject) }})" class="transition-transform hover:scale-105" title="Edit Review">
                                             @if($studentProject->projectReview->is_approved)
-                                                <svg class="w-5 h-5 text-green-500 group-hover:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"></path>
-                                                </svg>
+                                                <span class="inline-flex items-center justify-center px-3 py-1 rounded-full text-[11px] font-bold bg-green-100 text-green-700 border border-green-200">
+                                                    Approved
+                                                </span>
                                             @else
-                                                <svg class="w-5 h-5 text-brand-yellow-active group-hover:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
-                                                </svg>
+                                                <span class="inline-flex items-center justify-center px-3 py-1 rounded-full text-[11px] font-bold bg-brand-light-yellow text-brand-yellow-active border border-brand-yellow/50">
+                                                    Not Approved
+                                                </span>
                                             @endif
-
-                                            <svg class="w-5 h-5 text-brand-pink hidden group-hover:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-                                            </svg>
                                         </button>
-                                        
                                     @else
-                                        <button @click="openReviewModal({{ json_encode($studentProject) }})" class="text-brand-yellow-active hover:text-brand-dark-yellow transition-colors" title="Add Review">
+                                        <button @click="openReviewModal({{ json_encode($studentProject) }})" class="text-brand-yellow-active hover:text-brand-dark-yellow transition-transform hover:scale-105 " title="Add Review">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
                                             </svg>
                                         </button>
                                     @endif
                                 </div>
+                            </td>
+                            <td class="py-3 px-4 text-center whitespace-nowrap">
+                                @if($studentProject->is_published)
+                                    <span class="inline-flex items-center justify-center px-3 py-1 rounded-full text-[11px] font-bold bg-green-100 text-green-700 border border-green-200">
+                                        Published
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center justify-center px-3 py-1 rounded-full text-[11px] font-bold bg-red-100 text-red-700 border border-red-200">
+                                        Not Published
+                                    </span>
+                                @endif
                             </td>
                             <td class="py-3 px-6">
                                 <div class="flex items-center justify-center gap-3">

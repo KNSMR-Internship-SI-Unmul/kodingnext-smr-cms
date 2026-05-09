@@ -132,4 +132,24 @@ class StudentProjectController extends Controller
 
         return redirect()->route('student-projects.index')->with('delete', 'Student project deleted successfully!');
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (empty($ids)) {
+            return redirect()->back()->with('error', 'No student-projects selected.');
+        }
+
+        $studentProjects = StudentProject::whereIn('id', $ids)->get();
+
+        foreach ($studentProjects as $studentProject) {
+            if ($studentProject->media) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($studentProject->media);
+            }
+            $studentProject->delete();
+        }
+
+        return redirect()->route('student-projects.index')->with('delete', count($ids) . ' student-projects deleted successfully!');
+    }
 }

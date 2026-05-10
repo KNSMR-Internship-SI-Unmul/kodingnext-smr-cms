@@ -14,7 +14,7 @@ class ModuleSeeder extends Seeder
     public function run(): void
     {
         $modules = [
-            // Little Koder
+            // Little Koders
             [
                 'name' => 'Coding Stories',
                 'description' => 'Memperkenalkan konsep dasar pemrograman melalui aktivitas menyenangkan, melatih logika, serta membuat game sederhana dan cerita interaktif.',
@@ -78,7 +78,7 @@ class ModuleSeeder extends Seeder
                 'duration_per_session' => 60,
                 'course_type_id' => 1,
             ],
-            // Junior Koder
+            // Junior Koders
             [
                 'name' => '2D Games With Roblox',
                 'description' => 'Siswa akan memperkuat dasar pemrograman mereka dan diperkenalkan pada konsep yang lebih lanjut dengan membuat game dan animasi menarik menggunakan Scratch, Roblox, dan Construct 3.',

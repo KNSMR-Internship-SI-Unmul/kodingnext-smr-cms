@@ -61,7 +61,7 @@
                             <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Testimonial Content</th>
                             <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Created By</th>
                             <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Published</th>
-                            <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Action</th>
+                            <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap w-32">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,11 +71,8 @@
                                     <input type="checkbox" value="{{ $testimonial->id }}" x-model="selectedTestimonials" class="w-4 h-4 rounded border-gray-300 text-brand-blue focus:ring-brand-blue cursor-pointer">
                                 </td>
                                 <td class="py-3 px-4 text-sm font-semibold text-gray-800">{{ $testimonial->parents_name }}</td>
-                                <td class="py-3 px-4">
-                                    <div class="max-w-[250px] md:min-w-[350px]">
-                                        <p class="text-sm font-medium text-gray-700 text-justify">{{ $testimonial->review_content }}</p>
-                                        </p>
-                                    </div>
+                                <td class="py-3 px-4 max-w-[250px] md:min-w-[350px]">
+                                    <p class="text-sm font-medium text-gray-700 text-justify">{{ $testimonial->review_content }}</p>
                                 </td>
                                 <td class="py-3 px-4 whitespace-nowrap">
                                     <div class="flex items-center justify-center gap-2">
@@ -98,9 +95,6 @@
                                 </td>
                                 <td class="py-3 px-4">
                                     <div class="flex items-center justify-center gap-3">
-                                        <button @click="openDetailModal({{ json_encode($testimonial) }})" class="text-brand-blue hover:text-brand-blue-hover transition-colors" title="View Details">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                        </button>
                                         <button @click="openEditModal({{ json_encode($testimonial) }})" class="text-brand-pink hover:text-brand-pink-hover transition-colors" title="Edit">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                         </button>

@@ -26,7 +26,7 @@ class UpdateStudentProjectRequest extends FormRequest
             'title'       => 'required|string|max:255',
             'student_id'  => 'required|exists:students,id',
             'module_id'   => 'required|exists:modules,id',
-            'date'        => 'required|date|before_or_equal:today',
+            'date'        => 'nullable|date|before_or_equal:today',
             'description' => 'required|string',
             'project_url' => 'nullable|url|max:255',
             'media'       => 'nullable|file|mimes:mimes:jpeg,png,jpg,gif,mp4,webm|max:5120', 

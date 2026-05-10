@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->date('date');
+            $table->date('date')->nullable();
             $table->string('media');
             $table->string('project_url')->nullable();
             $table->boolean('is_published')->default(false);

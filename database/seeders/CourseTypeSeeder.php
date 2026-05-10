@@ -29,7 +29,7 @@ class CourseTypeSeeder extends Seeder
             [
                 'name' => 'RoboNext',
                 'description' => 'Kursus robotika dari Koding Next ini dirancang untuk memperkenalkan teknologi melalui pengalaman langsung. Siswa tidak hanya belajar coding dan merakit robot, tetapi juga memahami cara teknologi bekerja untuk menyelesaikan masalah dunia nyata.',
-                'image' => 'courses/OLq9ZauzNeBYJhq4sReMZARyMzuiEeJ99G6CHaJV.jpg',
+                'image' => 'courses/NPBXnFHquexMRfHNRlNNEvODhjSTUMsOHuV2kySp.jpg',
                 'user_id' => 1,
             ]
         ];

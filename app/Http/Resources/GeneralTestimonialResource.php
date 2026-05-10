@@ -15,9 +15,9 @@ class GeneralTestimonialResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'parents_name' => $this->parents_name,
-            'review_content' => $this->review_content,
+            'id'                => $this->id,
+            'parents_name'      => $this->parents_name,
+            'review_content'    => $this->review_content,
         ];
     }
 }

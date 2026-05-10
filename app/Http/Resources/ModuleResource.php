@@ -15,14 +15,14 @@ class ModuleResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
-            'age_range' => $this->age_range,
-            'duration_per_session' => $this->duration_per_session,
-            'category' => $this->category, 
-            'image_url' => $this->image ? asset('storage/' . $this->image) : null,
-            'course_type' => $this->courseType ? $this->courseType->name : null,
+            'id'                    => $this->id,
+            'name'                  => $this->name,
+            'description'           => $this->description,
+            'age_range'             => $this->age_range,
+            'duration_per_session'  => $this->duration_per_session,
+            'category'              => $this->category, 
+            'image_url'             => $this->image ? asset('storage/' . $this->image) : null,
+            'course_type'           => $this->courseType ? $this->courseType->name : null,
         ];
     }
 }

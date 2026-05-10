@@ -15,14 +15,14 @@ class PromotionResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'image_url' => $this->image ? asset('storage/' . $this->image) : null,
-            'start_date' => $this->start_date->format('Y-m-d'),
-            'end_date' => $this->end_date->format('Y-m-d'),
-            'format' => $this->file_format, 
-            'created_by' => $this->user ? $this->user->name : 'System',
+            'id'            => $this->id,
+            'title'         => $this->title,
+            'description'   => $this->description,
+            'image_url'     => $this->image ? asset('storage/' . $this->image) : null,
+            'start_date'    => $this->start_date->format('Y-m-d'),
+            'end_date'      => $this->end_date->format('Y-m-d'),
+            'format'        => $this->file_format, 
+            'created_by'    => $this->user ? $this->user->name : 'System',
         ];
     }
 }

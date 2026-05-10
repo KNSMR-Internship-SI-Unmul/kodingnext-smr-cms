@@ -29,7 +29,7 @@ class AddStudentProjectRequest extends FormRequest
             'date'        => 'nullable|date|before_or_equal:today',
             'description' => 'required|string',
             'project_url' => 'nullable|url|max:255',
-            'media'       => 'required|file|mimes:mimes:jpeg,png,jpg,gif,mp4,webm|max:5120', 
+            'media'       => 'required|file|mimes:jpeg,png,jpg,gif,mp4,webm|max:5120', 
             'is_published'=> 'nullable|boolean', 
         ];
     }

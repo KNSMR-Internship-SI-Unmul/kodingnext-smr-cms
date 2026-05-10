@@ -49,24 +49,29 @@
             @endphp
 
             @if($isVideo)
-                <video controls class="w-full h-full object-cover">
+                <video autoplay muted loop playsinline class="w-full h-full object-cover">
                     <source src="{{ asset('storage/' . $studentProject->media) }}" type="video/{{ $mediaExt === 'ogg' ? 'ogg' : $mediaExt }}">
                     Your browser does not support the video tag.
                 </video>
             @else
                 <img src="{{ asset('storage/' . $studentProject->media) }}" alt="{{ $studentProject->student->name }}'s Project Media" class="w-full h-full object-cover">
             @endif
-            
-            {{-- @if($studentProject->project_url)
-                <div class="absolute bottom-6 left-6 right-6">
-                    <a href="{{ $studentProject->project_url }}" target="_blank" class="block w-full bg-brand-pink hover:bg-brand-pink-hover transition-colors rounded-xl p-4 shadow-md group">
-                        <p class="text-white/90 text-sm font-semibold mb-1">Project Link</p>
-                        <p class="text-white text-xs truncate group-hover:underline">
-                            {{ $studentProject->project_url }}
-                        </p>
+
+            @if($studentProject->project_url)
+                <div class="absolute bottom-6 left-6 z-20">
+                    <a href="{{ $studentProject->project_url }}" target="_blank" class="group flex items-center bg-brand-pink text-white rounded-full shadow-lg h-12 transition-all duration-300 ease-in-out overflow-hidden hover:pr-6">
+                        
+                        <div class="w-12 h-12 flex shrink-0 items-center justify-center">
+                            <svg class="w-5 h-5 text-white transform -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                        </div>
+
+                        <div class="flex flex-col justify-center max-w-0 group-hover:max-w-[200px] transition-all duration-300 ease-in-out opacity-0 group-hover:opacity-100 whitespace-nowrap overflow-hidden">
+                            <span class="text-xs font-bold leading-tight mb-0.5">Link Project</span>
+                            <span class="text-[10px] font-medium opacity-90 truncate w-full">{{ str_replace(['http://', 'https://'], '', $studentProject->project_url) }}</span>
+                        </div>
                     </a>
                 </div>
-            @endif --}}
+            @endif
         </div>
 
         <div class="lg:w-1/2 p-9 flex flex-col justify-center">
@@ -90,19 +95,6 @@
             <p class="text-black text-sm font-medium leading-relaxed">
                 {{ $studentProject->description }}
             </p>
-
-            @if($studentProject->project_url)
-                <div class="mt-5">
-                    <a href="{{ $studentProject->project_url }}" target="_blank" class="max-w-full inline-flex items-center gap-3 bg-brand-pink hover:bg-brand-pink-hover transition-colors rounded-xl px-3 py-2 group">
-                        <svg class="w-6 h-6 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                        <div class="text-left flex-1 min-w-0">
-                            <p class="text-white/90 text-xs font-semibold mb-0.5">View Live Project</p>
-                            <p class="truncate text-white text-[10px] font-bold group-hover:underline">{{ str_replace(['http://', 'https://'], '', $studentProject->project_url) }}
-                            </p>
-                        </div>
-                    </a>
-                </div>
-            @endif
         </div>
     </div>
 
@@ -194,7 +186,7 @@
 
                         <div>
                             <label class="block text-sm font-semibold mb-1 text-gray-800">Date</label>
-                            <input type="date" name="date" x-model="studentProjectData.date" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('date') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror">
+                            <input type="date" name="date" x-model="studentProjectData.date" class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('date') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror">
                             @error('date')
                                 <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                             @enderror

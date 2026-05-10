@@ -99,9 +99,38 @@
                         <div class="mb-4">
                             <h4 class="text-sm font-bold text-brand-pink mb-1">Modules</h4>
                             <div class="flex flex-wrap gap-2">
-                                <span class="inline-block px-4 py-1.5 bg-brand-light-blue-active/75 text-brand-blue text-xs font-semibold rounded-full">
-                                    To Be Development
-                                </span>
+                                @php
+                                    $uniqueModules = $student->studentProjects->map->module->unique('id')->filter();
+                                @endphp
+
+                                @forelse($uniqueModules->take(3) as $module)
+                                    @php
+                                        $courseName = strtolower($module->courseType->name ?? '');
+                                        
+                                        if (str_contains($courseName, 'junior')) {
+                                            $colorClass = 'bg-brand-light-blue-active/75 text-brand-blue';
+                                        } elseif (str_contains($courseName, 'little')) {
+                                            $colorClass = 'bg-brand-light-pink-active/75 text-brand-pink';
+                                        } elseif (str_contains($courseName, 'robo')) {
+                                            $colorClass = 'bg-brand-light-purple-active/75 text-brand-purple';
+                                        } else {
+                                            $colorClass = 'bg-gray-100 text-gray-700';
+                                        }
+                                    @endphp
+                                    <span class="inline-block px-4 py-1.5 {{ $colorClass }} text-xs font-semibold rounded-full truncate max-w-40" title="{{ $module->name }}">
+                                        {{ $module->name }}
+                                    </span>
+                                @empty
+                                    <span class="inline-block px-4 py-1.5 bg-gray-50 border border-gray-200 text-gray-500 text-xs font-semibold rounded-full">
+                                        No module yet
+                                    </span>
+                                @endforelse
+
+                                @if($uniqueModules->count() > 3)
+                                    <span class="inline-block px-2 py-1.5 bg-brand-pink/10 text-brand-pink border border-brand-pink/15 text-xs font-bold rounded-full shadow-sm">
+                                        +{{ $uniqueModules->count() - 3 }}
+                                    </span>
+                                @endif
                             </div>
                         </div>
 
@@ -112,11 +141,16 @@
                             </div>
                             <div class="text-right">
                                 <p class="text-xs font-medium text-gray-500 mb-1">Review</p>
-                                <p class="text-sm font-bold text-brand-pink">0 review</p>
+                                @php
+                                    $totalReviews = $student->studentProjects->filter(function($project) {
+                                        return $project->projectReview !== null;
+                                    })->count();
+                                @endphp
+                                <p class="text-sm font-bold text-brand-pink">{{ $totalReviews }} review</p>
                             </div>
                         </div>
 
-                        <div class="text-center">
+                        <div class="text-center mt-auto">
                             <a href="/students/{{ $student->id }}" class="block text-sm font-medium h-full w-full text-gray-700 hover:text-brand-pink hover:bg-brand-light-pink-hover rounded-lg py-2 transition-colors">
                                 View Details
                             </a>

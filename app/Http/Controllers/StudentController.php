@@ -14,7 +14,8 @@ class StudentController extends Controller
      */
     public function index (Request $request)
     {
-        $query = Student::with('user')->latest('updated_at');
+        $query = Student::with(['user', 'studentProjects.module.courseType', 'studentProjects.projectReview'])
+                        ->latest('updated_at');
 
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
@@ -40,6 +41,7 @@ class StudentController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = 1;
+        //Auth::id()
 
         Student::create($data);
 

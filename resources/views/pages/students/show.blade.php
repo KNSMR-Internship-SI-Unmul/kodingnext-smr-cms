@@ -63,9 +63,33 @@
                 <div class="mb-6 min-h-[150px]">
                     <h4 class="text-sm font-bold text-brand-pink mb-2">Modules</h4>
                     <div class="flex flex-wrap gap-2 mb-1.5">
-                        <span class="inline-block px-4 py-1.5 bg-brand-light-blue-active/75 text-brand-blue text-xs font-semibold rounded-full">
-                            To Be Development
-                        </span>
+                        @php
+                            $uniqueModules = $student->studentProjects->map->module->unique('id')->filter();
+                        @endphp
+
+                        @forelse($uniqueModules as $module)
+                            @php
+                                $courseName = strtolower($module->courseType->name ?? '');
+                                
+                                if (str_contains($courseName, 'junior')) {
+                                    $colorClass = 'bg-brand-light-blue-active/75 text-brand-blue';
+                                } elseif (str_contains($courseName, 'little')) {
+                                    $colorClass = 'bg-brand-light-pink-active/75 text-brand-pink';
+                                } elseif (str_contains($courseName, 'robo')) {
+                                    $colorClass = 'bg-brand-light-purple-active/75 text-brand-purple';
+                                } else {
+                                    $colorClass = 'bg-gray-100 text-gray-700';
+                                }
+                            @endphp
+
+                            <span class="inline-block px-4 py-1.5 {{ $colorClass }} text-xs font-semibold rounded-full">
+                                {{ $module->name }}
+                            </span>
+                        @empty
+                            <span class="inline-block px-4 py-1.5 bg-gray-100 text-gray-500 text-xs font-semibold rounded-full">
+                                No module yet
+                            </span>
+                        @endforelse
                     </div>
                 </div>
 
@@ -112,23 +136,34 @@
                     <h3 class="text-lg font-semibold text-brand-pink">Student Projects</h3>
                 </div>
                 
-                {{-- <div class="flex flex-wrap gap-4 w-full">
-                    <span class="flex-1 bg-brand-light-blue-active/75 text-brand-blue font-semibold px-8 py-3 rounded-lg text-sm text-center">
-                        Anomaly Website
-                    </span>
-                    <span class="flex-1 bg-brand-light-blue-active/75 text-brand-blue font-semibold px-8 py-3 rounded-lg text-sm text-center">
-                        Calculator
-                    </span>
-                    <span class="flex-1 bg-brand-light-pink-active/75 text-brand-pink font-semibold px-8 py-3 rounded-lg text-sm text-center">
-                        Flapping Bird
-                    </span>
-                </div> --}}
-
-                {{-- empty state --}}
-                <div class="bg-gray-100 rounded-xl p-4 flex items-center gap-3 border border-gray-200">
-                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                    <span class="text-gray-500 font-bold text-sm">No projects yet</span>
-                </div>
+                @if($student->studentProjects->isNotEmpty())
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+                        @foreach($student->studentProjects as $project)
+                            @php
+                                $courseName = strtolower($project->module->courseType->name ?? '');
+                                
+                                if (str_contains($courseName, 'junior')) {
+                                    $bgClass = 'bg-brand-light-blue-active text-brand-blue';
+                                } elseif (str_contains($courseName, 'little')) {
+                                    $bgClass = 'bg-brand-light-pink-active text-brand-pink';
+                                } elseif (str_contains($courseName, 'robo')) {
+                                    $bgClass = 'bg-brand-light-purple-active text-brand-purple'; 
+                                } else {
+                                    $bgClass = 'bg-gray-100 text-gray-700 hover:bg-gray-500 hover:text-white';
+                                }
+                            @endphp
+                            <a href="/student-projects/{{ $project->id }}" class="flex-1 {{ $bgClass }} transition-transform hover:scale-105 font-semibold px-6 py-3.5 rounded-xl text-sm text-center truncate" title="{{ $project->title }}">
+                                {{ $project->title }}
+                            </a>
+                        @endforeach
+                    </div>
+                @else
+                    {{-- empty state --}}
+                    <div class="bg-gray-100 rounded-xl p-6 flex flex-col items-center justify-center gap-3 border border-dashed border-gray-200">
+                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        <span class="text-gray-500 font-bold text-sm">No project yet</span>
+                    </div>
+                @endif
 
                 <div class="flex items-center gap-3 mb-3 mt-8">
                     <svg class="w-5 h-5 text-brand-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>

@@ -337,15 +337,15 @@
 
     {{-- detail modal --}}
     <div x-show="showDetailModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
-        <div @click.away="showDetailModal = false" class="bg-white rounded-lg p-8 md:p-10 w-full max-w-3xl shadow-2xl relative mx-4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+        <div @click.away="showDetailModal = false" class="bg-white rounded-lg p-10 md:p-10 w-full max-w-3xl shadow-2xl relative mx-4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
             
             <button @click="showDetailModal = false" class="absolute top-6 right-6 text-gray-800 hover:text-gray-500 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
-            <h2 class="text-3xl font-semibold text-brand-pink mb-8">Promotion Details</h2>
+            <h2 class="text-3xl font-extrabold text-brand-pink mb-6">Promotion Details</h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-8 md:gap-12">
+            <div class="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-8 md:gap-10">
                 <div class="w-full rounded-lg border border-gray-200 overflow-hidden bg-gray-50 aspect-[3/4] flex items-center justify-center relative">
                     <template x-if="promotionData.image">
                         <img :src="'/storage/' + promotionData.image" class="w-full h-full object-cover">

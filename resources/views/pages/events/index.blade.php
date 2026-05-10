@@ -327,37 +327,40 @@
     </div>
 
     {{-- event view modal --}}
-    <div x-show="showDetailModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
-        <div @click.away="showDetailModal = false" class="bg-white rounded-lg p-8 md:p-10 w-full max-w-3xl shadow-2xl relative mx-4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+    <div x-show="showDetailModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm" x-transition.opacity>
+        <div @click.away="showDetailModal = false" class="bg-white rounded-lg p-10 w-full max-w-4xl shadow-2xl relative mx-4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
             
             <button @click="showDetailModal = false" class="absolute top-6 right-6 text-gray-800 hover:text-gray-500 transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
-            <h2 class="text-3xl font-semibold text-brand-pink mb-8">Event Details</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 mt-4">
+                
+                <div class="flex flex-col">
+                    <h2 class="text-3xl font-extrabold text-brand-pink mb-6">Event Details</h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-8 md:gap-12">
-                <div class="w-full rounded-lg border border-gray-200 overflow-hidden bg-gray-50 aspect-[3/4] flex items-center justify-center relative">
-                    <template x-if="eventData.image">
-                        <img :src="'/storage/' + eventData.image" class="w-full h-full object-cover">
-                    </template>
-                    <template x-if="!eventData.image">
-                        <div class="w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjZTVlN2ViIi8+PHJlY3QgeD0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2Y5ZmFmYiIvPjxyZWN0IHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNmOWZhZmIiLz48cmVjdCB4PSIxMCIgeT0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2U1ZTdlYiIvPjwvc3ZnPg==')] opacity-50"></div>
-                    </template>
-                </div>
+                    <div class="w-full rounded-lg border border-gray-200 overflow-hidden bg-gray-50 aspect-video flex items-center justify-center relative mb-6">
+                        <template x-if="eventData.image">
+                            <img :src="'/storage/' + eventData.image" class="w-full h-full object-cover">
+                        </template>
+                        <template x-if="!eventData.image">
+                            <div class="w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjZTVlN2ViIi8+PHJlY3QgeD0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2Y5ZmFmYiIvPjxyZWN0IHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNmOWZhZmIiLz48cmVjdCB4PSIxMCIgeT0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2U1ZTdlYiIvPjwvc3ZnPg==')] opacity-50"></div>
+                        </template>
+                    </div>
 
-                <div class="flex flex-col pt-2">
-                    <div class="flex items-center gap-3 mb-4 text-brand-pink">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="flex items-center gap-3 mb-2 text-brand-pink">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             <text x="12" y="16" text-anchor="middle" font-size="6" font-family="sans-serif" font-weight="medium" fill="currentColor">11</text>
                         </svg>
-                        <span class="text-lg font-medium" x-text="eventData.formatted_event_date"></span>
+                        <span class="text-xl font-medium" x-text="eventData.formatted_event_date"></span>
                     </div>
 
-                    <h3 class="text-2xl font-medium text-brand-pink mb-5" x-text="eventData.name"></h3>
+                    <h3 class="text-2xl font-medium text-brand-pink" x-text="eventData.name"></h3>
+                </div>
 
-                    <p class="text-gray-800 text-sm leading-relaxed flex-1" x-text="eventData.description"></p>
+                <div class="flex flex-col pt-16">
+                    <p class="text-gray-800 text-sm leading-relaxed font-normal" x-text="eventData.description"></p>
                 </div>
             </div>
         </div>

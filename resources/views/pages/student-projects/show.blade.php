@@ -78,7 +78,7 @@
                 <div class="flex items-center gap-2 text-brand-pink">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     <span class="font-semibold text-md">
-                        {{ $studentProject->date->format('d F Y') }}
+                        {{ $studentProject->date?->format('d/m/Y') ?? '-' }}
                     </span>
                 </div>
                 
@@ -130,7 +130,7 @@
                 </div>
             </div>
 
-            <p class="text-black text-lg font-medium leading-relaxed">
+            <p class="text-black text-sm font-medium leading-relaxed">
                 {{ $studentProject->projectReview->review_content }}
             </p>
         </div>
@@ -209,7 +209,7 @@
                         </div>
                     </div>
                     
-                    <div class="flex flex-col h-full" x-data="{ fileName: null }">
+                    <div class="flex flex-col h-full">
                         <label class="block text-xl font-semibold text-gray-800 mb-3">Student Project Media</label>
                         
                         <div class="flex-1 min-h-[250px] flex flex-col items-center justify-center bg-brand-light-pink rounded-lg cursor-pointer transition relative hover:opacity-90">
@@ -217,7 +217,7 @@
                                 name="media" 
                                 accept="image/*,video/mp4,video/webm"
                                 :required="!editModeProject"
-                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                 @change="
                                     const file = $event.target.files[0];
                                     if (file) {
@@ -245,9 +245,7 @@
                                 <div class="flex flex-col items-center pointer-events-none text-center px-4 w-full h-full py-4 justify-center">
                                     <template x-if="isVideo(fileName || mediaPreview)">
                                         <div class="w-24 h-24 rounded-full overflow-hidden mb-3 shadow-md border-4 border-brand-pink bg-black">
-                                            <video autoplay loop muted playsinline class="w-full h-full object-cover">
-                                                <source :src="mediaPreview">
-                                            </video>
+                                            <video :src="mediaPreview" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
                                         </div>
                                     </template>
 
@@ -275,7 +273,7 @@
                         </div>
 
                         <div class="flex gap-4 mt-8">
-                            <button type="button" @click="closeEditModal(); fileName = null" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition">Cancel</button>
+                            <button type="button" @click="closeEditModal()" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition">Cancel</button>
                             <button type="submit" class="flex-1 py-3 bg-brand-pink text-white hover:bg-brand-pink-hover font-semibold rounded-lg transition">Save</button>
                         </div>
                     </div>

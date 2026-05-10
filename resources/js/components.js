@@ -449,6 +449,7 @@ export const studentProjectManager = (config) => ({
     actionUrlProject: config.oldStudentProjectId ? `/student-projects/${config.oldStudentProjectId}` : config.storeRoute,
     actionUrlReview: config.oldReviewId ? `/project-reviews/${config.oldReviewId}` : config.storeReviewRoute,
     mediaPreview: config.oldMedia ? `/storage/${config.oldMedia}` : null,
+    fileName: null,
     mediaUrl: config.mediaUrl,
 
     studentProjectData: {
@@ -496,6 +497,7 @@ export const studentProjectManager = (config) => ({
         this.studentProjectData = { ...studentProject, date: date, media: studentProject.media };
         this.actionUrlProject = `/student-projects/${studentProject.id}`;
         this.mediaPreview = studentProject.media ? `/storage/${studentProject.media}` : null;
+        this.fileName = null;
         this.showStudentProjectModal = true;
     },
 
@@ -505,6 +507,7 @@ export const studentProjectManager = (config) => ({
         } else {
             this.showStudentProjectModal = false;
             this.mediaPreview = null;
+            this.fileName = null;
         }
     },  
 
@@ -513,6 +516,7 @@ export const studentProjectManager = (config) => ({
         this.actionUrlProject = this.storeRoute;
         this.studentProjectData = { id: '', title: '', description: '', date: '', media: '', project_url: '', is_published: false, module_id: '', student_id: '' };
         this.mediaPreview = null;
+        this.fileName = null;
         this.showStudentProjectModal = true;
     },
 

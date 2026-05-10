@@ -125,7 +125,7 @@
                             <td class="py-3 px-4 text-sm font-bold text-gray-800">{{ $studentProject->title }}</td>
                             <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center">{{ $studentProject->student->name }}</td>
                             <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center">{{ $studentProject->module->name }}</td>
-                            <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center">{{ $studentProject->date->format('d/m/Y') }}</td>
+                            <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center">{{ $studentProject->date?->format('d/m/Y') ?? '-' }}</td>
                             <td class="py-3 px-4 text-center whitespace-nowrap">
                                 <div class="flex items-center justify-center gap-3">
                                     @if($studentProject->projectReview)
@@ -286,7 +286,7 @@
 
                         <div>
                             <label class="block text-sm font-semibold mb-1 text-gray-800">Date</label>
-                            <input type="date" name="date" x-model="studentProjectData.date" required class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('date') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror">
+                            <input type="date" name="date" x-model="studentProjectData.date" class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition @error('date') border-red-500 focus:border-gray-300 @else border-gray-300 @enderror">
                             @error('date')
                                 <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                             @enderror
@@ -301,7 +301,7 @@
                         </div>
                     </div>
                     
-                    <div class="flex flex-col h-full" x-data="{ fileName: null }">
+                    <div class="flex flex-col h-full">
                         <label class="block text-xl font-semibold text-gray-800 mb-3">Student Project Media</label>
                         
                         <div class="flex-1 min-h-[250px] flex flex-col items-center justify-center bg-brand-light-pink rounded-lg cursor-pointer transition relative hover:opacity-90">
@@ -309,7 +309,7 @@
                                 name="media" 
                                 accept="image/*,video/mp4,video/webm"
                                 :required="!editModeProject"
-                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                 @change="
                                     const file = $event.target.files[0];
                                     if (file) {
@@ -337,9 +337,7 @@
                                 <div class="flex flex-col items-center pointer-events-none text-center px-4 w-full h-full py-4 justify-center">
                                     <template x-if="isVideo(fileName || mediaPreview)">
                                         <div class="w-24 h-24 rounded-full overflow-hidden mb-3 shadow-md border-4 border-brand-pink bg-black">
-                                            <video autoplay loop muted playsinline class="w-full h-full object-cover">
-                                                <source :src="mediaPreview">
-                                            </video>
+                                            <video :src="mediaPreview" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
                                         </div>
                                     </template>
 
@@ -367,7 +365,7 @@
                         </div>
 
                         <div class="flex gap-4 mt-8">
-                            <button type="button" @click="closeEditModal(); fileName = null" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition">Cancel</button>
+                            <button type="button" @click="closeEditModal()" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition">Cancel</button>
                             <button type="submit" class="flex-1 py-3 bg-brand-pink text-white hover:bg-brand-pink-hover font-semibold rounded-lg transition">Save</button>
                         </div>
                     </div>

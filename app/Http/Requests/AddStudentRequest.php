@@ -23,10 +23,10 @@ class AddStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'school' => 'required|string|max:255',
-            'phone_number' => 'nullable|string|min:11|max:13',
-            'address' => 'nullable|string',
+            'name'          => 'required|string|max:255',
+            'school'        => 'required|string|max:255',
+            'phone_number'  => 'nullable|string|min:11|max:13',
+            'address'       => 'nullable|string',
         ];
     }
 }

@@ -23,11 +23,11 @@ class UpdatePromotionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
+            'title'         => 'required|string|max:255',
+            'description'   => 'required|string',
+            'start_date'    => 'required|date',
+            'end_date'      => 'required|date|after_or_equal:start_date',
+            'image'         => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
         ];
     }
 }

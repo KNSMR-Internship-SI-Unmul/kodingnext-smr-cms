@@ -23,10 +23,10 @@ class AddEventRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'event_date' => 'required|date|before_or_equal:today',
+            'name'        => 'required|string|max:255',
+            'event_date'  => 'required|date|before_or_equal:today',
             'description' => 'required|string',
-            'image' => 'required|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
+            'image'       => 'required|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
         ];
     }
 }

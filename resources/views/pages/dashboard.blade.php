@@ -12,7 +12,7 @@
             </div>
             <div class="text-white">
                 <p class="text-sm font-medium text-white/90 mb-0.5">Employees</p>
-                <p class="text-3xl font-extrabold leading-none">9</p>
+                <p class="text-3xl font-extrabold leading-none">{{ $totalEmployees }}</p>
             </div>
         </div>
 
@@ -22,7 +22,7 @@
             </div>
             <div class="text-white">
                 <p class="text-sm font-medium text-white/90 mb-0.5">Promotions</p>
-                <p class="text-3xl font-extrabold leading-none">3</p>
+                <p class="text-3xl font-extrabold leading-none">{{ $totalPromotions }}</p>
             </div>
         </div>
 
@@ -35,7 +35,7 @@
             </div>
             <div class="text-white">
                 <p class="text-sm font-medium text-white/90 mb-0.5">Events</p>
-                <p class="text-3xl font-extrabold leading-none">5</p>
+                <p class="text-3xl font-extrabold leading-none">{{ $totalEvents }}</p>
             </div>
         </div>
 
@@ -45,7 +45,7 @@
             </div>
             <div class="text-white">
                 <p class="text-sm font-medium text-white/90 mb-0.5">Student Projects</p>
-                <p class="text-3xl font-extrabold leading-none">1</p>
+                <p class="text-3xl font-extrabold leading-none">{{ $totalStudentProjects }}</p>
             </div>
         </div>
         
@@ -61,54 +61,52 @@
     </div>
 
     <div class="flex flex-col gap-5">
-        
-        {{-- course little koders --}}
-        <div class="bg-brand-light-pink rounded-xl p-4 flex flex-col sm:flex-row items-center gap-6 relative pr-16 border border-brand-pink/10">
-            <div class="w-32 h-32 bg-white rounded-xl shadow-sm flex-shrink-0 flex items-center justify-center overflow-hidden">
-                <img src="{{ asset('images/course-littlekoder.avif') }}" class="w-full h-full object-cover">
-            </div>
-            <div class="flex-1 py-2">
-                <h3 class="text-2xl font-bold text-brand-pink mb-1.5">Little Koders</h3>
-                <p class="text-sm text-brand-pink leading-[1.7] max-w-4xl">
-                    Kursus coding ini dirancang untuk mengajarkan siswa sejak usia 4-8 tentang pemrograman dan meningkatkan pemikiran logis serta keterampilan matematika mereka.
-                </p>
-            </div>
-            <button class="absolute bottom-4 right-4 w-9 h-9 bg-white rounded-full flex items-center justify-center text-gray-700 shadow-sm hover:text-brand-pink hover:bg-gray-50 transition-all border border-gray-100">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-            </button>
-        </div>
+        @forelse($courseTypes as $courseType)
+            @php
+                $courseName = strtolower($courseType->name);
+                
+                if (str_contains($courseName, 'junior')) {
+                    $colorClass = 'brand-blue';
+                    $bgClass = 'brand-light-blue';
+                    $defaultImage = 'images/course-juniorkoder.avif';
+                } elseif (str_contains($courseName, 'little')) {
+                    $colorClass = 'brand-pink';
+                    $bgClass = 'brand-light-pink';
+                    $defaultImage = 'images/course-littlekoder.avif';
+                } elseif (str_contains($courseName, 'robo')) {
+                    $colorClass = 'brand-purple/75'; 
+                    $bgClass = 'brand-light-purple'; 
+                    $defaultImage = 'images/course-robonext.avif';
+                } else {
+                    $colorClass = 'gray-600'; 
+                    $bgClass = 'gray-100';
+                }
+                $imagePath = $courseType->image ? asset('storage/' . $courseType->image) : asset($defaultImage);
+                $description = $courseType->description ?? 'Deskripsi untuk ' . $courseType->name . ' belum tersedia.';
+            @endphp
 
-        {{-- course junior koders --}}
-        <div class="bg-brand-light-blue rounded-xl p-4 flex flex-col sm:flex-row items-center gap-6 relative pr-16 border border-brand-blue/10">
-            <div class="w-32 h-32 bg-white rounded-xl shadow-sm flex-shrink-0 flex items-center justify-center overflow-hidden">
-                <img src="{{ asset('images/course-juniorkoder.avif') }}" class="w-full h-full object-cover">
+            <div class="bg-{{ $bgClass }} rounded-xl p-4 flex flex-col sm:flex-row items-center gap-6 relative pr-16 border border-{{ $colorClass }}/10">
+                <div class="w-32 h-32 bg-white rounded-xl shadow-sm flex-shrink-0 flex items-center justify-center overflow-hidden">
+                    <img src="{{ $imagePath }}" class="w-full h-full object-cover" alt="{{ $courseType->name }}">
+                </div>
+                <div class="flex-1 py-2">
+                    <h3 class="text-2xl font-bold text-{{ $colorClass }} mb-1.5">
+                        {{ $courseType->name }}
+                    </h3>
+                    <p class="text-sm text-{{ $colorClass }} leading-[1.7] max-w-4xl">
+                        {{ $description }}
+                    </p>
+                </div>
+                <a href="/dashboard/courses" class="absolute bottom-4 right-4 w-9 h-9 bg-white rounded-full flex items-center justify-center text-gray-700 shadow-sm hover:text-{{ $colorClass }} hover:bg-gray-50 transition-all border border-gray-100">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                </a>
             </div>
-            <div class="flex-1 py-2">
-                <h3 class="text-2xl font-bold text-brand-blue mb-1.5">Junior Koders</h3>
-                <p class="text-sm text-brand-blue leading-[1.7] max-w-4xl">
-                    Kursus coding ini diperuntukkan bagi siswa berusia 8 hingga 16 tahun. Program ini menawarkan kursus pemula dalam pemrograman blok, seperti Game 2D dan Pengembangan Aplikasi Mobile, dan kursus lanjutan dalam pemrograman berbasis teks, seperti Python, JavaScript, dan Smart Home IoT.
-                </p>
-            </div>
-            <button class="absolute bottom-4 right-4 w-9 h-9 bg-white rounded-full flex items-center justify-center text-gray-700 shadow-sm hover:text-brand-blue hover:bg-gray-50 transition-all border border-gray-100">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-            </button>
-        </div>
 
-        <div class="bg-brand-light-purple rounded-xl p-4 flex flex-col sm:flex-row items-center gap-6 relative pr-16 border border-brand-purple/10">
-            <div class="w-32 h-32 bg-white rounded-xl shadow-sm flex-shrink-0 flex items-center justify-center overflow-hidden">
-                <img src="{{ asset('images/course-robonext.avif') }}" class="w-full h-full object-cover">
+        @empty
+            <div class="bg-gray-50 rounded-xl p-8 flex flex-col items-center justify-center gap-3 border border-dashed border-gray-200">
+                <span class="text-gray-500 font-bold text-sm">No course types available.</span>
             </div>
-            <div class="flex-1 py-2">
-                <h3 class="text-2xl font-bold text-brand-purple/75 mb-1.5">RoboNext</h3>
-                <p class="text-sm text-brand-purple/75 leading-[1.7] max-w-4xl">
-                    Kursus  robotika dari Koding Next ini dirancang untuk memperkenalkan teknologi melalui pengalaman langsung. Siswa tidak hanya belajar coding dan merakit robot, tetapi juga memahami cara teknologi bekerja untuk menyelesaikan masalah dunia nyata.
-                </p>
-            </div>
-            <button class="absolute bottom-4 right-4 w-9 h-9 bg-white rounded-full flex items-center justify-center text-gray-700 shadow-sm hover:text-brand-purple/75 hover:bg-gray-50 transition-all">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-            </button>
-        </div>
-
+        @endforelse
     </div>
 
 </div>

@@ -11,15 +11,14 @@ use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\StudentProjectController;
 use App\Http\Controllers\ProjectReviewController;
 use App\Http\Controllers\GeneralTestimonialController;
+use App\Http\Controllers\DashboardController;
 
 
 Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/dashboard', function () {
-    return view('pages.dashboard');
-});
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
 Route::resource('/dashboard/courses', CourseTypeController::class);
 

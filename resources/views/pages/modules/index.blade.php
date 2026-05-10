@@ -16,6 +16,7 @@
         oldCourseTypeId: @js(old('course_type_id', '')),
         oldImage: @js(old('existing_image', ''))
     })" 
+    class="max-w-7xl mx-auto"
 >
     <form method="GET" action="{{ route('modules.index') }}" class="flex flex-wrap items-end gap-4 mb-9">
         <div class="flex-[2] min-w-[250px]">

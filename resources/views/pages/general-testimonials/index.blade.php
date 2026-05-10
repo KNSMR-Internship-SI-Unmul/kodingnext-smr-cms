@@ -14,6 +14,7 @@
         oldReviewContent: @js(old('review_content', '')),
         oldIsPublished: @js(old('is_published', false)),
     })"
+    class="max-w-7xl mx-auto"
 >
     <div class="flex justify-between items-end mb-8">
         <div>

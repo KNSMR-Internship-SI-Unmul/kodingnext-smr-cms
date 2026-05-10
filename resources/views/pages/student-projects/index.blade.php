@@ -26,6 +26,7 @@
         oldReviewContent: @js(old('review_content', '')),
         oldReviewIsApproved: @js(old('is_approved', false))
     })"
+    class="max-w-7xl mx-auto"
 >
 
     <form method="GET" action="{{ route('student-projects.index') }}" class="flex flex-wrap items-end gap-4 mb-8 w-full">
@@ -516,5 +517,5 @@
         </div>
     @endif
 
-</div>
+</class=>
 @endsection

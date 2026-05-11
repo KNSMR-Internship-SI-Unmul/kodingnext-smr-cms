@@ -141,8 +141,10 @@
                     <select 
                         class="border border-gray-200 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-pink bg-white"
                         @change="
-                            document.getElementById('per_page_input').value = $event.target.value;
-                            document.getElementById('per_page_input').closest('form').submit();
+                            const url = new URL(window.location.href);
+                            url.searchParams.set('per_page', $event.target.value);
+                            url.searchParams.delete('page');
+                            window.location.href = url.href;
                         "
                     >
                         <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>

@@ -112,7 +112,7 @@
 
                         <div>
                             <label class="block text-sm font-semibold mb-1 text-gray-800">Description</label>
-                            <textarea type="text" name="description" rows="9" x-model="courseTypeData.description" class="w-full px-4 py-2.5 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition"></textarea>
+                            <textarea type="text" name="description" rows="9" x-model="courseTypeData.description" required class="w-full px-4 py-2.5 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-pink transition"></textarea>
                             @error('description')
                                 <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                             @enderror

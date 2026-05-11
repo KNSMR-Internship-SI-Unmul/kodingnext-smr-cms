@@ -17,8 +17,10 @@ class StudentProjectController extends Controller
         $query = StudentProject::with(['module', 'student'])
                     ->where('is_published', true);
 
+        $isSearching = $request->filled('search');
+
         // search berdasarkan nama student atau title
-        if ($request->filled('search')) {
+        if ($isSearching) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('title', 'like', '%' . $search . '%')
@@ -38,6 +40,11 @@ class StudentProjectController extends Controller
             $query->whereHas('module', function($moduleQuery) use ($request) {
                 $moduleQuery->where('age_range', $request->age_range);
             });
+            
+            // jika sedang load per-usia dan bukan search, batasi 3 data
+            if (!$isSearching) {
+                $query->limit(3);
+            }
         }
 
         // filter berdasarkan course_type_id (relasi ke tabel module)
@@ -47,7 +54,7 @@ class StudentProjectController extends Controller
         //     });
         // }
 
-        $studentProjects = $query->latest('date')->get();
+        $studentProjects = $query->latest('updated_at')->get();
 
         return response()->json([
             'success' => true,

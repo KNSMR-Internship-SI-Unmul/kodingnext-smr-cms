@@ -1,4 +1,4 @@
-<aside class="max-w-64 bg-white border-r border-gray-100 flex flex-col h-screen shadow-sm z-10 relative transition-all duration-300">
+<aside x-data="{ showLogoutModal: false}" class="max-w-64 bg-white border-r border-gray-100 flex flex-col h-screen shadow-sm z-10 relative transition-all duration-300">
 
     <div class="px-6 py-8 flex justify-center">
         <a href="/dashboard">
@@ -79,28 +79,56 @@
             <p class="px-4 text-[11px] font-semibold text-gray-400 tracking-wider uppercase">System</p>
         </div>
 
-        <form method="POST" action="{{ route('logout') }}" class="w-full">
-            @csrf
-            <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-500 rounded-full hover:bg-red-50 hover:text-red-600 transition-all group">
-                <svg class="w-5 h-5 text-red-400 group-hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                Logout
-            </button>
-        </form>
+        <button type="button" @click="showLogoutModal = true" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-500 rounded-full hover:bg-red-50 hover:text-red-600 transition-all group">
+            <svg class="w-5 h-5 text-red-400 group-hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+            Logout
+        </button>
     </nav>
 
     <div class="p-4 border-t border-gray-100 bg-white">
-        <div class="flex items-center gap-3 w-full cursor-pointer hover:bg-gray-50 p-2 rounded-xl transition-colors">
+        <a href="/employees/{{ auth()->id() }}" class="flex items-center gap-3 w-full cursor-pointer hover:bg-gray-50 p-2 rounded-xl transition-colors">
             
-            <div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden border border-gray-200 flex-shrink-0 flex items-center justify-center">
-                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-            </div>
+            <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&color=3D7D9E&background=EEF6FB' }}" 
+                 alt="{{ auth()->user()->name }}'s Profile Picture" 
+                 class="w-10 h-10 rounded-full object-cover border border-gray-200 flex-shrink-0">
             
             <div class="flex-1 overflow-hidden">
-                <p class="text-[11px] text-gray-400 font-medium truncate">Student Advisor</p>
-                <p class="text-sm font-bold text-gray-900 truncate tracking-tight">Rinda Lailatul Arofah, S.Kom.</p>
+                <p class="text-[11px] text-gray-400 font-medium truncate">
+                    {{ auth()->user()->role->name ?? 'Employee' }}
+                </p>
+                
+                <p class="text-sm font-bold text-gray-900 truncate tracking-tight group-hover:text-brand-pink transition-colors">
+                    {{ auth()->user()->name }}
+                </p>
             </div>
             
             <svg class="w-4 h-4 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-        </div>
+        </a>
     </div>
+
+    {{-- logout confirm modal --}}
+    <template x-teleport="body">
+        <div x-show="showLogoutModal" style="display: none;" class="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-900/40 backdrop-blur-sm" x-transition.opacity>
+            <div @click.away="showLogoutModal = false" class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl relative overflow-hidden text-center" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
+                
+                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500 shadow-sm">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"></path></svg>
+                </div>
+                
+                <h3 class="text-xl font-extrabold text-gray-900 mb-2">Logout Account?</h3>
+                <p class="text-sm text-gray-500 mb-6 font-medium">Are you sure want to logout your account?</p>
+                
+                <div class="flex gap-3">
+                    <button type="button" @click="showLogoutModal = false" class="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition">Cancel</button>
+                    
+                    <form action="{{ route('logout') }}" method="POST" class="flex-1">
+                        @csrf
+                        <button type="submit" class="w-full py-2.5 bg-[#EE5B5B] hover:bg-red-600 text-white font-semibold rounded-lg transition">Yes, logout</button>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </template>
+
 </aside>

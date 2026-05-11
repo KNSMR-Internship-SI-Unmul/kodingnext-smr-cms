@@ -6,17 +6,16 @@
         </h2>
     </div>
 
-    <div class="flex items-center gap-3 border border-brand-pink rounded-lg px-3 py-1 cursor-pointer hover:bg-gray-100 transition-colors shadow-sm">
+    <a href="/employees/{{ auth()->id() }}" class="flex items-center gap-3 border border-brand-pink rounded-lg px-3 py-1 cursor-pointer hover:bg-gray-100 transition-colors shadow-sm">
         
         <div class="text-right">
-            <p class="text-xs font-semibold text-gray-900 leading-tight">Rinda Lailatul Arofah, S.Kom.</p>
-            <p class="text-[10px] font-medium text-gray-600">Student Advisor</p>
+            <p class="text-xs font-semibold text-gray-900 leading-tight">{{ auth()->user()->role->name ?? 'Employee' }}</p>
+            <p class="text-[10px] font-medium text-gray-600">{{ auth()->user()->name }}</p>
         </div>
         
-        <div class="h-8 w-8 rounded-full bg-gray-200 border border-gray-200 flex items-center justify-center overflow-hidden">
-            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-        </div>
-        
-</div>
+        <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&color=3D7D9E&background=EEF6FB' }}" 
+                 alt="{{ auth()->user()->name }}'s Profile Picture" 
+                 class="h-8 w-8 rounded-full bg-gray-200 border border-gray-200 object-cover items-center justify-center">
+    </a>
     
 </header>

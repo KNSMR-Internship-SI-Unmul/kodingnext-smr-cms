@@ -43,8 +43,9 @@ class StudentProjectController extends Controller
                 $moduleQuery->where('course_type_id', $request->course_type_id);
             });
         }
+        $perPage = $request->input('per_page', 10);
 
-        $studentProjects = $query->paginate(10)->withQueryString(); 
+        $studentProjects = $query->paginate($perPage)->withQueryString(); 
 
         return view('pages.student-projects.index', compact('studentProjects', 'modules', 'courseTypes', 'students'));
     }

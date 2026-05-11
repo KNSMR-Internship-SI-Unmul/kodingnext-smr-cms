@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('course_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description')->nullable();
-            $table->string('image')->nullable();
+            $table->text('description');
+            $table->string('image');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });

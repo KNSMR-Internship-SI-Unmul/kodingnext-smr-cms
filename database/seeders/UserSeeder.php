@@ -83,7 +83,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'Muhammad Nizar, S. Kom',
-                'email' => 'nizares234@gmai.com',
+                'email' => 'nizares234@gmail.com',
                 'password' => Hash::make('password'),
                 'profile_picture' => 'employees/Xfl5P1dtU2fUzsBFudwMX1Cab3boCByuOKTiBpmh.jpg',
                 'hired_date' => '2025-03-01',

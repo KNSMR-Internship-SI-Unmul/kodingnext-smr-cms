@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
@@ -43,6 +44,8 @@ class EmployeeController extends Controller
      */
     public function store(AddEmployeeRequest $request)
     {
+        abort_if(Auth::user()?->role_id !== 1, 403, 'You dont have access to add employee.');
+
         $data = $request->validated();
         $data['password'] = Hash::make($request->password);
         $data['user_id'] = 1;
@@ -79,7 +82,7 @@ class EmployeeController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdateEmployeeRequest $request, string $id)
-    {
+    {   
         $employee = User::findOrFail($id);
         $data = $request->validated();
 
@@ -107,6 +110,8 @@ class EmployeeController extends Controller
      */
     public function destroy(string $id)
     {
+        abort_if(Auth::user()?->role_id !== 1, 403, 'You dont have access to delete employee.');
+
         $employee = User::findOrFail($id);
 
         if ($employee->profile_picture) {

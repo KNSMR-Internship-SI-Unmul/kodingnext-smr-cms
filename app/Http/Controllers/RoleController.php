@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Http\Requests\AddRoleRequest;
@@ -32,6 +33,8 @@ class RoleController extends Controller
      */
     public function store(AddRoleRequest $request)
     {
+        abort_if(Auth::user()?->role_id !== 1, 403, 'You dont have access to add role.'); 
+
         Role::create([
             'name' => $request->name,
         ]);
@@ -59,7 +62,9 @@ class RoleController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdateRoleRequest $request, string $id)
-    {
+    {   
+        abort_if(Auth::user()?->role_id !== 1, 403, 'You dont have access to update role.'); 
+
         $role = Role::findOrFail($id);
         
         $role->update([
@@ -73,7 +78,9 @@ class RoleController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
+    {   
+        abort_if(Auth::user()?->role_id !== 1, 403, 'You dont have access to delete role.'); 
+
         $role = Role::findOrFail($id);
         $role->delete();
 

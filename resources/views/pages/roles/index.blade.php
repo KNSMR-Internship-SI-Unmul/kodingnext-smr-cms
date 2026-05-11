@@ -23,9 +23,11 @@
             <h1 class="text-3xl font-bold text-brand-pink mb-1 tracking-tight">Roles</h1>
             <p class="text-sm font-medium text-gray-500">Manage employee roles.</p>
         </div>
+        @if(auth()->user()->role_id === 1)
         <button @click="resetModal()" class="px-6 py-2.5 w-[180px] h-[42px] bg-brand-pink hover:bg-brand-pink-hover text-white font-semibold rounded-lg transition shadow-sm text-sm">
             + Add Role
         </button>
+        @endif
     </div>
 
     {{-- role table --}}
@@ -38,7 +40,9 @@
                         <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap">Role Name</th>
                         <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap text-center">Total Users</th>
                         <th class="py-3 px-4 text-sm font-bold text-brand-blue whitespace-nowrap text-center">Created At</th>
-                        <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap w-32">Action</th>
+                        @if(auth()->user()->role_id === 1)
+                            <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap w-32">Action</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -55,16 +59,19 @@
                             </td>
                             <td class="py-3 px-4 text-center font-medium text-gray-500 text-sm">{{ $role->users->count() }} User</td>
                             <td class="py-3 px-4 text-center font-medium text-gray-500 text-sm">{{ $role->created_at->format('d F Y') }}</td>
-                            <td class="py-3 px-4">
-                                <div class="flex items-center justify-center gap-3">
-                                    <button @click="openEditModal({{ json_encode($role) }})" class="text-brand-pink hover:text-brand-pink-hover transition-colors" title="Edit">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                    </button>
-                                    <button @click="openDeleteModal({{ $role->id }})" class="text-red-500 hover:text-red-600 transition-colors" title="Delete">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                    </button>
-                                </div>
-                            </td>
+                            @if(auth()->user()->role_id === 1)
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center justify-center gap-3">
+                                        <button @click="openEditModal({{ json_encode($role) }})" class="text-brand-pink hover:text-brand-pink-hover transition-colors" title="Edit">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                        </button>
+                                        
+                                        <button @click="openDeleteModal({{ $role->id }})" class="text-red-500 hover:text-red-600 transition-colors" title="Delete">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

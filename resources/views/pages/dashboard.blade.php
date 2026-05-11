@@ -109,5 +109,12 @@
         @endforelse
     </div>
 
+    {{-- toast notification --}}
+    @if(session('success'))
+        <div class="fixed top-10 right-10 z-50 flex flex-col gap-3">
+            <x-toast type="welcome" message="{{ session('success') }}" />
+        </div>
+    @endif
+
 </div>
 @endsection

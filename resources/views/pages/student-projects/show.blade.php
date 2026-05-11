@@ -127,7 +127,7 @@
             </p>
         </div>
     @else
-        <div class="mt-8 p-8 bg-gray-50 rounded-2xl border border-gray-200 text-center">
+        <div class="mt-8 p-8 bg-gray-50 rounded-2xl border border-dashed border-gray-200 text-center">
             <h3 class="text-xl font-bold text-gray-500 mb-2">No review yet</h3>
             <p class="text-sm text-gray-500 font-medium">This student project hasn't received a review.</p>
         </div>

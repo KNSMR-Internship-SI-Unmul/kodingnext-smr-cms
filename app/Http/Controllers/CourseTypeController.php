@@ -7,6 +7,7 @@ use App\Models\CourseType;
 use App\Http\Requests\AddCourseTypeRequest;
 use App\Http\Requests\UpdateCourseTypeRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class CourseTypeController extends Controller
 {
@@ -34,8 +35,7 @@ class CourseTypeController extends Controller
     public function store(AddCourseTypeRequest $request)
     {
         $data = $request->validated();
-        $data['user_id'] = 1;
-        // $data['user_id'] = auth()->id();
+        $data['user_id'] = Auth::id();
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('courses', 'public');

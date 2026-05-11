@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Http\Requests\AddStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
@@ -40,8 +41,7 @@ class StudentController extends Controller
     public function store(AddStudentRequest $request)
     {
         $data = $request->validated();
-        $data['user_id'] = 1;
-        //Auth::id()
+        $data['user_id'] = Auth::id();
 
         Student::create($data);
 

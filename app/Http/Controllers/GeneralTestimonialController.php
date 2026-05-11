@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\GeneralTestimonial;
 use App\Http\Requests\AddGeneralTestimonialRequest;
 use App\Http\Requests\UpdateGeneralTestimonialRequest;
+use Illuminate\Support\Facades\Auth;
 
 class GeneralTestimonialController extends Controller
 {
@@ -37,10 +38,8 @@ class GeneralTestimonialController extends Controller
     public function store(AddGeneralTestimonialRequest $request)
     {
         $data = $request->validated();
-        // $data['user_id'] = auth()->id();
-
+        $data['user_id'] = Auth::id();
         $data['is_published'] = $request->has('is_published'); 
-        $data['user_id'] = 1;
 
         GeneralTestimonial::create($data);
 
@@ -72,7 +71,7 @@ class GeneralTestimonialController extends Controller
         $data = $request->validated();
 
         $data['is_published'] = $request->has('is_published');
-        $data['user_id'] = 1;
+        // $data['user_id'] = 1;
 
         $testimonial->update($data);
 

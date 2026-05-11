@@ -7,6 +7,7 @@ use App\Models\Promotion;
 use App\Http\Requests\AddPromotionRequest;
 use App\Http\Requests\UpdatePromotionRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class PromotionController extends Controller
 {
@@ -47,8 +48,7 @@ class PromotionController extends Controller
     public function store(AddPromotionRequest $request)
     {
         $data = $request->validated();
-        $data['user_id'] = 1;
-        // $data['user_id'] = auth()->id();
+        $data['user_id'] = Auth::id();
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('promotions', 'public');

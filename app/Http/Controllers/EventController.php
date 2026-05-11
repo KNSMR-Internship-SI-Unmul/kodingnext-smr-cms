@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Http\Requests\AddEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -46,8 +47,7 @@ class EventController extends Controller
     public function store(AddEventRequest $request)
     {
         $data = $request->validated();
-        $data['user_id'] = 1;
-        // $data['user_id'] = auth()->id();
+        $data['user_id'] = Auth::id();
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('events', 'public');

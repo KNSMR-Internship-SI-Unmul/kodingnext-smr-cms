@@ -35,7 +35,7 @@
 
     <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-semibold text-gray-900 tracking-tight">
-            <span class="text-brand-pink">{{ $employees->count() }}</span> Employee
+            <span class="text-brand-pink">{{ $totalEmployees }}</span> Employee
         </h1>
         <div class="flex gap-4">
             <a href="/employees/roles" class="px-6 py-2.5 h-[42px] gap-2 bg-brand-white hover:bg-brand-pink text-brand-pink hover:text-white border border-brand-pink font-semibold rounded-lg transition text-sm flex items-center justify-center">

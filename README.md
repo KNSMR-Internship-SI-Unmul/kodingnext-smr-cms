@@ -183,4 +183,11 @@ Proyek ini dibangun di atas arsitektur standar Laravel. Namun, untuk memudahkan 
         ├── api.php 
         └── web.php     
 
-### **Status proyek:** Selesai & siap deployment (Ready for production)
+
+## 🚀 Status Proyek & Catatan Deployment
+
+**Status:** Selesai & siap deployment (Ready for production)
+
+**Catatan khusus:** Migrasi Tailwind CSS
+
+Selama fase *development*, proyek ini menggunakan Tailwind CSS via CDN untuk mempercepat proses *prototyping*. Sebelum aplikasi ini ke tahap *server production*, sangat disarankan untuk melakukan *build* aset CSS menggunakan Vite demi performa dan kecepatan *loading* halaman.

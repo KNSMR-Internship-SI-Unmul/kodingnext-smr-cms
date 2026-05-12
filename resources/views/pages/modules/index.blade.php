@@ -124,24 +124,29 @@
                             </button>
                         </div>
                     </div>
-                    
-                    <div class="flex justify-between items-center px-3 pt-5 pb-3">
-                        <div class="flex-1 min-h-16">
-                            <h3 class="font-extrabold {{ $textColor }} text-xl leading-tight mb-1">{{ $module->name }}</h3>
+
+                    <div class="flex justify-between items-start px-3 pt-5 pb-3">
+                        <div class="flex-1 min-h-16 w-full">
+                            <h3 class="font-extrabold {{ $textColor }} text-xl leading-tight mb-1.5">{{ $module->name }}</h3>
                             
-                            <div class="flex justify-between">
+                            <div class="flex justify-between items-start">
                                 <p class="text-sm text-gray-500">{{ $module->courseType->name }}</p>
-                                
-                                @if($module->category)
-                                    <span class="inline-block px-2.5 py-1 mt-2 border {{ $borderColor }} {{ $textColor }} text-xs font-semibold rounded-md w-fit">
+                                @if(!$module->image && $module->category)
+                                    <span class="inline-block px-2.5 py-1 border {{ $borderColor }} {{ $textColor }} text-[11px] font-semibold rounded-md w-fit">
                                         {{ $module->category }}
                                     </span>
                                 @endif
                             </div>
+
+                            @if($module->image && $module->category)
+                                <span class="inline-block px-2.5 py-1 mt-2 border {{ $borderColor }} {{ $textColor }} text-[11px] font-semibold rounded-md w-fit">
+                                    {{ $module->category }}
+                                </span>
+                            @endif
                         </div>
-                        
+
                         @if($module->image)
-                        <div class="flex-shrink-0 relative z-10">
+                        <div class="flex-shrink-0 relative z-10 ml-2">
                             <img src="{{ asset('storage/' . $module->image) }}" alt="{{ $module->name }} Icon" class="w-[106px] h-[106px] object-contain drop-shadow-sm">
                         </div>
                         @endif

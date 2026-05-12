@@ -7,13 +7,11 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // Menampilkan halaman login
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    // Memproses data login
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -28,13 +26,11 @@ class AuthController extends Controller
                              ->with('success', 'Welcome back, ' . Auth::user()->name . '!');; 
         }
 
-        // 4. Jika gagal, kembalikan ke halaman login dengan pesan error
         return back()->withErrors([
             'email'     => 'The provided credentials do not match our records.',
-        ])->onlyInput('email'); // Tetap pertahankan isian email agar user tidak perlu mengetik ulang
+        ])->onlyInput('email');
     }
 
-    // Memproses logout
     public function logout(Request $request)
     {
         Auth::logout();

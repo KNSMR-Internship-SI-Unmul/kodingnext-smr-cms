@@ -458,7 +458,7 @@
             
             <h3 class="text-xl font-extrabold text-gray-900 mb-2">
                 <span x-show="deleteMode === 'single'">Delete Student Project?</span>
-                <span x-show="deleteMode === 'bulk'">Delete <span x-text="studentProjectData.length"></span> Student Project?</span>
+                <span x-show="deleteMode === 'bulk'">Delete <span x-text="selectedStudentProjects.length"></span> Student Project?</span>
             </h3>
             
             <p class="text-sm text-gray-500 mb-6 font-medium" 

@@ -93,7 +93,6 @@ Pastikan sistem sudah terinstal:
 
 Proyek ini dibangun di atas arsitektur standar Laravel. Namun, untuk memudahkan *developer* selanjutnya, berikut adalah pemetaan direktori dan file utama yang **dibuat dan dikustomisasi secara khusus** untuk kebutuhan CMS Koding Next Samarinda:
 
-    ```text
     kodingnext-smr-cms/
     ├── app/
     │   ├── Http/

@@ -9,8 +9,8 @@
     <a href="/employees/{{ auth()->id() }}" class="flex items-center gap-3 border border-brand-pink rounded-lg px-3 py-1 cursor-pointer hover:bg-gray-100 transition-colors shadow-sm">
         
         <div class="text-right">
-            <p class="text-xs font-semibold text-gray-900 leading-tight">{{ auth()->user()->role->name ?? 'Employee' }}</p>
-            <p class="text-[10px] font-medium text-gray-600">{{ auth()->user()->name }}</p>
+            <p class="text-xs font-semibold text-gray-900 leading-tight">{{ auth()->user()->name }}</p>
+            <p class="text-[10px] font-medium text-gray-600">{{ auth()->user()->role->name }}</p>
         </div>
         
         <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&color=3D7D9E&background=EEF6FB' }}" 

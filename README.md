@@ -2,6 +2,16 @@
 
 Sistem Informasi Manajemen Konten (CMS) yang dibangun khusus untuk **Koding Next Samarinda** guna mengelola dan mengintegrasikan data operasional untuk kebutuhan pemasaran.
 
+## 📑 Daftar Isi (Table of Contents)
+
+- [🚀 Fitur Utama](#-fitur-utama)
+- [🛠️ Teknologi yang Digunakan (Tech Stack)](#️-teknologi-yang-digunakan-tech-stack)
+- [📂 Struktur Direktori & File Utama](#-struktur-direktori--file-utama)
+- [💻 Panduan Instalasi (Setup Guide)](#-panduan-instalasi-setup-guide)
+  - [1. Prasyarat Sistem (Prerequisites)](#1-prasyarat-sistem-prerequisites)
+  - [2. Langkah Instalasi](#2-langkah-instalasi)
+- [📋 Status Proyek & Catatan Deployment](#-status-proyek--catatan-deployment)
+
 ## 🚀 Fitur Utama
 
 Sistem ini dilengkapi dengan berbagai fitur untuk mendukung efisiensi operasional:
@@ -184,7 +194,7 @@ Proyek ini dibangun di atas arsitektur standar Laravel. Namun, untuk memudahkan 
         └── web.php     
 
 
-## 🚀 Status Proyek & Catatan Deployment
+## 📋 Status Proyek & Catatan Deployment
 
 **Status:** Selesai & siap deployment (Ready for production)
 

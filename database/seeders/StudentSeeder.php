@@ -17,27 +17,34 @@ class StudentSeeder extends Seeder
             [
             'name' => 'Eugenia Goshen Kurniawan',
             'school' => 'Nido Montessori School',
-            'user_id'       => 1,
+            'phone_number' => '082152784817',
+            'user_id' => 1,
             ], 
             [
             'name' => 'Faiha Farzana Halwa',
             'school' => 'TK ABA 7 Samarinda',
-            'user_id'       => 1,
+            'phone_number' => '082329303555',
+            'user_id' => 1,
             ],
             [
             'name' => 'Abdurahman Nur Tajri',
             'school' => 'SDIT Al Firdaus samarinda',
-            'user_id'       => 1,
+            'phone_number' => '081350113256',
+            'user_id' => 1,
             ],
             [
             'name' => 'Aisyah Ayudia Inara',
             'school' => 'SD Muhamadiyah',
-            'user_id'       => 1,
+            'phone_number' => '082211352840',
+            'user_id' => 1,
             ],
         ];
 
         foreach ($students as $student) {
-            Student::create($student);
+            Student::updateOrCreate(
+                ['name' => $student['name']],
+                $student
+            );
         }
     }
 }

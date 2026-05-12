@@ -49,7 +49,10 @@ class StudentProjectSeeder extends Seeder
         ];
 
         foreach ($studentProjects as $studentProject) {
-            StudentProject::create($studentProject);
+            StudentProject::updateOrCreate(
+                ['title' => $studentProject['title']],
+                $studentProject
+            );
         }
     }
 }

@@ -287,9 +287,12 @@ class ModuleSeeder extends Seeder
                 'course_type_id' => 3,
             ],
         ];
-
+        
         foreach ($modules as $module) {
-            Module::create($module);
+            Module::updateOrCreate(
+                ['name' => $module['name']],
+                $module
+            );
         }
     }
 }

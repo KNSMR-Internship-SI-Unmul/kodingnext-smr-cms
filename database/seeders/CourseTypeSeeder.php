@@ -33,9 +33,12 @@ class CourseTypeSeeder extends Seeder
                 'user_id' => 1,
             ]
         ];
-
+        
         foreach ($courseTypes as $courseType) {
-            CourseType::create($courseType);
+            CourseType::updateOrCreate(
+                ['name' => $courseType['name']],
+                $courseType
+            );
         }
     }
 }

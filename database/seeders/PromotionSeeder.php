@@ -28,12 +28,15 @@ class PromotionSeeder extends Seeder
                 'end_date' => '2026-02-22',
                 'description' => 'Chinese New Year Promo – Pick Your Lucky Angpao! Celebrate the Lunar New Year with a fresh start for your child’s digital journey. Through this special promo, kids can enjoy a fun and meaningful learning experience while exploring coding at Koding Next Samarinda. Pick Your Lucky Angpao and get a registration discount of 500,000 for coding programs Available from February 13 to 22, 2026, this is the perfect opportunity to begin a creative and future-ready learning adventure. Don’t miss out.',
                 'image' => 'promotions/589loNMVusVx8naHPue6nclWiquJkyl3qsYg4s9l.jpg',
-                'user_id' => 2,
+                'user_id' => 1,
             ]
         ];
 
         foreach ($promotions as $promotion) {
-            Promotion::create($promotion);
+            Promotion::updateOrCreate(
+                ['title' => $promotion['title']],
+                $promotion
+            );
         }
     }
 }

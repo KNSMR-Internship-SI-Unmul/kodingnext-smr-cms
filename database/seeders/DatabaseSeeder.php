@@ -18,19 +18,22 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             UserSeeder::class,
-            StudentSeeder::class,
-            PromotionSeeder::class,
-            EventSeeder::class,
             CourseTypeSeeder::class,
             ModuleSeeder::class,
+        ]);
+
+        $this->call([
+            PromotionSeeder::class,
+            EventSeeder::class,
+            StudentSeeder::class,
             StudentProjectSeeder::class,
-            ProjectReviewSeeder::class,
             GeneralTestimonialSeeder::class,
         ]);
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        if (app()->environment('local')) {
+            $this->call([
+                ProjectReviewSeeder::class
+            ]);
+        }
     }
 }

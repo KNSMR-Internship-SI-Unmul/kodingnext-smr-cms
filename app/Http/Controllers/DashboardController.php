@@ -14,7 +14,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $totalEmployees = User::with('role')->whereNotIn('name', ['admin', 'owner', 'Admin', 'Owner'])->count(); 
+        $totalEmployees = User::whereHas('role', function ($query) {
+            $query->whereNotIn('name', ['Admin', 'Owner', 'Super Admin']); 
+        })->count();
         $totalPromotions = Promotion::count();
         $totalEvents = Event::count();
         $totalStudentProjects = StudentProject::count();

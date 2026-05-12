@@ -27,8 +27,11 @@ class EmployeeController extends Controller
         }
 
         $employees = $query->get();
+        $totalEmployees = User::whereHas('role', function ($query) {
+            $query->whereNotIn('name', ['Admin', 'Owner', 'Super Admin']); 
+        })->count();
 
-        return view('pages.employees.index', compact('employees', 'roles'));
+        return view('pages.employees.index', compact('employees', 'roles', 'totalEmployees'));
     }
 
     /**

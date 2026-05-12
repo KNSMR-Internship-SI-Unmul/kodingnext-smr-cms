@@ -14,16 +14,11 @@ use App\Http\Controllers\CourseTypeController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\StudentProjectController;
 use App\Http\Controllers\ProjectReviewController;
-use App\Http\Controllers\GeneralTestimonialController;
-
-
-// Route::get('/', function () {
-//     return view('auth.login');
-// });
+use App\Http\Controllers\GeneralTestimonialController;;
 
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+    Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/', [AuthController::class, 'login'])->name('login.post');
 });
 
 Route::middleware('auth')->group(function () {

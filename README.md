@@ -1,59 +1,187 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Content Management System (CMS) - Koding Next Samarinda
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Informasi Manajemen Konten (CMS) yang dibangun khusus untuk **Koding Next Samarinda** guna mengelola dan mengintegrasikan data operasional untuk kebutuhan pemasaran.
 
-## About Laravel
+## 🚀 Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Sistem ini dilengkapi dengan berbagai fitur untuk mendukung efisiensi operasional:
+*   **Secure Authentication & Authorization:** Sistem login/logout dengan role based access.
+*   **Human Resources Management:** 
+    *   Manajemen Role (Akses khusus untuk Admin).
+    *   Manajemen Data Employee.
+*   **Curriculum Management:**
+    *   Manajemen Course Types.
+    *   Manajemen Module.
+*   **Student Management:**
+    *   Manajemen Data Student.
+    *   Student Projects & Project Reviews.
+*   **Marketing & Public Relations:**
+    *   Manajemen Events.
+    *   Manajemen Promotions.
+    *   General Testimonials.
+*   **Global Features:** Live search, pagination, bulk actions (Checkbox delete).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Hak Akses (Role & Authorization)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* Admin: Memiliki akses penuh terhadap semua fitur.
+* Student Advisor, Teacher, dan Advanced Teacher: Dapat mengelola semua fitur kecuali Role dan Employee.
 
-## Learning Laravel
+## 🛠️ Teknologi yang Digunakan (Tech Stack)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+*   **Backend:** [Laravel](https://laravel.com/) (PHP Framework)
+*   **Database:** MySQL
+*   **Frontend Styling:** [Tailwind CSS](https://tailwindcss.com/)
+*   **Frontend Interactivity:** [Alpine.js](https://alpinejs.dev/) (Untuk interaktivitas UI seperti modal, dropdown, dan toast).
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 💻 Panduan Instalasi (Setup Guide)
 
-## Laravel Sponsors
+Langkah-langkah untuk menjalankan aplikasi ini di environment lokal atau server baru:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 1. Prasyarat Sistem (Prerequisites)
+Pastikan sistem sudah terinstal:
+*   PHP (Sesuai versi Laravel yang digunakan)
+*   Composer
+*   MySQL
+*   Node.js & NPM
+*   Git 
 
-### Premium Partners
+### 2. Langkah Instalasi
+1. **Clone repositori**
+   ```bash
+   git clone https://github.com/KNSMR-Internship-SI-Unmul/kodingnext-smr-cms.git
+2. **Masuk ke direktori proyek**
+   ```bash
+   cd kodingnext-smr-cms
+3. **Install dependensi backend**
+   ```bash
+   composer install
+4. **Install dependensi frontend**
+   ```bash
+   npm install
+5. **Setup file konfigurasi**
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+    Copy file .env.example dan ubah namanya menjadi .env.
+   ```bash
+   cp .env.example .env
+6. **Buat database**
+   
+   Buat database baru (kosong) dengan nama kodingsmr_cms (atau sesuaikan kembali dengan konfigurasi file .env).
+7. **Generate Application Key**
+   ```bash
+   php artisan key:generate
+8. **Jalankan migrasi database**
+   ```bash
+   php artisan migrate
+9. **Jalankan seeder database**
+   ```bash
+   php artisan db:seed
+10. **Hubungkan folder storage**
+    ```bash
+    php artisan storage:link
+11. **Jalankan local server**
+    
+    Jalankan kedua perintah tersebut di terminal yang berbeda secara bersamaan.
+    ```bash
+    # Terminal 1
+    npm run dev
 
-## Contributing
+    # Terminal 2
+    php artisan serve
+12. Akses aplikasi melalui browser di: `http://localhost:8000`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 📂 Struktur Direktori & File Utama
 
-## Code of Conduct
+Proyek ini dibangun di atas arsitektur standar Laravel. Namun, untuk memudahkan *developer* selanjutnya, berikut adalah pemetaan direktori dan file utama yang **dibuat dan dikustomisasi secara khusus** untuk kebutuhan CMS Koding Next Samarinda:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    ```text
+    kodingnext-smr-cms/
+    ├── app/
+    │   ├── Http/
+    │   │   ├── Controllers/          # Logika bisnis & kendali alur
+    |   |   |   ├──Api/               # API untuk website profile
+    |   |   |   |   ├── CourseTypeController.php
+    |   |   |   |   ├── EmployeeController.php
+    |   |   |   |   └── ... (File Controller lainnya)
+    │   │   │   ├── AuthController.php
+    |   |   |   ├── CourseTypeController.php
+    │   │   │   ├── DashboardController.php
+    │   │   │   ├── EmployeeController.php
+    │   │   │   ├── EventController.php
+    │   │   │   ├── GeneralTestimonialController.php
+    │   │   │   ├── ModuleController.php
+    │   │   │   ├── ProjectReviewController.php
+    │   │   │   ├── PromotionController.php
+    │   │   │   ├── RoleController.php
+    │   │   │   ├── StudentController.php
+    │   │   │   └── StudentProjectController.php
+    │   │   ├── Requests/             # Validasi input form (Security)
+    │   │   │   ├── AddStudentProjectRequest.php
+    │   │   │   ├── UpdateStudentProjectRequest.php
+    │   │   │   └── ... (File Request lainnya)
+    │   │   └── Resources/
+    │   │   │   ├── CourseTypeResources.php
+    │   │   │   ├── Employee Resources.php
+    │   │   │   └── ... (File Resources lainnya)
+    │   ├── Models/                   # Representasi database & relasi (Eloquent)
+    │   │   ├── CourseType.php
+    │   │   ├── Event.php
+    │   │   ├── GeneralTestimonial.php
+    │   │   ├── Module.php
+    │   │   ├── ProjectReview.php
+    │   │   ├── Promotion.php
+    │   │   ├── Role.php
+    │   │   ├── Student.php
+    │   │   ├── StudentProject.php
+    │   │   └── User.php              # Di-extend untuk kapabilitas Employee
+    │   └── Policies/                 # Logika keamanan & otorisasi 
+    │       └── UserPolicy.php        # Membatasi hak akses
+    │
+    ├── database/
+    │   ├── migrations/               # Skema database (tabel & relasi)
+    │   │   └── (File migrasi untuk seluruh entitas sistem)
+    │   └── seeders/                  # Data master & dummy
+    │       ├── CourseTypeSeeder.php
+    │       ├── DatabaseSeeder.php 
+    │       ├── EventSeeder.php
+    │       ├── GeneralTestimonialSeeder.php
+    │       ├── ModuleSeeder.php
+    │       ├── ProjectReviewSeeder.php
+    │       ├── PromotionSeeder.php
+    │       ├── RoleSeeder.php
+    │       ├── StudentProjectSeeder.php
+    │       ├── StudentSeeder.php
+    │       └── UserSeeder.php
+    │
+    ├── resources/
+    │   ├── js/
+    │   |   ├── app.js                # Entry point utama & inisialisasi Alpine.js
+    │   |   └── component.js          # Component Manager berisi logika x-data Alpine.js untuk disuntikkan ke tampilan
+    │   └── views/                    # Tampilan frontend
+    │       ├── auth/
+    │       │   └── login.blade.php
+    │       ├── components/           # Komponen UI reusable
+    │       │   ├── empty-state.blade.php
+    │       │   └── toast.blade.php
+    │       ├── layouts/              # Template utama
+    │       │   ├── app.blade.php     # Layout master HTML
+    │       │   └── auth.blade.php    # Layout untuk halaman autentikasi
+    │       ├── pages/                # Tampilan per fitur (index, show)
+    │       │   ├── courses/
+    │       │   ├── employees/
+    │       │   ├── events/
+    │       │   ├── general-testimonials/
+    │       │   ├── modules/
+    │       │   ├── promotions/
+    │       │   ├── roles/
+    │       │   ├── student-projects/
+    │       │   ├── students/
+    │       │   └── dashboard.index.php
+    │       └── partials/
+    │           ├── navbar.blade.php
+    |           └── sidebar.blade.php
+    │
+    └── routes/
+        ├── api.php 
+        └── web.php     
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### **Status proyek:** Selesai & siap deployment (Ready for production)

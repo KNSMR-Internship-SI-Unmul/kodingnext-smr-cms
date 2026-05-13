@@ -40,6 +40,7 @@ Sistem ini dilengkapi dengan berbagai fitur untuk mendukung efisiensi operasiona
 
 *   **Backend:** [Laravel](https://laravel.com/) (PHP Framework)
 *   **Database:** MySQL
+*   **Frontend Templating:** [Blade Template](https://laravel.com/docs/13.x/blade)
 *   **Frontend Styling:** [Tailwind CSS](https://tailwindcss.com/)
 *   **Frontend Interactivity:** [Alpine.js](https://alpinejs.dev/) (Untuk interaktivitas UI seperti modal, dropdown, dan toast).
 

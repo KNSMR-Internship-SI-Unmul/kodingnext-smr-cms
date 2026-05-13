@@ -188,12 +188,19 @@
 
                         <div>
                             <label class="block text-sm font-semibold mb-1 text-gray-800">Role</label>
-                            <select name="role_id" x-model="employeeData.role_id" required class="w-full px-4 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 transition bg-white focus:ring-brand-pink">
-                                <option value="" disabled selected>Select Role</option>
+                            <select name="role_id" x-model="employeeData.role_id" 
+                                @if(auth()->user()->role_id !== 1) disabled @endif 
+                                class="w-full px-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-pink transition 
+                                @if(auth()->user()->role_id !== 1) bg-gray-100 text-gray-500 cursor-not-allowed @else bg-white focus:border-brand-pink @endif">
+                                
+                                <option value="" disabled>Select Role</option>
                                 @foreach($roles as $role)
                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
                                 @endforeach
                             </select>
+                            @if(auth()->user()->role_id !== 1)
+                                <input type="hidden" name="role_id" x-model="employeeData.role_id">
+                            @endif
                         </div>
                     </div>
 

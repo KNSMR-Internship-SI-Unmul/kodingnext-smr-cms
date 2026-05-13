@@ -89,6 +89,10 @@ class EmployeeController extends Controller
         $employee = User::findOrFail($id);
         $data = $request->validated();
 
+        if ($request->user()->role_id !== 1) {
+            unset($data['role_id']);
+        }
+
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
         } else {

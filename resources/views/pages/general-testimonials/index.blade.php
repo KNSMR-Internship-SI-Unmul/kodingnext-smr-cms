@@ -196,8 +196,22 @@
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <input type="checkbox" id="is_published" name="is_published" value="1" x-model="testimonialData.is_published" class="w-5 h-5 text-brand-pink focus:ring-brand-pink border-gray-300 rounded cursor-pointer transition">
-                    <label for="is_published" class="text-sm font-semibold text-gray-900 cursor-pointer select-none">Publish Testimonial</label>
+                    <label for="is_published" class="flex items-center cursor-pointer select-none gap-3">
+                        <input type="checkbox" 
+                            id="is_published" 
+                            name="is_published" 
+                            value="1" 
+                            x-model="testimonialData.is_published" 
+                            class="sr-only">
+
+                        <div :class="testimonialData.is_published ? 'bg-brand-pink' : 'bg-gray-300'" 
+                            class="w-12 h-7 rounded-full transition-colors duration-300 ease-in-out relative flex items-center">
+                            <div :class="testimonialData.is_published ? 'translate-x-6' : 'translate-x-1'" 
+                                class="w-5 h-5 bg-white rounded-full shadow-sm transform transition-transform duration-300 ease-in-out">
+                            </div>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-900">Publish Testimonial</span>
+                    </label>
                 </div>
                 
                 <div class="flex gap-3 pt-2 justify-end">

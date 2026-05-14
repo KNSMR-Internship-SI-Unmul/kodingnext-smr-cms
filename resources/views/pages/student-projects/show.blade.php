@@ -260,8 +260,22 @@
                         </div>
 
                         <div class="flex items-center gap-2 mt-5">
-                            <input type="checkbox" id="is_published" name="is_published" value="1" x-model="studentProjectData.is_published" class="w-5 h-5 text-brand-pink focus:ring-brand-pink border-gray-300 rounded cursor-pointer transition">
-                            <label for="is_published" class="text-sm font-semibold text-gray-900 cursor-pointer select-none">Publish Project</label>
+                            <label for="is_published" class="flex items-center cursor-pointer select-none gap-3">
+                                <input type="checkbox" 
+                                    id="is_published" 
+                                    name="is_published" 
+                                    value="1" 
+                                    x-model="studentProjectData.is_published" 
+                                    class="sr-only">
+
+                                <div :class="studentProjectData.is_published ? 'bg-brand-pink' : 'bg-gray-300'" 
+                                    class="w-12 h-7 rounded-full transition-colors duration-300 ease-in-out relative flex items-center">
+                                    <div :class="studentProjectData.is_published ? 'translate-x-6' : 'translate-x-1'" 
+                                        class="w-5 h-5 bg-white rounded-full shadow-sm transform transition-transform duration-300 ease-in-out">
+                                    </div>
+                                </div>
+                                <span class="text-sm font-semibold text-gray-900">Publish Project</span>
+                            </label>
                         </div>
 
                         <div class="flex gap-4 mt-8">

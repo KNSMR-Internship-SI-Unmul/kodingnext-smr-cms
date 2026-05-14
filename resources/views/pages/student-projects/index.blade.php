@@ -362,8 +362,22 @@
                         </div>
 
                         <div class="flex items-center gap-2 mt-5">
-                            <input type="checkbox" id="is_published" name="is_published" value="1" x-model="studentProjectData.is_published" class="w-5 h-5 text-brand-pink focus:ring-brand-pink border-gray-300 rounded cursor-pointer transition">
-                            <label for="is_published" class="text-sm font-semibold text-gray-900 cursor-pointer select-none">Publish Project</label>
+                            <label for="is_published" class="flex items-center cursor-pointer select-none gap-3">
+                                <input type="checkbox" 
+                                    id="is_published" 
+                                    name="is_published" 
+                                    value="1" 
+                                    x-model="studentProjectData.is_published" 
+                                    class="sr-only">
+
+                                <div :class="studentProjectData.is_published ? 'bg-brand-pink' : 'bg-gray-300'" 
+                                    class="w-12 h-7 rounded-full transition-colors duration-300 ease-in-out relative flex items-center">
+                                    <div :class="studentProjectData.is_published ? 'translate-x-6' : 'translate-x-1'" 
+                                        class="w-5 h-5 bg-white rounded-full shadow-sm transform transition-transform duration-300 ease-in-out">
+                                    </div>
+                                </div>
+                                <span class="text-sm font-semibold text-gray-900">Publish Project</span>
+                            </label>
                         </div>
 
                         <div class="flex gap-4 mt-8">
@@ -422,9 +436,23 @@
                     @enderror
                 </div>
 
-                <div class="flex justify-baseline gap-2">
-                    <input type="checkbox" id="approve" name="is_approved" value="1" x-model="projectReviewData.is_approved" class="w-5 h-5 text-brand-pink focus:ring-brand-pink border-gray-300 rounded cursor-pointer transition">
-                    <label for="approve" class="text-sm font-semibold text-gray-900 cursor-pointer select-none">Approve Review</label>
+                <div class="flex items-center gap-2 mt-5">
+                    <label for="approve" class="flex items-center cursor-pointer select-none gap-3">
+                        <input type="checkbox" 
+                            id="approve" 
+                            name="is_approved" 
+                            value="1" 
+                            x-model="projectReviewData.is_approved" 
+                            class="sr-only">
+
+                        <div :class="projectReviewData.is_approved ? 'bg-brand-pink' : 'bg-gray-300'" 
+                            class="w-12 h-7 rounded-full transition-colors duration-300 ease-in-out relative flex items-center">
+                            <div :class="projectReviewData.is_approved ? 'translate-x-6' : 'translate-x-1'" 
+                                class="w-5 h-5 bg-white rounded-full shadow-sm transform transition-transform duration-300 ease-in-out">
+                            </div>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-900">Approve Review</span>
+                    </label>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 mt-10 pt-5 border-t border-gray-100 items-center justify-center">

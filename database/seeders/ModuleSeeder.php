@@ -80,6 +80,13 @@ class ModuleSeeder extends Seeder
             ],
             // Junior Koders
             [
+                'name' => 'Python: First Programmes',
+                'description' => 'Siswa akan mempelajari pemrograman berbasis teks dan konsep dasar pemrograman menggunakan Python. Mereka juga akan menggunakan library dan API Python untuk membuat proyek GUI seperti Google Translator.',
+                'age_range' => '12-16',
+                'duration_per_session' => 90,
+                'course_type_id' => 2,
+            ],
+            [
                 'name' => '2D Games With Roblox',
                 'description' => 'Siswa akan memperkuat dasar pemrograman mereka dan diperkenalkan pada konsep yang lebih lanjut dengan membuat game dan animasi menarik menggunakan Scratch, Roblox, dan Construct 3.',
                 'age_range' => '8-12',
@@ -164,13 +171,6 @@ class ModuleSeeder extends Seeder
                 'age_range' => '8-12',
                 'duration_per_session' => 90,
                 'category' => 'Tech Innovator',
-                'course_type_id' => 2,
-            ],
-            [
-                'name' => 'Python: First Programmes',
-                'description' => 'Siswa akan mempelajari pemrograman berbasis teks dan konsep dasar pemrograman menggunakan Python. Mereka juga akan menggunakan library dan API Python untuk membuat proyek GUI seperti Google Translator.',
-                'age_range' => '12-16',
-                'duration_per_session' => 90,
                 'course_type_id' => 2,
             ],
             [

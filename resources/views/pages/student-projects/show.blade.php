@@ -43,14 +43,10 @@
 
     <div class="flex flex-col lg:flex-row bg-brand-light-pink rounded-3xl overflow-hidden mb-12 shadow-sm border border-brand-pink/10">
         <div class="lg:w-1/2 relative bg-gray-200 min-h-80 lg:min-h-full">
-            @php
-                $mediaExt = strtolower(pathinfo($studentProject->media, PATHINFO_EXTENSION));
-                $isVideo = in_array($mediaExt, ['mp4', 'webm', 'ogg']);
-            @endphp
-
-            @if($isVideo)
+            
+            @if($studentProject->is_video)
                 <video autoplay muted loop playsinline class="w-full h-full object-cover">
-                    <source src="{{ asset('storage/' . $studentProject->media) }}" type="video/{{ $mediaExt === 'ogg' ? 'ogg' : $mediaExt }}">
+                    <source src="{{ asset('storage/' . $studentProject->media) }}" type="video/{{ $studentProject->media_extension }}">
                     Your browser does not support the video tag.
                 </video>
             @else
@@ -67,7 +63,7 @@
 
                         <div class="flex flex-col justify-center max-w-0 group-hover:max-w-[200px] transition-all duration-300 ease-in-out opacity-0 group-hover:opacity-100 whitespace-nowrap overflow-hidden">
                             <span class="text-xs font-bold leading-tight mb-0.5">Link Project</span>
-                            <span class="text-[10px] font-medium opacity-90 truncate w-full">{{ str_replace(['http://', 'https://'], '', $studentProject->project_url) }}</span>
+                            <span class="text-[10px] font-medium opacity-90 truncate w-full">{{ $studentProject->display_url }}</span>
                         </div>
                     </a>
                 </div>

@@ -38,4 +38,25 @@ class StudentProject extends Model
     {
         return $this->hasOne(ProjectReview::class);
     }
+
+    public function getMediaExtensionAttribute()
+    {
+        return strtolower(pathinfo($this->media, PATHINFO_EXTENSION));
+    }
+
+    /**
+     * Checking is media is video.
+     */
+    public function getIsVideoAttribute()
+    {
+        return in_array($this->media_extension, ['mp4', 'webm', 'ogg']);
+    }
+
+    /**
+     * Display url without "http/https" for clean UI
+     */
+    public function getDisplayUrlAttribute()
+    {
+        return str_replace(['http://', 'https://'], '', $this->project_url);
+    }
 }

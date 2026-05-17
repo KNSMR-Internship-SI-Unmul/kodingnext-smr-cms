@@ -132,7 +132,7 @@
             @endforeach
         </div> 
 
-        <div class="flex flex-col sm:flex-row items-center justify-between text-sm text-gray-500 px-2 mt-10">
+        <div class="flex flex-col sm:flex-row items-center justify-between text-sm text-gray-500 px-2 mt-5">
             <div>
                 Showing <span class="font-medium text-gray-900">{{ $employees->firstItem() ?? 0 }}</span> to <span class="font-medium text-gray-900">{{ $employees->lastItem() ?? 0 }}</span> of <span class="font-semibold text-brand-blue">{{ $employees->total() }}</span> employees
             </div>

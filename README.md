@@ -36,7 +36,7 @@ Sistem ini dilengkapi dengan berbagai fitur untuk mendukung efisiensi operasiona
 * Admin: Memiliki akses penuh terhadap semua fitur.
 * Student Advisor, Teacher, dan Advanced Teacher: Dapat mengelola semua fitur kecuali Role dan Employee.
 
-## 🛠️ Teknologi yang Digunakan (Tech Stack)
+## Teknologi yang Digunakan (Tech Stack)
 
 *   **Backend:** [Laravel](https://laravel.com/) (PHP Framework)
 *   **Database:** MySQL

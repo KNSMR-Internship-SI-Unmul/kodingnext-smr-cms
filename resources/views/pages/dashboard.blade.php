@@ -62,46 +62,22 @@
 
     <div class="flex flex-col gap-5">
         @forelse($courseTypes as $courseType)
-            @php
-                $courseName = strtolower($courseType->name);
-                
-                if (str_contains($courseName, 'junior')) {
-                    $colorClass = 'brand-blue';
-                    $bgClass = 'brand-light-blue';
-                    $defaultImage = 'images/course-juniorkoder.avif';
-                } elseif (str_contains($courseName, 'little')) {
-                    $colorClass = 'brand-pink';
-                    $bgClass = 'brand-light-pink';
-                    $defaultImage = 'images/course-littlekoder.avif';
-                } elseif (str_contains($courseName, 'robo')) {
-                    $colorClass = 'brand-purple/75'; 
-                    $bgClass = 'brand-light-purple'; 
-                    $defaultImage = 'images/course-robonext.avif';
-                } else {
-                    $colorClass = 'gray-600'; 
-                    $bgClass = 'gray-100';
-                }
-                $imagePath = $courseType->image ? asset('storage/' . $courseType->image) : asset($defaultImage);
-                $description = $courseType->description ?? 'Deskripsi untuk ' . $courseType->name . ' belum tersedia.';
-            @endphp
-
-            <div class="bg-{{ $bgClass }} rounded-xl p-4 flex flex-col sm:flex-row items-center gap-6 relative pr-16 border border-{{ $colorClass }}/10">
+            <div class="bg-{{ $courseType->theme['bg'] }} rounded-xl p-4 flex flex-col sm:flex-row items-center gap-6 relative pr-16 border border-{{ $courseType->theme['color'] }}/10">
                 <div class="w-32 h-32 bg-white rounded-xl shadow-sm flex-shrink-0 flex items-center justify-center overflow-hidden">
-                    <img src="{{ $imagePath }}" class="w-full h-full object-cover" alt="{{ $courseType->name }}">
+                    <img src="{{ $courseType->theme['imagePath'] }}" class="w-full h-full object-cover" alt="{{ $courseType->name }}">
                 </div>
                 <div class="flex-1 py-2">
-                    <h3 class="text-2xl font-bold text-{{ $colorClass }} mb-1.5">
+                    <h3 class="text-2xl font-bold text-{{ $courseType->theme['color'] }} mb-1.5">
                         {{ $courseType->name }}
                     </h3>
-                    <p class="text-sm text-{{ $colorClass }} leading-[1.7] max-w-4xl">
-                        {{ $description }}
+                    <p class="text-sm text-{{ $courseType->theme['color'] }} leading-[1.7] max-w-4xl">
+                        {{ $courseType->theme['description'] }}
                     </p>
                 </div>
-                <a href="/dashboard/courses" class="absolute bottom-4 right-4 w-9 h-9 bg-white rounded-full flex items-center justify-center text-gray-700 shadow-sm hover:text-{{ $colorClass }} hover:bg-gray-50 transition-all border border-gray-100">
+                <a href="/dashboard/courses" class="absolute bottom-4 right-4 w-9 h-9 bg-white rounded-full flex items-center justify-center text-gray-700 shadow-sm hover:text-{{ $courseType->theme['color'] }} hover:bg-gray-50 transition-all border border-gray-100">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                 </a>
             </div>
-
         @empty
             <div class="bg-gray-50 rounded-xl p-8 flex flex-col items-center justify-center gap-3 border border-dashed border-gray-200">
                 <span class="text-gray-500 font-bold text-sm">No course types available.</span>

@@ -34,4 +34,16 @@ class Student extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getUniqueModulesAttribute()
+    {
+        return $this->studentProjects->map->module->unique('id')->filter();
+    }
+
+    public function getTotalReviewsAttribute()
+    {
+        return $this->studentProjects->filter(function($project) {
+            return $project->projectReview !== null;
+        })->count();
+    }
 }

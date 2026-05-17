@@ -99,25 +99,8 @@
                         <div class="mb-4">
                             <h4 class="text-sm font-bold text-brand-pink mb-1">Modules</h4>
                             <div class="flex flex-wrap gap-2">
-                                @php
-                                    $uniqueModules = $student->studentProjects->map->module->unique('id')->filter();
-                                @endphp
-
-                                @forelse($uniqueModules->take(3) as $module)
-                                    @php
-                                        $courseName = strtolower($module->courseType->name ?? '');
-                                        
-                                        if (str_contains($courseName, 'junior')) {
-                                            $colorClass = 'bg-brand-light-blue-active/75 text-brand-blue';
-                                        } elseif (str_contains($courseName, 'little')) {
-                                            $colorClass = 'bg-brand-light-pink-active/75 text-brand-pink';
-                                        } elseif (str_contains($courseName, 'robo')) {
-                                            $colorClass = 'bg-brand-light-purple-active/75 text-brand-purple';
-                                        } else {
-                                            $colorClass = 'bg-gray-100 text-gray-700';
-                                        }
-                                    @endphp
-                                    <span class="inline-block px-4 py-1.5 {{ $colorClass }} text-xs font-semibold rounded-full truncate max-w-40" title="{{ $module->name }}">
+                                @forelse($student->unique_modules->take(3) as $module)
+                                    <span class="inline-block px-4 py-1.5 {{ $module->badge_color }} text-xs font-semibold rounded-full truncate max-w-40" title="{{ $module->name }}">
                                         {{ $module->name }}
                                     </span>
                                 @empty
@@ -126,9 +109,9 @@
                                     </span>
                                 @endforelse
 
-                                @if($uniqueModules->count() > 3)
+                                @if($student->unique_modules->count() > 3)
                                     <span class="inline-block px-2 py-1.5 bg-brand-pink/10 text-brand-pink border border-brand-pink/15 text-xs font-bold rounded-full shadow-sm">
-                                        +{{ $uniqueModules->count() - 3 }}
+                                        +{{ $student->unique_modules->count() - 3 }}
                                     </span>
                                 @endif
                             </div>
@@ -141,12 +124,7 @@
                             </div>
                             <div class="text-right">
                                 <p class="text-xs font-medium text-gray-500 mb-1">Review</p>
-                                @php
-                                    $totalReviews = $student->studentProjects->filter(function($project) {
-                                        return $project->projectReview !== null;
-                                    })->count();
-                                @endphp
-                                <p class="text-sm font-bold text-brand-pink">{{ $totalReviews }} review</p>
+                                <p class="text-sm font-bold text-brand-pink">{{ $student->total_reviews }} review</p>
                             </div>
                         </div>
 
@@ -158,6 +136,59 @@
                     </div>
                 </div>
             @endforeach
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-between text-sm text-gray-500 px-2 mt-10">
+            <div>
+                Showing <span class="font-medium text-gray-900">{{ $students->firstItem() ?? 0 }}</span> to <span class="font-medium text-gray-900">{{ $students->lastItem() ?? 0 }}</span> of <span class="font-semibold text-brand-blue">{{ $students->total() }}</span> students
+            </div>
+            
+            <div class="flex items-center gap-6 mt-4 sm:mt-0">
+                <div class="flex items-center gap-2">
+                    <span>Cards per page</span>
+                    <select 
+                        class="border border-gray-200 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-pink bg-white cursor-pointer"
+                        @change="
+                            const url = new URL(window.location.href);
+                            url.searchParams.set('per_page', $event.target.value);
+                            url.searchParams.delete('page');
+                            window.location.href = url.href;
+                        "
+                    >
+                        <option value="12" {{ request('per_page', 12) == 12 ? 'selected' : '' }}>12</option>
+                        <option value="24" {{ request('per_page') == 24 ? 'selected' : '' }}>24</option>
+                        <option value="48" {{ request('per_page') == 48 ? 'selected' : '' }}>48</option>
+                    </select>
+                </div>
+
+                <span>Page {{ $students->currentPage() }} of {{ $students->lastPage() }}</span>
+                
+                <div class="flex items-center gap-4">
+                    @if ($students->onFirstPage())
+                        <span class="text-gray-300 cursor-not-allowed flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                            Prev
+                        </span>
+                    @else
+                        <a href="{{ $students->previousPageUrl() }}&search={{ request('search') }}&per_page={{ request('per_page', 12) }}" class="text-brand-blue hover:text-brand-blue-hover transition-colors flex items-center gap-1 font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                            Prev
+                        </a>
+                    @endif
+
+                    @if ($students->hasMorePages())
+                        <a href="{{ $students->nextPageUrl() }}&search={{ request('search') }}&per_page={{ request('per_page', 12) }}" class="text-brand-blue hover:text-brand-blue-hover transition-colors flex items-center gap-1 font-medium">
+                            Next
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </a>
+                    @else
+                        <span class="text-gray-300 cursor-not-allowed flex items-center gap-1">
+                            Next
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </span>
+                    @endif
+                </div>
+            </div>
         </div>
     @endif
     

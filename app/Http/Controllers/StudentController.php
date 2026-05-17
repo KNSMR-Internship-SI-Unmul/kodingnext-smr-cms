@@ -22,7 +22,9 @@ class StudentController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        $students = $query->get();
+        $perPage = $request->input('per_page', 12);
+
+        $students = $query->paginate($perPage)->withQueryString();
 
         return view('pages.students.index', compact('students'));
     }

@@ -36,4 +36,31 @@ class Promotion extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getStatusLabelAttribute()
+    {
+        $today = now()->format('Y-m-d');
+        $startDate = $this->start_date->format('Y-m-d');
+        $endDate = $this->end_date->format('Y-m-d');
+
+        if ($today < $startDate) {
+            return 'Upcoming';
+        } elseif ($today > $endDate) {
+            return 'Done';
+        }
+
+        return 'On Going';
+    }
+
+    public function getStatusColorAttribute()
+    {
+        switch ($this->status_label) {
+            case 'Upcoming':
+                return 'bg-yellow-100 text-yellow-600 border-yellow-300';
+            case 'Done':
+                return 'bg-gray-100 text-gray-500 border-gray-300';
+            default:
+                return 'bg-green-100 text-green-600 border-green-200';
+        }
+    }
+
 }

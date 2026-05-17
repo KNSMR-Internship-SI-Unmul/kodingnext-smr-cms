@@ -87,6 +87,7 @@
                             <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Start Date</th>
                             <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">End Date</th>
                             <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Format</th>
+                            <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Status</th>
                             <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Created By</th>
                             <th class="py-3 px-4 text-sm font-bold text-brand-blue text-center whitespace-nowrap">Action</th>
                         </tr>
@@ -101,6 +102,11 @@
                                 <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center">{{ $promotion->start_date->format('d/m/Y') }}</td>
                                 <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center">{{ $promotion->end_date->format('d/m/Y') }}</td>
                                 <td class="py-3 px-4 text-sm font-semibold text-gray-700 text-center uppercase">{{ $promotion->file_format }}</td>
+                                <td class="py-3 px-4 text-center whitespace-nowrap">
+                                    <span class="inline-flex items-center justify-center px-3 py-1 rounded-full text-[11px] font-bold border {{ $promotion->status_color }}">
+                                        {{ $promotion->status_label }}
+                                    </span>
+                                </td>
                                 <td class="py-3 px-4">
                                     <div class="flex items-center justify-center gap-2">
                                         <div class="w-6 h-6 rounded-full bg-gray-200 overflow-hidden">

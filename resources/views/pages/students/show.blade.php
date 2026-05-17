@@ -63,26 +63,8 @@
                 <div class="mb-6 min-h-[150px]">
                     <h4 class="text-sm font-bold text-brand-pink mb-2">Modules</h4>
                     <div class="flex flex-wrap gap-2 mb-1.5">
-                        @php
-                            $uniqueModules = $student->studentProjects->map->module->unique('id')->filter();
-                        @endphp
-
-                        @forelse($uniqueModules as $module)
-                            @php
-                                $courseName = strtolower($module->courseType->name ?? '');
-                                
-                                if (str_contains($courseName, 'junior')) {
-                                    $colorClass = 'bg-brand-light-blue-active/75 text-brand-blue';
-                                } elseif (str_contains($courseName, 'little')) {
-                                    $colorClass = 'bg-brand-light-pink-active/75 text-brand-pink';
-                                } elseif (str_contains($courseName, 'robo')) {
-                                    $colorClass = 'bg-brand-light-purple-active/75 text-brand-purple';
-                                } else {
-                                    $colorClass = 'bg-gray-100 text-gray-700';
-                                }
-                            @endphp
-
-                            <span class="inline-block px-4 py-1.5 {{ $colorClass }} text-xs font-semibold rounded-full">
+                        @forelse($student->unique_modules as $module)
+                            <span class="inline-block px-4 py-1.5 {{ $module->badge_color }} text-xs font-semibold rounded-full">
                                 {{ $module->name }}
                             </span>
                         @empty
@@ -140,17 +122,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
                         @foreach($student->studentProjects as $project)
                             @php
-                                $courseName = strtolower($project->module->courseType->name ?? '');
-                                
-                                if (str_contains($courseName, 'junior')) {
-                                    $bgClass = 'bg-brand-light-blue-active text-brand-blue';
-                                } elseif (str_contains($courseName, 'little')) {
-                                    $bgClass = 'bg-brand-light-pink-active text-brand-pink';
-                                } elseif (str_contains($courseName, 'robo')) {
-                                    $bgClass = 'bg-brand-light-purple-active text-brand-purple'; 
-                                } else {
-                                    $bgClass = 'bg-gray-100 text-gray-700 hover:bg-gray-500 hover:text-white';
-                                }
+                                $badgeClass = $project->module->badge_color ?? 'bg-gray-100 text-gray-700';
+                                $bgClass = str_replace(['/75', 'bg-gray-100'], ['', 'bg-gray-100 hover:bg-gray-500 hover:text-white'], $badgeClass);
                             @endphp
                             <a href="/student-projects/{{ $project->id }}" class="flex-1 {{ $bgClass }} transition-transform hover:scale-105 font-semibold px-6 py-3.5 rounded-xl text-sm text-center truncate" title="{{ $project->title }}">
                                 {{ $project->title }}

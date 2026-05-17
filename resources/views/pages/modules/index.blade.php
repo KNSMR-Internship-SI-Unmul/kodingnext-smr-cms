@@ -73,35 +73,9 @@
         {{-- module cards --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-9">
             @foreach ($modules as $module)
-                @php
-                    $bgColors = [
-                        1 => 'bg-brand-light-pink',
-                        2 => 'bg-brand-light-blue', 
-                        3 => 'bg-brand-light-purple',
-                    ];
-                    $textColors = [
-                        1 => 'text-brand-pink',
-                        2 => 'text-brand-blue',
-                        3 => 'text-brand-purple/75',
-                    ];
-                    $borderColors = [
-                        1 => 'border-brand-pink',
-                        2 => 'border-brand-blue',
-                        3 => 'border-brand-purple/75',
-                    ];
-                    $bgPrimaryColors = [
-                        1 => 'bg-brand-pink',
-                        2 => 'bg-brand-blue', 
-                        3 => 'bg-brand-purple',
-                    ];
-                    $bgColor = $bgColors[$module->course_type_id];
-                    $textColor = $textColors[$module->course_type_id];
-                    $borderColor = $borderColors[$module->course_type_id];
-                    $bgPrimaryColor = $bgPrimaryColors[$module->course_type_id];
-                @endphp
-                <div class="{{ $bgColor }} rounded-lg p-4 shadow-sm hover:shadow-md flex flex-col h-full relative group transform transition-all hover:-translate-y-1">
+                <div class="{{ $module->theme['bg'] }} rounded-lg p-4 shadow-sm hover:shadow-md flex flex-col h-full relative group transform transition-all hover:-translate-y-1">
                     <div class="absolute top-3 right-3 z-20" x-data="{ openDropdown: false }">
-                        <button @click="openDropdown = !openDropdown" class="{{ $textColor }} hover:{{ $textColor }} focus:outline-none transition-colors rounded-full p-1 hover:{{ $bgPrimaryColor }}/10">
+                        <button @click="openDropdown = !openDropdown" class="{{ $module->theme['text'] }} hover:{{ $module->theme['text'] }} focus:outline-none transition-colors rounded-full p-1 hover:{{ $module->theme['primary'] }}/10">
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
                         </button>
                         
@@ -114,7 +88,7 @@
                             x-transition:enter-start="transform opacity-0 scale-95"
                             x-transition:enter-end="transform opacity-100 scale-100"
                         >
-                            <button @click="openDropdown = false; openEditModal({{ json_encode($module) }})" class="w-full text-left px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:{{ $textColor }} flex items-center gap-2 transition-colors">
+                            <button @click="openDropdown = false; openEditModal({{ json_encode($module) }})" class="w-full text-left px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:{{ $module->theme['text'] }} flex items-center gap-2 transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                 Edit
                             </button>
@@ -127,19 +101,19 @@
 
                     <div class="flex justify-between items-start px-3 pt-5 pb-3">
                         <div class="flex-1 min-h-16 w-full">
-                            <h3 class="font-extrabold {{ $textColor }} text-xl leading-tight mb-1.5">{{ $module->name }}</h3>
+                            <h3 class="font-extrabold {{ $module->theme['text'] }} text-xl leading-tight mb-1.5">{{ $module->name }}</h3>
                             
                             <div class="flex justify-between items-start">
                                 <p class="text-sm text-gray-500">{{ $module->courseType->name }}</p>
                                 @if(!$module->image && $module->category)
-                                    <span class="inline-block px-2.5 py-1 border {{ $borderColor }} {{ $textColor }} text-[11px] font-semibold rounded-md w-fit">
+                                    <span class="inline-block px-2.5 py-1 border {{ $module->theme['border'] }} {{ $module->theme['text'] }} text-[11px] font-semibold rounded-md w-fit">
                                         {{ $module->category }}
                                     </span>
                                 @endif
                             </div>
 
                             @if($module->image && $module->category)
-                                <span class="inline-block px-2.5 py-1 mt-2 border {{ $borderColor }} {{ $textColor }} text-[11px] font-semibold rounded-md w-fit">
+                                <span class="inline-block px-2.5 py-1 mt-2 border {{ $module->theme['border'] }} {{ $module->theme['text'] }} text-[11px] font-semibold rounded-md w-fit">
                                     {{ $module->category }}
                                 </span>
                             @endif
@@ -152,7 +126,7 @@
                         @endif
                     </div>
                     
-                    <div class="bg-white rounded-lg p-5 flex-1 flex flex-col {{ $borderColor }} border shadow-sm relative z-0">
+                    <div class="bg-white rounded-lg p-5 flex-1 flex flex-col {{ $module->theme['border'] }} border shadow-sm relative z-0">
                         <p class="text-xs text-gray-800 leading-relaxed mb-4 flex-1">{{ $module->description }}</p>
                         
                         <div class="flex items-center justify-between border-t border-gray-100 pt-3">

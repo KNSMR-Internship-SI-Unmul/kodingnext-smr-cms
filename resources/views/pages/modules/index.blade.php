@@ -169,6 +169,59 @@
                 </div>
             @endforeach
         </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-between text-sm text-gray-500 px-2 mt-5">
+            <div>
+                Showing <span class="font-medium text-gray-900">{{ $modules->firstItem() ?? 0 }}</span> to <span class="font-medium text-gray-900">{{ $modules->lastItem() ?? 0 }}</span> of <span class="font-semibold text-brand-blue">{{ $modules->total() }}</span> modules
+            </div>
+            
+            <div class="flex items-center gap-6 mt-4 sm:mt-0">
+                <div class="flex items-center gap-2">
+                    <span>Cards per page</span>
+                    <select 
+                        class="border border-gray-200 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-pink bg-white cursor-pointer"
+                        @change="
+                            const url = new URL(window.location.href);
+                            url.searchParams.set('per_page', $event.target.value);
+                            url.searchParams.delete('page');
+                            window.location.href = url.href;
+                        "
+                    >
+                        <option value="12" {{ request('per_page', 12) == 12 ? 'selected' : '' }}>12</option>
+                        <option value="24" {{ request('per_page') == 24 ? 'selected' : '' }}>24</option>
+                        <option value="48" {{ request('per_page') == 48 ? 'selected' : '' }}>48</option>
+                    </select>
+                </div>
+
+                <span>Page {{ $modules->currentPage() }} of {{ $modules->lastPage() }}</span>
+                
+                <div class="flex items-center gap-4">
+                    @if ($modules->onFirstPage())
+                        <span class="text-gray-300 cursor-not-allowed flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                            Prev
+                        </span>
+                    @else
+                        <a href="{{ $modules->previousPageUrl() }}&search={{ request('search') }}&per_page={{ request('per_page', 12) }}" class="text-brand-blue hover:text-brand-blue-hover transition-colors flex items-center gap-1 font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                            Prev
+                        </a>
+                    @endif
+
+                    @if ($modules->hasMorePages())
+                        <a href="{{ $modules->nextPageUrl() }}&search={{ request('search') }}&per_page={{ request('per_page', 12) }}" class="text-brand-blue hover:text-brand-blue-hover transition-colors flex items-center gap-1 font-medium">
+                            Next
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </a>
+                    @else
+                        <span class="text-gray-300 cursor-not-allowed flex items-center gap-1">
+                            Next
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </span>
+                    @endif
+                </div>
+            </div>
+        </div>
     @endif
 
     {{-- create & edit module modal --}}

@@ -27,7 +27,9 @@ class ModuleController extends Controller
             $query->where('course_type_id', $request->course_type_id);
         }
 
-        $modules = $query->get();
+        $perPage = $request->input('per_page', 12);
+
+        $modules = $query->paginate($perPage)->withQueryString();
 
         return view('pages.modules.index', compact('modules', 'courseTypes'));
     }

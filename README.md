@@ -2,7 +2,7 @@
 
 Sistem Informasi Manajemen Konten (CMS) yang dibangun khusus untuk **Koding Next Samarinda** guna mengelola dan mengintegrasikan data operasional untuk kebutuhan pemasaran.
 
-## 📑 Daftar Isi (Table of Contents)
+## Daftar Isi (Table of Contents)
 
 - [🚀 Fitur Utama](#-fitur-utama)
 - [🛠️ Teknologi yang Digunakan (Tech Stack)](#️-teknologi-yang-digunakan-tech-stack)
@@ -12,7 +12,7 @@ Sistem Informasi Manajemen Konten (CMS) yang dibangun khusus untuk **Koding Next
   - [2. Langkah Instalasi](#2-langkah-instalasi)
 - [📋 Status Proyek & Catatan Deployment](#-status-proyek--catatan-deployment)
 
-## 🚀 Fitur Utama
+## Fitur Utama
 
 Sistem ini dilengkapi dengan berbagai fitur untuk mendukung efisiensi operasional:
 *   **Secure Authentication & Authorization:** Sistem login/logout dengan role based access.
@@ -44,7 +44,7 @@ Sistem ini dilengkapi dengan berbagai fitur untuk mendukung efisiensi operasiona
 *   **Frontend Styling:** [Tailwind CSS](https://tailwindcss.com/)
 *   **Frontend Interactivity:** [Alpine.js](https://alpinejs.dev/) (Untuk interaktivitas UI seperti modal, dropdown, dan toast).
 
-## 💻 Panduan Instalasi (Setup Guide)
+## Panduan Instalasi (Setup Guide)
 
 Langkah-langkah untuk menjalankan aplikasi ini di environment lokal atau server baru:
 
@@ -100,7 +100,7 @@ Pastikan sistem sudah terinstal:
     php artisan serve
 12. Akses aplikasi melalui browser di: `http://localhost:8000`
 
-## 📂 Struktur Direktori & File Utama
+## Struktur Direktori & File Utama
 
 Proyek ini dibangun di atas arsitektur standar Laravel. Namun, untuk memudahkan *developer* selanjutnya, berikut adalah pemetaan direktori dan file utama yang **dibuat dan dikustomisasi secara khusus** untuk kebutuhan CMS Koding Next Samarinda:
 
@@ -195,7 +195,7 @@ Proyek ini dibangun di atas arsitektur standar Laravel. Namun, untuk memudahkan 
         └── web.php     
 
 
-## 📋 Status Proyek & Catatan Deployment
+## Status Proyek & Catatan Deployment
 
 **Status:** Selesai & siap deployment (Ready for production)
 

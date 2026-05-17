@@ -89,6 +89,8 @@ Pastikan sistem sudah terinstal:
 10. **Hubungkan folder storage**
     ```bash
     php artisan storage:link
+    ```
+    Lalu, ekstrak file extract_at_storage-app-public.zip di folder storage>app>public.
 11. **Jalankan local server**
     
     Jalankan kedua perintah tersebut di terminal yang berbeda secara bersamaan.

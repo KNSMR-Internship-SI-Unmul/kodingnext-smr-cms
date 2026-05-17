@@ -26,7 +26,10 @@ class EmployeeController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        $employees = $query->get();
+        $perPage = $request->input('per_page', 12);
+
+        $employees = $query->paginate($perPage)->withQueryString();
+
         $totalEmployees = User::whereHas('role', function ($query) {
             $query->whereNotIn('name', ['Admin', 'Owner', 'Super Admin']); 
         })->count();
